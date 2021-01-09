@@ -38,7 +38,7 @@ Resources:
       BadgeEnabled: true
       Description: >
           The build process for creating an image and propagating to
-          ECS.
+          ECR for automated build processes.
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
@@ -56,21 +56,18 @@ Resources:
       Name: !Join
         - ''
         - - !Ref EnvironmentName
-          - "_YP_Build_Image"
+          - "_YPBuildImage"
       ServiceRole: !Ref CodeBuildRole
       Source:
         BuildSpec: buildspec/ci_image.yml
         Location: https://github.com/aws/meta-aws-ci
         Type: GITHUB
-        SourceIdentifier: meta-aws-ci
+        SourceIdentifier: meta_aws_ci
       SourceVersion: master
       VpcConfig:
         VpcId: !Ref VPC
-        Subnets: !Join
-          - ','
-          - - !Ref PrivateSubnet1
-            - !Ref PrivateSubnet2
-        SecurityGroupIds: !Ref NoIngressSecurityGroup
+        Subnets: [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]
+        SecurityGroupIds: [ !Ref NoIngressSecurityGroup ]
 
   CodeBuildRole:
     Type: AWS::IAM::Role
