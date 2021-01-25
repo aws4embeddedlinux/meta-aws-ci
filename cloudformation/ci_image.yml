@@ -4,7 +4,7 @@ Description: >-
     CI Network template.
 
 Parameters:
-  EnvironmentName:
+  NetworkStackName:
     Description: >-
         An environment name that is prefixed to resource names
     Type: String
@@ -13,26 +13,6 @@ Parameters:
     Description: >-
         The secret you manually created to access DockerHub
     Type: String
-
-  VPC:
-    Description: >-
-        Please select the VPC ID that represents a CodeBuild ready VPC.
-    Type: AWS::EC2::VPC::Id
-
-  PrivateSubnet1:
-    Description: >-
-        Please select the first private subnet.
-    Type: AWS::EC2::Subnet::Id
-
-  PrivateSubnet2:
-    Description: >-
-        Please select the second private subnet.
-    Type: AWS::EC2::Subnet::Id
-      
-  NoIngressSecurityGroup:
-    Description: >-
-        Select the no ingress security group (required)
-    Type: AWS::EC2::SecurityGroup::Id
 
 Resources:
 
@@ -77,7 +57,7 @@ Resources:
             Type: SECRETS_MANAGER
       Name: !Join
         - ''
-        - - !Ref EnvironmentName
+        - - !Ref AWS::StackName
           - "_YPBuildImage"
       ServiceRole: !Ref CodeBuildRole
       Source:
@@ -87,9 +67,17 @@ Resources:
         SourceIdentifier: meta_aws_ci
       SourceVersion: master
       VpcConfig:
-        VpcId: !Ref VPC
-        Subnets: [ !Ref PrivateSubnet1, !Ref PrivateSubnet2 ]
-        SecurityGroupIds: [ !Ref NoIngressSecurityGroup ]
+        VpcId:
+          Fn::ImportValue:
+            !Sub "${NetworkStackName}-VPC"
+        Subnets:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet1"
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-PrivateSubnet2"
+        SecurityGroupIds:
+          - Fn::ImportValue:
+              !Sub "${NetworkStackName}-NoIngressSecurityGroup"
 
   CodeBuildRole:
     Type: AWS::IAM::Role
@@ -135,7 +123,7 @@ Resources:
                           - ':'
                           - !Ref 'AWS::AccountId'
                           - ':network-interface:subnet/'
-                          - !Ref PrivateSubnet1
+                          - Fn::ImportValue: !Sub "${NetworkStackName}-PrivateSubnet1"
                       - !Join
                         - ''
                         - - 'arn:aws:ec2:'
@@ -143,7 +131,7 @@ Resources:
                           - ':'
                           - !Ref 'AWS::AccountId'
                           - ':network-interface:subnet/'
-                          - !Ref PrivateSubnet2
+                          - Fn::ImportValue: !Sub "${NetworkStackName}-PrivateSubnet2"
                     'ec2:AuthorizedService': 'codebuild.amazonaws.com'
                 Effect: Allow
                 Resource: !Join
@@ -207,7 +195,7 @@ Resources:
                     - ':log-group:/aws/codebuild/'
                     - !Join
                       - ''
-                      - - !Ref EnvironmentName
+                      - - !Ref AWS::StackName
                         - "_YPBuildImage"
                 - !Join
                   - ''
@@ -218,7 +206,7 @@ Resources:
                     - ':log-group:/aws/codebuild/'
                     - !Join
                       - ''
-                      - - !Ref EnvironmentName
+                      - - !Ref AWS::StackName
                         - "_YPBuildImage"
                     - ':*'
         - PolicyName: S3Access
