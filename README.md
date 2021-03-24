@@ -1,37 +1,34 @@
 ## meta-aws-ci: continuous integration for the meta-aws project
 
+Subtopics:
+
+* Core CI
+* Reference implementation
+
+## Goals
+
 This project has three goals:
 
-1. continuous integration that provides Quality accurance metrics
-   across all supportable silicon vendor BSPs, matrix with the AWS
-   software stacks that run on Embedded Linux.
-2. pull request verification checks for meta-aws pull requests
-3. provide a framework for major software stack integration testing
-   using Device Tester. at the time of writing, this is limited to AWS
-   IoT Greengrass.
+1. Provide mechanisms for meta-aws and meta-aws-demos continuous
+   integration and pull request verification.
+2. Provide mechanisms for OEM/ODM customers wanting to streamline
+   Embedded Linux delivery.
+3. Provide a reference implementation that illustrates how to
+   integrate and maintain AWS device software throughout the IoT
+   product lifecycle.
 
-# Project Status
+## How this repository is organized
 
-The project is in the beginning stages of the first goal where build
-machine definitions are being setup.
+ core/              <= mechanisms for meta-aws CI
+   cfn/             <= AWS Cloudformation stack templates
+   conf/            <= bitbake local.conf configuration snippets
+ ref/               <= reference implementation
+   cfn/             <= Infrastructure using AWS CodeCommit
+   conf/            <= bitbake local configuration
+   layer/           <= Reference app layer, distribution definition
+     ci/            <= AWS CodeBuild buildspec file per target, repo config
+ verify/            <= mechanisms for meta-aws and meta-aws-demos pull requests
 
-# Continuous Integration
-
-Provides an AWS cloud native and serverless continuous integration
-framework that facilitates build-stage-test.
-
-# Pull request verification checks
-
-Provides an AWS cloud native integration hook with the meta-aws Github
-repo, providing bitbake layer integrity and verification checks. This
-might be extended to incremental build-stage-test in the future.
-
-# Device Tester integration
-
-Device Tester provides automated testing and certification through
-managed integration testing. meta-aws-ci provides the mechanisms to
-coordinate edge devices under test with the harness running in the AWS
-cloud.
 
 ## License
 
