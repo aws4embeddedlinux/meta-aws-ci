@@ -19,6 +19,7 @@ This project has three goals:
 
 ## How this repository is organized
 
+```text
  core/              <= mechanisms for meta-aws CI
    cfn/             <= AWS Cloudformation stack templates
    conf/            <= bitbake local.conf configuration snippets
@@ -28,7 +29,7 @@ This project has three goals:
    layer/           <= Reference app layer, distribution definition
      ci/            <= AWS CodeBuild buildspec file per target, repo config
  verify/            <= mechanisms for meta-aws and meta-aws-demos pull requests
-
+```
 
 ## License
 
