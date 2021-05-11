@@ -66,6 +66,9 @@ recipes for your target board. The pipeline will monitor for changes and update 
 
     * After the first successful deployment, priviledged credentials are no longer required.
 
+    * After you run a deployment for the first time with the settings above, a cdk.context.json may get created automatically. This file must be committed to source control to keep track of resources
+    * and settings for the self-mutate and updates to work correctly.
+
 ## Useful commands
 
  * `npm run build`   compile typescript to js
