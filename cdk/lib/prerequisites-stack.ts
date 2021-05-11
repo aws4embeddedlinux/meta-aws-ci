@@ -26,13 +26,13 @@ export class PrerequisitesStack extends Stack {
     //   "password": "docker-api-key-f91737aaa"   
     // }
     // Used by: Base image builder, when pulling upstream images from Docker Hub
-    public static readonly DockerSecretName = "dh";
+    public static readonly DockerSecretName: string = "dh";
 
     // Secrets Manager: Plaintext secret containing the Github token with permissions to read
     // the repository mentioned below
     // Format: "ghp_ABCDEF0iiiEXAMPLE"
     // Used by: Pipeline Stack, Image Builder when interacting with Github.
-    public static readonly GithubSecretName = "github_personal_token";
+    public static readonly GithubSecretName: string = "github_personal_token";
 
     // VPC: Customer private cloud network set-up.
     // Used by: Image builders, to communicate between EFS caches and CodeBuild.
@@ -41,26 +41,26 @@ export class PrerequisitesStack extends Stack {
     // Repository: Repository where this CDK code lives.
     // Used by: Pipeline stack, to monitor changes and modify the pipeline
     // Notes: this repository must exist and be usable by your token described above
-    public static readonly GithubCdkRepositoryName: "meta-aws-ci";
-    public static readonly GithubCdkRepositoryOwner: "aws";
-    public static readonly GithubCdkRepositoryBranch: "master";
+    public static readonly GithubCdkRepositoryName: string = "meta-aws-ci";
+    public static readonly GithubCdkRepositoryOwner: string = "aws";
+    public static readonly GithubCdkRepositoryBranch: string = "master";
     // If the CDK package isn't at the top level of the repository, enter the subdirectory here.
-    public static readonly GithubCdkSubdirectory: "cdk";
+    public static readonly GithubCdkSubdirectory: string = "cdk";
 
     // Repository: Repository where the Yocto recipe code lives.
     // Used by: Image builder, to build a yocto image for this board.
     // Notes: this repository must exist and be usable by your token described above
-    public static readonly GithubYoctoRecipeRepositoryName: "meta-aws-demos";
-    public static readonly GithubYoctoRecipeRepositoryOwner: "aws-samples";
-    public static readonly GithubYoctoRecipeRepositoryBranch: "master";
+    public static readonly GithubYoctoRecipeRepositoryName: string = "meta-aws-demos";
+    public static readonly GithubYoctoRecipeRepositoryOwner: string = "aws-samples";
+    public static readonly GithubYoctoRecipeRepositoryBranch: string = "master";
 
     // Repository: Repository where the Yocto builder CodeBuild project lives.
     // Used by: Base Image builder, to build a container for YP builds.
     // Notes: this repository must exist and be usable by your token described above
-    public static readonly GithubBaseImageRepositoryName: "meta-aws-ci";
-    public static readonly GithubBaseImageRepositoryOwner: "aws";
-    public static readonly GithubBaseImageRepositoryBranch: "master";
-    public static readonly GithubBaseImageRepositorySpecLocation: "buildspec/ci_image.yml";
+    public static readonly GithubBaseImageRepositoryName: string = "meta-aws-ci";
+    public static readonly GithubBaseImageRepositoryOwner: string = "aws";
+    public static readonly GithubBaseImageRepositoryBranch: string = "master";
+    public static readonly GithubBaseImageRepositorySpecLocation: string = "buildspec/ci_image.yml";
 
 
     constructor(scope: Construct, id: string, props: PrerequisitesStackProps) {
