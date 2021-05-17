@@ -21,7 +21,7 @@ This project has three goals:
 
 ```text
  core/              <= mechanisms for meta-aws CI
-   cfn/             <= AWS Cloudformation stack templates
+   cdk/             <= CDK templates for CI/CD pipeline
    conf/            <= bitbake local.conf configuration snippets
  ref/               <= reference implementation
    cfn/             <= Infrastructure using AWS CodeCommit
