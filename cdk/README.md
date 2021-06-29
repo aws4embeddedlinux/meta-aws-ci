@@ -22,6 +22,7 @@ recipes for your target board. The pipeline will monitor for changes and update 
 
     * The AWS account you will use to host the PipelineStack needs to be prepared using this command 
     (replace _ADMIN-PROFILE_, _ACCOUNT-ID_, and _REGION_ with values suitable to you):
+    __Note__: The below examples were adapted from [CDK's documentation](https://docs.aws.amazon.com/cdk/api/latest/docs/pipelines-readme.html#cdk-environment-bootstrapping).
 
     ```bash
     export CDK_NEW_BOOTSTRAP=1 
@@ -50,6 +51,7 @@ recipes for your target board. The pipeline will monitor for changes and update 
       
     * You must create a secret in Secrets Manager the account where the base image will be built,
       with `username` and `password` values matching your Docker Hub credentials. Suggested name: `dh`
+    __Note__: For `aws-cli` users, the `username` and `password` fields comprise of a JSON blob string.
 
     * Update the values `lib/prerequisites-stack.ts` file if not using the suggested secret names. 
       Other values are also configurable in that file. 

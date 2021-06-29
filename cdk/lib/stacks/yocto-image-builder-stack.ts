@@ -18,9 +18,9 @@ export interface YoctoImageBuilderStackProps extends StackProps {
     readonly vpc: ec2.IVpc;
 
     readonly githubSecretName: string;
-    readonly githubYoctoRecipeRepositoryName: "meta-aws-demos";
-    readonly githubYoctoRecipeRepositoryOwner: "aws-samples";
-    readonly githubYoctoRecipeRepositoryBranch: "master";
+    readonly githubYoctoRecipeRepositoryName: string;
+    readonly githubYoctoRecipeRepositoryOwner: string;
+    readonly githubYoctoRecipeRepositoryBranch: string;
 
     readonly yoctoProjectRelease?: string;
     readonly machineType?: string;
