@@ -29,6 +29,7 @@ This project has three goals:
    layer/           <= Reference app layer, distribution definition
      ci/            <= AWS CodeBuild buildspec file per target, repo config
  verify/            <= mechanisms for meta-aws and meta-aws-demos pull requests
+ workshop/          <= workshop source for working on Yocto on AWS
 ```
 
 ## License
