@@ -21,7 +21,8 @@ This project has three goals:
 
 ```text
  core/              <= mechanisms for meta-aws CI
-   cdk/             <= CDK templates for CI/CD pipeline
+   cdk/             <= CI/CD pipeline - CDK - AWS IoT Greengrass
+   cfn/             <= CI/CD pipeline - CFN - Standard (all recipe targets and QA checks)
    conf/            <= bitbake local.conf configuration snippets
  ref/               <= reference implementation
    cfn/             <= Infrastructure using AWS CodeCommit
