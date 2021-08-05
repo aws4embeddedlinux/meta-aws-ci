@@ -8,18 +8,23 @@ The Yocto Project is an open source collaboration project that helps developers 
 
 ### What you will learn in this module
 
-Learn how to setup a cloud development environment to make development practices easier and manually bake a ready-to-work image using a provided Yocto Recipe and Yocto Layer.
+Learn how to setup a cloud development environment to make development easier and manually bake a ready-to-work image using a provided Yocto Recipe and Layers.
 
-### What will you need
+### What you will need
 
-Cloud9 Instance setup: the higher the number of vCPU available, the faster you'll be able to complete this module.
-The bitbake process is CPU-intensive and scales very well with the number of vCPU. We recommend at least a c5.12xlarge
+A Cloud9 Instance with 100GB available: the higher the number of vCPU available, the faster you'll be able to complete this module. (more info can be found here: https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#var-PARALLEL_MAKE )
+
+The bitbake process is CPU-intensive and scales very well with the number of vCPU. We recommend at least a c5.9xlarge
 
 ### Step 1 - Prepare your development environment
  
 ```bash
 sudo apt update
 sudo apt upgrade -y
+```
+
+Now install all the required packages:
+```bash
 sudo apt install gawk wget git-core         \
     diffstat unzip texinfo gcc-multilib   \
     chrpath socat cpio build-essential     \
@@ -29,7 +34,7 @@ sudo apt install gawk wget git-core         \
     libsdl1.2-dev xterm pylint3 -y
 ```
 
-Let's set up our work directory:
+Let's set up our work folder:
 ```
 mkdir -p $HOME/environment/src/mydev-proto
 DEVHOME=$HOME/environment/src/mydev-proto
@@ -38,7 +43,7 @@ DEVHOME=$HOME/environment/src/mydev-proto
 And clone Poky, Yocto's reference distribution that will help us build our own custom Linux Distribution.
 
 ```
-git clone -b zeus git://git.yoctoproject.org/poky $DEVHOME 
+git clone -b hardknott git://git.yoctoproject.org/poky $DEVHOME 
 cd $DEVHOME
 ```
 
@@ -59,14 +64,27 @@ MACHINE=qemux86-64     \
   core-image-minimal
 ```
 
+{{% notice note %}}
+  If you receive an error like this: 
+  ![](/images/01_hello_yocto_diskfull.png)
+  Increase your disk space following this guide: https://docs.aws.amazon.com/cloud9/latest/user-guide/move-environment.html
+  After you've resized the Cloud9's EBS from the AWS console or via CLI, if you are using Ubuntu, the main commands are:
+  `sudo growpart /dev/nvme0n1 1`  and `sudo resize2fs /dev/nvme0n1p1` 
+{{% /notice %}}
+While we wait, we can create a new shell and proceed to the next step
+
 ### Step 3 - Integrate layers and your application layer
 
-Now, we can download our layers:
+Let's initialize the shell and can download our layers:
 ```
-git clone -b zeus git://git.openembedded.org/meta-openembedded
-git clone -b zeus https://git.yoctoproject.org/git/meta-java
-git clone -b zeus https://git.yoctoproject.org/git/meta-virtualization
-git clone -b zeus https://github.com/aws/meta-aws
+DEVHOME=$HOME/environment/src/mydev-proto
+cd $DEVHOME
+git clone -b hardknott git://git.openembedded.org/meta-openembedded
+git clone -b hardknott https://git.yoctoproject.org/git/meta-virtualization
+git clone -b hardknott https://github.com/aws/meta-aws
+git clone -b master https://git.yoctoproject.org/git/meta-java
+cd meta-java
+git checkout 04377d10225360bd27d018007889176911bb7532
 ```
 
 Then modify the `$DEVHOME/build/conf/bblayers.conf` file by adding the layers we download previously to our new custom layer (substitute $DEVHOME with the $DEVHOME path, e.g. `home/ubuntu/environment/src/mydev-proto`)
@@ -78,7 +96,7 @@ $DEVHOME/meta-java
 $DEVHOME/meta-aws
 ```
 
-It should look like this
+It should look like this:
 
 ```
 BBLAYERS ?= " \
@@ -91,6 +109,12 @@ BBLAYERS ?= " \
   /home/ubuntu/environment/src/mydev-proto/meta-java \
   /home/ubuntu/environment/src/mydev-proto/meta-aws \
   "
+```
+
+Before baking the image, let's add the aws-ioto-device-client to the image.
+Let's modify `$DEVHOME/build/conf/local.conf` and add the following line at the end of the file.
+```
+IMAGE_INSTALL_append = "aws-iot-device-client"
 ```
 
 Now let's bake the image again.
@@ -115,14 +139,18 @@ runqemu                \
   nographic
 ```
 
-If you want to exit the simulation, just run Ctrl+A and X
-
-### Step 5 - Creating a new layer
-
-If you wanted to create a new layer, specific for our project, type the following commands
+provide user __rooot__ and test that the aws-device-client-sdk is installed by running the following command:
 ```
-bitbake-layers create-layer $DEVHOME/meta-you
-bitbake-layers add-layer $DEVHOME/meta-you
+/sbin/aws-iot-device-client --help
 ```
 
-*explain what happens*
+If you want to exit the simulation, just run Ctrl+A and then press X
+
+### Checkpoint
+
+1. You have successfully logged onto the Cloud9 instance and set up the prerequisites
+1. You have baked the image without any additional layer
+1. You have modified the configuration to include the cloned layers
+1. You have run the non graphical simulation of the firmware you just baked and ensured that the aws-iot-device-client sdk is present
+
+
