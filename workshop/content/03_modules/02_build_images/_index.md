@@ -3,23 +3,40 @@ title: "2 – Build images in a fast and repeatable way"
 weight: 10
 ---
 
-In this module we use the AWS Cloud Development Kit (CDK) to define and deploy a pipeline that hosts an application. The application is designed to build Yocto images in a fast and repeatable way. 
+### Introduction
 
+In this module we use the AWS Cloud Development Kit (CDK), CDK Pipelines and the Yocto project to define and deploy a pipeline that hosts a self-updating application that constructs a Linux image that target a Raspberry Pi 4.
+
+Here is a high-level diagram of how the solution works and the services used:
 ![Solution Architecture](/images/02_build_images_solution_architecture.png)
+
+### Prerequisites
+- An AWS Account
+- Experience building images locally using Yocto
+- Familiarity with the AWS Cloud Development Kit (CDK) or AWS CloudFormation
+- Understanding of Continuous Delivery and Continuous Integration (CI/CD) concepts
+- Experience writing code using TypeScript, Node.js or JavaScript
 
 ### What is the AWS Cloud Development Kit (CDK)?
 
-The AWS Cloud Development Kit (CDK) is a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation. The AWS CDK lets you define applications in the AWS Cloud using your programming language of choice.  We will be using Typescript in this Module.
+The AWS Cloud Development Kit (CDK) is a framework for defining cloud infrastructure in code and provisioning it through AWS CloudFormation. AWS CDK enables you to build your cloud application without leaving your IDE. You can write your runtime code and define your AWS resources with the same programming language. We will be using Typescript in this Module.
+
+{{% notice info %}}
+If you have not used AWS CDK before, please consider working through the [Getting Started](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html) section of the AWS CDK Developer Guide before continuing with this lab.
+{{% /notice %}}
 
 ### What are CDK Pipelines? 
 
-CDK Pipelines is a construct library module for continuous delivery of AWS CDK applications. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or BitBucket, CDK Pipelines can automatically build, test, and deploy your new version. CDK Pipelines are self-updating; if you add new application stages or new stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks.
+CDK Pipelines is a high-level construct library that makes it easy to set up a continuous deployment pipeline for your CDK applications, powered by AWS CodePipeline. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or BitBucket, CDK Pipelines can automatically build, test, and deploy your new version. CDK Pipelines are self-updating; if you add new application stages or new stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks.
 
 
-{{% notice note %}}
-CDK Pipelines is currently in developer preview, and its API is subject to change. Breaking API changes will be announced in the AWS CDK Release Notes. https://github.com/aws/aws-cdk/releases
+{{% notice info %}}
+If you have not used CDK Pipelines before, please consider working through the code example [Continuous integration and delivery (CI/CD) using CDK Pipelines](https://docs.aws.amazon.com/cdk/latest/guide/cdk_pipeline.html) available in the AWS CDK Developer Guide before continuing with this lab. 
 {{% /notice %}}
 
+### Expected Environment 
+- NodeJS, the latest LTS version is recommended
+- NPM version 7 or later. View NPM upgrade instructions
 
 ### Step 1 - Fork the reference implementation for continuous integration for meta-aws
 
@@ -35,7 +52,7 @@ You must have a GitHub account to fork an existing repo. If you do not have an a
 
 ### Step 2 - Store GitHub and Docker Hub secrets securely in your account
 
-1. A Github token is used to by the pipeline Stack and the imaage builder when interacting with Github. On your Github account, go to __Settings → Developer Settings → Personal access tokens__ and generate a new token. The token should have __workflow__ scope selected
+1. A GitHub token is used to by the pipeline Stack and the imaage builder when interacting with Github. On your Github account, go to __Settings → Developer Settings → Personal access tokens__ and generate a new token. The token should have __workflow__ scope selected
 
 ![GitHub personal access tokens](/images/02_build_images_github_personal_token.png)
 
@@ -52,37 +69,162 @@ You must have a GitHub account to fork an existing repo. If you do not have an a
 1. Clone your forked project
 
 ```bash
-git clone git@github.com:<<YOUR_GITHUB_USER>>/meta-aws-ci.git
+git clone git@github.com:<YOUR_GITHUB_USER>/meta-aws-ci.git
 ```
 
-2. Navigate to the __cdk__ directory and install the project dependencies
+2. Open the file `prerequisites-stack.ts` which is located under `cdk/lib` directory and change the variable `GithubCdkRepositoryOwner` and `GithubBaseImageRepositoryOwner` to match to your GitHub user name.
+
+3. Navigate to the repository directory and commit your changes
 
 ```bash
-cd meta-aws-ci/cdk
-npm update
+cd meta-aws-ci
+git add --all
+git commit -m "updated GithubCdkRepositoryOwner & GithubBaseImageRepositoryOwner"
+git push
 ```
 
-3. Deploy the project
+4. Navigate to the __cdk__ directory and install the project dependencies
+
+```bash
+cd cdk
+npm install
+```
+
+6. Ensure CDK builds correctly 
+
+```bash
+cdk synth
+```
+
+7. Setup temporary credentials. Make sure you have enough permissions.
+
+```bash
+export AWS_ACCESS_KEY_ID=ASIA3MLQD3T3MEXAMPLE
+export AWS_SECRET_ACCESS_KEY=D8uy7l7koV3cDR8rYgtDVN0qJvSHrTKfgEXAMPLE
+export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjEI7//////////wEaCXVzLWVhc3QtMSJHMEUCIFfRRvaFjczQlyqgSvSzYMfviRvQjdFNFudh0gBooEAEXAMPLE
+```
+
+7. Bootstrap the AWS Account & region you are planning to yse. This is only needs to be done once per account-region combination.
+
+```bash
+export CDK_NEW_BOOTSTRAP=1 
+export ACCOUNTID=<YOUR_ACCOUNT_ID>
+export REGION=<YOUR_REGION>
+cdk bootstrap \
+    --cloudformation-execution-policies arn:aws:iam::aws:policy/AdministratorAccess \
+    aws://$ACCOUNTID/$REGION
+```
+
+7. Deploy the project
+
 ```bash
 cdk deploy
 ```
+#### Troubleshooting deployment issues
+
+- __You are not authorized to perform this operation__: You may need to manually add the permission "ec2:DescribeAvailabilityZones" to the " IAM role that starts with 'GreengrassDeviceImageBuil-PipelineBuildSynthCdk' if the pipeline 'DeviceImageBuilderPipeline' fails during the build stage because of the error "[Error at /GreengrassDeviceImageBuilder-PipelineStack/Testing/PrerequisitesStack] You are not authorized to perform this operation". This is due to a [bug](https://github.com/aws/aws-cdk/issues/2643) with CDK and new accounts. Once you have added the permission, you must retry the build process by clicking the "Retry" button on the console.
+
+Example: In-line policy applied to IAM role 'GreengrassDeviceImageBuil-PipelineBuildSynthCdk...'
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "ec2:DescribeAvailabilityZones",
+            "Resource": "*"
+        }
+    ]
+}
+```
+- __Access Denied (Service: Amazon S3; Status Code: 403; Error Code: AccessDenied..)__: By default the reference implementation uses the caret symbol (^) which indicates “Compatible with version”. This means that NPM will update you to all future minor/patch versions, without incrementing the major version. Forcing packages.json to use a specific version of the AWS CDK like "1.111.0" may help resolving this issue if you encounter it. You will need to update NPM by running `npm update --force`.
+
+Example: Setting dependencies to use a specific version - 'cdk/packages.json'
+```json
+{
+  ...
+  "dependencies": {
+    "@aws-cdk/aws-codebuild": "1.111.0",
+    "@aws-cdk/aws-codecommit": "1.111.0",
+    "@aws-cdk/aws-codepipeline": "1.111.0",
+    "@aws-cdk/aws-codepipeline-actions": "1.111.0",
+    "@aws-cdk/aws-efs": "1.111.0",
+    "@aws-cdk/aws-iam": "1.111.0",
+    "@aws-cdk/aws-s3": "1.111.0",
+    "@aws-cdk/core": "1.111.0",
+    "@aws-cdk/pipelines": "1.111.0",
+    "source-map-support": "^0.5.16"
+  }
+  ...
+}
+
+```
+- __Error calling startBuild: Cannot have more than 0 builds in queue for the account__: Your account may be having a limit on the number of running On-Demand Instances. The reference implementation uses the largest instance available (145 GB , 72 vCPUs). Using a smaller instance should allow you to build the project if you encounter this error. You can change this setting from the console or by modifying the instance type defined in the file 'yocto-image-builder-stack.ts' from 'codebuild.ComputeType.X2_LARGE' to `codebuild.ComputeType.LARGE` or smaller. By default, the timeout is 1 hour, you may want to set it to a higher number as the 1st time build can take more than 1 hour in smaller instances.
+
+Example: Modifying the project to use a different instance size and setting the timeout value - 'cdk/lib/stacks/yocto-image-builder-stack.ts'
+```js
+...
+import { Construct, SecretValue, Stack, StackProps, RemovalPolicy, Duration } from '@aws-cdk/core';
+...
+const buildProject = new codebuild.PipelineProject(this, `YoctoBuild-${machineType}-${projectType}-${yoctoProjectRelease}`, {
+   ...
+    timeout: Duration.hours(8)
+    ...
+    environment: {
+        ...
+        computeType: codebuild.ComputeType.LARGE,
+        ...
+    },
+   ...
+});
+```
+
 ### Step 4 - Monitor the deployment process
 
 The first thing that happens when you run ‘cdk deploy’ is that the CDK Pipelines project gets synthesized into a CloudFormation template. Then, this template gets deployed in your account.
 
 CDK Pipelines project creates a CodePipeline pipeline called ‘DeviceImageBuilderPipeline’ in your account. This pipeline publishes a set of CloudFormation templates that define two application stacks. 
 
-The first stack is called the ‘YoctoBaseImageBuilderStack’ and it is responsible for creating a Docker image that contains all the packages that Poky needs to be able to build images. The Docker image produced is stored in the AWS Elastic Container Registry (ECR).
+The first stack is called the ‘YoctoBaseImageBuilderStack’ and it is responsible for creating a Docker image that contains all the packages that Poky needs to be able to build images. The Docker image produced is stored in the AWS Elastic Container Registry (ECR). This takes approximately 15 minutes to build.
 
-The second stack is called the ‘YoctoRaspberryPiImageBuilderStack’. This stack pulls the Docker image produced by in by the first stack and start building a Linux image using Poky. The image built in this module comes from a recipe available in the meta-aws-demos repository. The recipe targets a RaspberryPi 4. It builds a basic operating system with support for filesystem, python, networking, and AWS IoT GreenGrasss.
-
+The second stack is called the ‘YoctoRaspberryPiImageBuilderStack’. This stack pulls the Docker image produced by in by the first stack and start building a Linux image using Poky. The image built in this module comes from a recipe available in the meta-aws-demos repository. The recipe targets a Raspberry Pi 4 and builds a basic operating system with support for filesystem, python, networking, and AWS IoT Greengrasss Version 2. This process takes approximately 90 minutes to build the first time but because the stack leverages from Amazon EFS to maintain the SSTATE cache, subsequent builds are much faster.
 
 {{% notice note %}}
 For more information about the image that this module builds, please explore the recipe here: 
 https://github.com/aws-samples/meta-aws-demos/blob/master/raspberrypi4-64/aws-iot-greengrass-v2/
 {{% /notice %}}
 
-### Step 5 - Download the image from S3 and test it
+### Step 5 - Commit a change to your repository and build a new image
+
+The [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) repository includes demonstrations of the `meta-aws` layer. At the time of writing, the demonstration used by default produces an image that includes AWS IoT Greengrass, Version 2. The image targets a Raspberry Pi 4 and uses the `Dunfell` release from the Yocto project. Changing the release or target hardware will create a different image.
+
+1. Open the file `yocto-image-builder-stack.ts` located under the `cdk/lib/stacks` directory.
+
+2. Change the `yoctoProjectRelease` property to a different supported demonstration recipe. You can find the supported demonstrations by navigating through the [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) repository.
+
+```js
+...
+const { 
+    ...
+    yoctoProjectRelease = "hardknott", 
+    ...
+} = props;
+...
+
+```
+
+3. Commit your changes
+
+```bash
+git add --all
+git commit -m "updated yocto-image-builder-stack.ts to a different demo"
+git push
+```
+
+4. Monitor the deployment process
+
+### Step 6 (Optional) - Download the image from S3 and test it
 
 1. Get the name of the S3 bucket that contains the image
 
@@ -105,5 +247,5 @@ Make sure you choose the right device. This process will overwrite the card.
 {{% /notice %}}
 
 ```bash
-dd if=$FILE of=/dev/<<YOUR_SD_CARD_DEVICE>> bs=4M status=progress
+dd if=$FILE of=/dev/<YOUR_SD_CARD_DEVICE> bs=4M status=progress
 ```
