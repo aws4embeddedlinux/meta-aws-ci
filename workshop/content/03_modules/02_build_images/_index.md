@@ -5,7 +5,7 @@ weight: 10
 
 ### Introduction
 
-In this module we use the AWS Cloud Development Kit (CDK), CDK Pipelines and the Yocto project to define and deploy a pipeline that hosts a self-updating application that constructs a Linux image that target a Raspberry Pi 4.
+In this module we use the AWS Cloud Development Kit (CDK), CDK Pipelines and the Yocto project to define and deploy a pipeline that hosts a self-updating application that constructs a Linux image compatible with a Raspberry Pi 4.
 
 Here is a high-level diagram of how the solution works and the services used:
 ![Solution Architecture](/images/02_build_images_solution_architecture.png)
@@ -16,6 +16,7 @@ Here is a high-level diagram of how the solution works and the services used:
 - Familiarity with the AWS Cloud Development Kit (CDK) or AWS CloudFormation
 - Understanding of Continuous Delivery and Continuous Integration (CI/CD) concepts
 - Experience writing code using TypeScript, Node.js or JavaScript
+- (Optional) A Raspberry Pi 4 and an SD card to test the produced image
 
 ### What is the AWS Cloud Development Kit (CDK)?
 
@@ -27,7 +28,7 @@ If you have not used AWS CDK before, please consider working through the [Gettin
 
 ### What are CDK Pipelines? 
 
-CDK Pipelines is a high-level construct library that makes it easy to set up a continuous deployment pipeline for your CDK applications, powered by AWS CodePipeline. Whenever you check your AWS CDK app's source code in to AWS CodeCommit, GitHub, or BitBucket, CDK Pipelines can automatically build, test, and deploy your new version. CDK Pipelines are self-updating; if you add new application stages or new stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks.
+CDK Pipelines is a high-level construct library that makes it easy to set up a continuous deployment pipeline for your CDK applications, powered by AWS CodePipeline. Whenever you check your AWS CDK application's source code in to AWS CodeCommit, GitHub, or BitBucket, CDK Pipelines can automatically build, test, and deploy your new version. CDK Pipelines are self-updating; if you add new application stages or new stacks, the pipeline automatically reconfigures itself to deploy those new stages and/or stacks.
 
 
 {{% notice info %}}
@@ -52,7 +53,7 @@ You must have a GitHub account to fork an existing repo. If you do not have an a
 
 ### Step 2 - Store GitHub and Docker Hub secrets securely in your account
 
-1. A GitHub token is used to by the pipeline Stack and the imaage builder when interacting with Github. On your Github account, go to __Settings → Developer Settings → Personal access tokens__ and generate a new token. The token should have __workflow__ scope selected
+1. A GitHub token is used to by the pipeline Stack and the image builder when interacting with GitHub. On your GitHub account, go to __Settings → Developer Settings → Personal access tokens__ and generate a new token. The token should have the __workflow__ scope selected
 
 ![GitHub personal access tokens](/images/02_build_images_github_personal_token.png)
 
@@ -60,7 +61,7 @@ You must have a GitHub account to fork an existing repo. If you do not have an a
 
 ![GitHub personal access tokens](/images/02_build_images_secrets_github.png) 
 
-3. DockerHub credentials are used by the image builder when pulling upstream images from Docker Hub. Create a new secret by going to __AWS Console → AWS Secrets Manager__ and click on __Store a new secret__ then choose __Other type of secrets__, click on the __Secret key/value__ tab and create a `username` and `password` key/value pair. This secret needs to be named `dh` 
+3. DockerHub credentials are used by the image builder when pulling upstream images from Docker Hub. Create a new secret by going to __AWS Console → AWS Secrets Manager__ and click on __Store a new secret__. Choose __Other type of secrets__, click on the __Secret key/value__ tab and create a `username` and `password` key/value pair. This secret needs to be named `dh` 
 
 ![GitHub personal access tokens](/images/02_build_images_secrets_dockerhub.png) 
 
@@ -79,7 +80,7 @@ git clone git@github.com:<YOUR_GITHUB_USER>/meta-aws-ci.git
 ```bash
 cd meta-aws-ci
 git add --all
-git commit -m "updated GithubCdkRepositoryOwner & GithubBaseImageRepositoryOwner"
+git commit -m git commit -m "updated owners"
 git push
 ```
 
@@ -104,7 +105,7 @@ export AWS_SECRET_ACCESS_KEY=D8uy7l7koV3cDR8rYgtDVN0qJvSHrTKfgEXAMPLE
 export AWS_SESSION_TOKEN=IQoJb3JpZ2luX2VjEI7//////////wEaCXVzLWVhc3QtMSJHMEUCIFfRRvaFjczQlyqgSvSzYMfviRvQjdFNFudh0gBooEAEXAMPLE
 ```
 
-7. Bootstrap the AWS Account & region you are planning to yse. This is only needs to be done once per account-region combination.
+7. Bootstrap the AWS Account & region you are planning to use. This only needs to be done once per account-region combination.
 
 ```bash
 export CDK_NEW_BOOTSTRAP=1 
@@ -120,6 +121,21 @@ cdk bootstrap \
 ```bash
 cdk deploy
 ```
+### Step 4 - Monitor the deployment process
+
+The first thing that happens when you run ‘cdk deploy’ is that the CDK Pipelines project gets synthesized into a CloudFormation template. Then, this template gets deployed in your account.
+
+CDK Pipelines project creates a CodePipeline pipeline called ‘DeviceImageBuilderPipeline’ in your account. This pipeline publishes a set of CloudFormation templates that define two application stacks. 
+
+The first stack is called the ‘YoctoBaseImageBuilderStack’ and it is responsible for creating a Docker image that contains all the packages that Poky needs to be able to build images. The Docker image produced is stored in the AWS Elastic Container Registry (ECR). This takes approximately 15 minutes to build.
+
+The second stack is called the ‘YoctoRaspberryPiImageBuilderStack’. This stack pulls the Docker image produced by in by the first stack and start building a Linux image using Poky. The image built in this module comes from a recipe available in the meta-aws-demos repository. The recipe targets a Raspberry Pi 4 and builds a basic operating system with support for filesystem, python, networking, and AWS IoT Greengrasss Version 2. This process takes approximately 90 minutes to build the first time but because the stack leverages from Amazon EFS to maintain the SSTATE cache, subsequent builds are much faster.
+
+{{% notice note %}}
+For more information about the image that this module builds, please explore the recipe here: 
+https://github.com/aws-samples/meta-aws-demos/blob/master/raspberrypi4-64/aws-iot-greengrass-v2/
+{{% /notice %}}
+
 #### Troubleshooting deployment issues
 
 - __You are not authorized to perform this operation__: You may need to manually add the permission "ec2:DescribeAvailabilityZones" to the " IAM role that starts with 'GreengrassDeviceImageBuil-PipelineBuildSynthCdk' if the pipeline 'DeviceImageBuilderPipeline' fails during the build stage because of the error "[Error at /GreengrassDeviceImageBuilder-PipelineStack/Testing/PrerequisitesStack] You are not authorized to perform this operation". This is due to a [bug](https://github.com/aws/aws-cdk/issues/2643) with CDK and new accounts. Once you have added the permission, you must retry the build process by clicking the "Retry" button on the console.
@@ -180,51 +196,7 @@ const buildProject = new codebuild.PipelineProject(this, `YoctoBuild-${machineTy
 });
 ```
 
-### Step 4 - Monitor the deployment process
-
-The first thing that happens when you run ‘cdk deploy’ is that the CDK Pipelines project gets synthesized into a CloudFormation template. Then, this template gets deployed in your account.
-
-CDK Pipelines project creates a CodePipeline pipeline called ‘DeviceImageBuilderPipeline’ in your account. This pipeline publishes a set of CloudFormation templates that define two application stacks. 
-
-The first stack is called the ‘YoctoBaseImageBuilderStack’ and it is responsible for creating a Docker image that contains all the packages that Poky needs to be able to build images. The Docker image produced is stored in the AWS Elastic Container Registry (ECR). This takes approximately 15 minutes to build.
-
-The second stack is called the ‘YoctoRaspberryPiImageBuilderStack’. This stack pulls the Docker image produced by in by the first stack and start building a Linux image using Poky. The image built in this module comes from a recipe available in the meta-aws-demos repository. The recipe targets a Raspberry Pi 4 and builds a basic operating system with support for filesystem, python, networking, and AWS IoT Greengrasss Version 2. This process takes approximately 90 minutes to build the first time but because the stack leverages from Amazon EFS to maintain the SSTATE cache, subsequent builds are much faster.
-
-{{% notice note %}}
-For more information about the image that this module builds, please explore the recipe here: 
-https://github.com/aws-samples/meta-aws-demos/blob/master/raspberrypi4-64/aws-iot-greengrass-v2/
-{{% /notice %}}
-
-### Step 5 - Commit a change to your repository and build a new image
-
-The [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) repository includes demonstrations of the `meta-aws` layer. At the time of writing, the demonstration used by default produces an image that includes AWS IoT Greengrass, Version 2. The image targets a Raspberry Pi 4 and uses the `Dunfell` release from the Yocto project. Changing the release or target hardware will create a different image.
-
-1. Open the file `yocto-image-builder-stack.ts` located under the `cdk/lib/stacks` directory.
-
-2. Change the `yoctoProjectRelease` property to a different supported demonstration recipe. You can find the supported demonstrations by navigating through the [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) repository.
-
-```js
-...
-const { 
-    ...
-    yoctoProjectRelease = "hardknott", 
-    ...
-} = props;
-...
-
-```
-
-3. Commit your changes
-
-```bash
-git add --all
-git commit -m "updated yocto-image-builder-stack.ts to a different demo"
-git push
-```
-
-4. Monitor the deployment process
-
-### Step 6 (Optional) - Download the image from S3 and test it
+### Step 5 (Optional) - Download the image from S3 and test it
 
 1. Get the name of the S3 bucket that contains the image
 
