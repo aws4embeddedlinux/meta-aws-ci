@@ -121,7 +121,27 @@ cdk bootstrap \
 ```bash
 cdk deploy
 ```
+
 ### Step 4 - Monitor the deployment process
+
+Here is a high level view of the resources deployed by each of the stacks.  Visit the CloudFormation console for a more detailed view.
+
+__GreengrassDeviceImageBuilder-PipelineStack__
+- The CDK Pipeline
+- S3 bucket to store artifacts
+
+__Testing-PrerequisitesStack__
+- New VPC, including private subnets and  NAT gateways
+           
+__Testing-YoctoBaseImageBuilderStack__
+- Base image builder pipeline 
+- S3 bucket to store artifacts
+- AWS ECR repository to store Docker images
+
+__Testing-YoctoRaspberryPiImageBuilderStack__
+- The Raspberry Pi image builder pipeline
+- S3 bucket to store artifacts
+- Amazon EFS file systems to store SSTATE and Download caches
 
 The first thing that happens when you run ‘cdk deploy’ is that the CDK Pipelines project gets synthesized into a CloudFormation template. Then, this template gets deployed in your account.
 
