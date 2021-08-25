@@ -14,7 +14,11 @@ Learn how to setup a cloud development environment to make development easier an
 
 A Cloud9 Instance with 100GB available: the higher the number of vCPU available, the faster you'll be able to complete this module. (more info can be found here: https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#var-PARALLEL_MAKE )
 
-The bitbake process is CPU-intensive and scales very well with the number of vCPU. We recommend at least a c5.9xlarge
+The bitbake process is CPU-intensive and scales automatically with the number of vCPUs available.
+
+![Graph that shows the time it takes to bitbake the base image based on the Cloud9 CPU instance](/images/01_hello_yocto_bitbaketimes.png)
+
+We recommend at least a c5.9xlarge.
 
 ### Step 1 - Prepare your development environment
  
@@ -139,7 +143,7 @@ runqemu                \
   nographic
 ```
 
-provide user __rooot__ and test that the aws-device-client-sdk is installed by running the following command:
+provide user __root__ and test that the aws-device-client-sdk is installed by running the following command:
 ```
 /sbin/aws-iot-device-client --help
 ```
@@ -152,5 +156,3 @@ If you want to exit the simulation, just run Ctrl+A and then press X
 1. You have baked the image without any additional layer
 1. You have modified the configuration to include the cloned layers
 1. You have run the non graphical simulation of the firmware you just baked and ensured that the aws-iot-device-client sdk is present
-
-
