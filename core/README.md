@@ -72,13 +72,13 @@ Baseline components are required for all other automation areas.
    install the container build for the reference distribution named **Poky**.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_ci_container_poky.sh ${prefix}
+   ~/meta-aws-ci/core/scripts/setup_ci_container_poky.sh ${prefix} ${secret_arn}
    ```
 
 3. Invoke the container build.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/run_ci_container_poky.sh ${prefix}
+   aws codebuild start-build --project-name ${prefix}-el-ci-container-poky_YPBuildImage
    ```
 
 ### Embedded Linux build components
