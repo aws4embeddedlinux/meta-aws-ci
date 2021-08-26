@@ -47,10 +47,12 @@ You will also need an Amazon S3 bucket.
    ```
 
 2. When building containers, you will need a secret setup in AWS Secret
-Manager.
+Manager.  Run this script without arguments and enter your Dockerhub username
+and password.  It will create a Secrets Manager entry and return an
+ARN that you will use when doing setup for the container projects.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_s3_objects.sh
+   ~/meta-aws-ci/core/scripts/setup_dockerhub_secret.sh
    ```
 
 ## Baseline components
