@@ -18,7 +18,7 @@ stack_id=$(aws cloudformation create-stack --output text \
                --stack-name ${STACKNAME} \
                --template-url "${URL}" \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-               --parameters "$NETWORK_STACK_NAME $DOCKERHUB_SECRET_ARN"
+               --parameters "${NETWORK_STACK_NAME}, ${DOCKERHUB_SECRET_ARN}" \
                --query StackId)
 
 echo stack_id is [${stack_id}]
