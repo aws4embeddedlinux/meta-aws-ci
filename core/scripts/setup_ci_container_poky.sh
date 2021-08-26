@@ -12,7 +12,7 @@ echo invoking the template.
 URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_container_poky.yml
 STACKNAME=${prefix}-el-ci-container-poky
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
-DOCKERHUB_SECRET_ARN=ParameterKey=NetworkStackName,ParameterValue=${dockerhub_secret_arn}
+DOCKERHUB_SECRET_ARN=ParameterKey=DockerhubSecretArn,ParameterValue=${dockerhub_secret_arn}
 
 stack_id=$(aws cloudformation create-stack --output text \
                --stack-name ${STACKNAME} \
