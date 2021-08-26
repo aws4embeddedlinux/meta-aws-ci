@@ -14,12 +14,17 @@ Parameters:
         The secret you manually created to access DockerHub
     Type: String
 
+  Prefix:
+    Description: >-
+        A unique prefix for objects that might clash on multiple instances
+    Type: String
+
 Resources:
 
   CodeBuildImageRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: yoctoproject/buildmachine
+      RepositoryName: !Sub 'yoctoproject/${Prefix}/buildmachine-poky'
       
   
   CodeBuildProject:
