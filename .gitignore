@@ -5,3 +5,4 @@ public
 .DS_Store
 *.swp
 .vscode
+bucket-policy.json
