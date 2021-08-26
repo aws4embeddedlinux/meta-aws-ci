@@ -1,11 +1,9 @@
-**under construction**
-
+<font color="red">**under construction**</font>
 
 The **core** part of this repository contains the standard set of AWS
 CloudFormation and other data for **meta-aws** Continuous Integration
 and Continuous Delivery practices.  Customers can reuse these
 artifacts to build Linux distributions with Yocto Project.
-
 
 ## How this is organized
 
@@ -20,26 +18,68 @@ artifacts to build Linux distributions with Yocto Project.
      specific distributions like **Poky** (Yocto Project) and
      **Arago** (Texas Instruments).
 
-## Installing and running
+## Working environment
 
-With these steps, you will need to keep your region consistent.  The
-actions will not work cross-region, such as installing the network to
-us-east-1 and the container build to us-east-2.
+For simplicity, we assume you are operating in an AWS CloudShell
+context.  They will run on a Linux or Mac OS machine with AWS Command
+Line Interface installed.  Run on a Windows machine at your own risk.
 
-1. Install the network layer to your target region.
+1. Login to the AWS Console.  Open the AWS CloudShell service and wait
+   for the environment to run.
+2. In AWS CloudShell, run the following command to clone this repository.
 
-   <a
-href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=el_network&templateURL=https://raw.githubusercontent.com/aws/meta-aws-ci/master/core/cfn/ci_network.yml"><img
-src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a>
+   ```bash
+   git clone https://github.com/aws/meta-aws-ci
+   ```
 
-2. Install the container build layer to your target. In this case, you
+You will also need an Amazon S3 bucket.
+
+1. In AWS CloudShell, run the script to create an Amazon S3
+   bucket for AWS Cloudformation scripts.  You may run this script as
+   many times as you wish to update the AWS CloudFormation files from
+   this repository to the S3 bucket.
+   
+   **INFO**: this step creates an S3 bucket in your account and will
+   copy files into the S3 bucket, possibly incurring storage charges.
+
+   ```bash
+   ~/meta-aws-ci/core/scripts/setup_s3_objects.sh
+   ```
+
+2. When building containers, you will need a secret setup in AWS Secret
+Manager.
+
+   ```bash
+   ~/meta-aws-ci/core/scripts/setup_s3_objects.sh
+   ```
+
+## Baseline components
+
+Baseline components are required for all other automation areas.
+
+1. In AWS CloudShell, run the script to create the network layer. The
+   network layer is a Virtual Private Cloud (VPN) for AWS CodeBuild.
+
+   ```bash
+   ~/meta-aws-ci/core/scripts/setup_ci_network.sh
+   ```
+
+### Container components
+
+1. Install the container build layer to your target. In this case, you
    install the container build for the reference distribution named **Poky**.
 
-   <a
-href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=el_image_poky&templateURL=https://raw.githubusercontent.com/aws/meta-aws-ci/master/core/cfn/ci_image_poky.yml"><img
-src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a>
+   ```bash
+   ~/meta-aws-ci/core/scripts/setup_ci_container_poky.sh ${prefix}
+   ```
 
 3. Invoke the container build.
+
+   ```bash
+   ~/meta-aws-ci/core/scripts/run_ci_container_poky.sh ${prefix}
+   ```
+
+### Embedded Linux build components
 
 4. Install the AWS CodeBuild project to construct the
    core-image-minimal image for the QEMU x86-64 MACHINE target that
@@ -47,6 +87,6 @@ src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stac
    project is in the
    (https://github.com/aws-samples/meta-aws-demos)[meta-aws-demos] repository.
 
-   <a
-href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=el_poky_x86-64_aws-iot-device-client&templateURL=https://raw.githubusercontent.com/aws/meta-aws-ci/master/core/cfn/ci_poky_x86-64_aws-iot-device-client.yml"><img
-src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></a>
+   ```bash
+   ~/meta-aws-ci/core/scripts/setup_build_poky.sh ${prefix} ${machine} ${target}
+   ```
