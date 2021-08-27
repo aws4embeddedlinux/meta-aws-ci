@@ -14,13 +14,6 @@ Parameters:
         The secret you manually created to access DockerHub
     Type: String
 
-  DockerhubUsername:
-    Description: >-
-        The username for access to DockerHub.  The reason for passing
-        this value is it contributes to the unique Dockerhub secret in AWS
-        Secrets Manager.
-    Type: String
-
   Prefix:
     Description: >-
         A unique prefix for objects that might clash on multiple instances
@@ -50,7 +43,7 @@ Resources:
         PrivilegedMode: true
         EnvironmentVariables:
           - Name: IMAGE_REPO_NAME
-            Value: yoctoproject/buildmachine
+            Value: !Sub 'yoctoproject/${Prefix}/buildmachine-poky'
             Type: PLAINTEXT
           - Name: AWS_DEFAULT_REGION
             Value: !Ref 'AWS::Region'
