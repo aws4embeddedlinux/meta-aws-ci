@@ -6,7 +6,7 @@ board=$4
 demo=$5
 release=$6
 set +x
-if test $# -ne 3; then
+if test $# -ne 6; then
     echo $0 [prefix] [container_uri] [vendor] [board] [demo] [yocto_release]
     echo See online documentation for more details.
     exit 1
