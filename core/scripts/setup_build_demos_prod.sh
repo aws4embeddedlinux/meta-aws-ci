@@ -18,7 +18,7 @@ URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/build_demos_pro
 STACKNAME=${prefix}-el-build-${board}-${demo}-${release}
 PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
-CONTAINER_ARN=ParameterKey=ContainerRegisterUri,ParameterValue=${container_uri}
+CONTAINER_ARN=ParameterKey=ContainerRegistryUri,ParameterValue=${container_uri}
 VENDOR=ParameterKey=DemoVendor,ParameterValue=${vendor}
 BOARD=ParameterKey=DemoBoard,ParameterValue=${board}
 DEMO=ParameterKey=DemoName,ParameterValue=${demo}
