@@ -25,7 +25,24 @@ Resources:
     Type: AWS::ECR::Repository
     Properties:
       RepositoryName: !Sub 'yoctoproject/${Prefix}/buildmachine-poky'
-      
+      RepositoryPolicyText: >-
+            {
+              "Version": "2008-10-17",
+              "Statement": [
+              {
+                "Sid": "CodeBuildAccess",
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "codebuild.amazonaws.com"
+                },
+                "Action": [
+                  "ecr:BatchCheckLayerAvailability",
+                  "ecr:BatchGetImage",
+                  "ecr:GetDownloadUrlForLayer"
+                ]
+                }
+              ]
+            }
   
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
