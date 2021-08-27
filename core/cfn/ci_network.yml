@@ -208,6 +208,7 @@ Resources:
       GroupDescription: "Security group with no ingress rule"
       VpcId: !Ref VPC
 
+
 Outputs:
   VPC:
     Description: >-
@@ -251,3 +252,9 @@ Outputs:
     Export:
       Name: !Sub "${AWS::StackName}-NoIngressSecurityGroup"
     
+  DefaultSecurityGroup:
+    Description: >-
+      Security group with no ingress rule
+    Value: !GetAtt VPC.DefaultSecurityGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-DefaultSecurityGroup"
