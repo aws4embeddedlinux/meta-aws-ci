@@ -1,5 +1,9 @@
 #! /bin/bash
 prefix=$1
+if test $# -ne 1; then
+    echo you must pass in 1 argument: system prefix
+    exit 1
+fi
 
 echo invoking the template.
 

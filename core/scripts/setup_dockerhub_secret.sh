@@ -1,4 +1,9 @@
 #+ /bin/bash
+prefix=$1
+if test $# -ne 1; then
+    echo you must pass in 1 argument: system prefix
+    exit 1
+fi
 
 printf "What is your dockerhub username (it will be used as part of the name)? "
 read username
@@ -11,7 +16,7 @@ printf "\n"
 printf "Copy this ARN for when you invoke the AWS CloudFormation script for building an image:\n"
 secret_string={\"username\":\"${username}\",\"password\":\"${password}\"}
 secret_arn=$(aws secretsmanager create-secret \
-                 --name dockerhub_${username} \
+                 --name dockerhub_${prefix} \
                  --description "DockerHub login" \
                  --secret-string "${secret_string}" \
                  --output text --query ARN)

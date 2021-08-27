@@ -2,8 +2,8 @@
 prefix=$1
 dockerhub_secret_arn=$2
 set +x
-if test $# -ne 2; then
-    echo you must pass in 2 arguments: prefix and dockerhub secret arn  
+if test $# -ne 3; then
+    echo you must pass in 3 arguments: prefix then dockerhub secret arn
     exit 1
 fi
 

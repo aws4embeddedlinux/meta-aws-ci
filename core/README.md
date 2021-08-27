@@ -52,7 +52,7 @@ and password.  It will create a Secrets Manager entry and return an
 ARN that you will use when doing setup for the container projects.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_dockerhub_secret.sh
+   ~/meta-aws-ci/core/scripts/setup_dockerhub_secret.sh ${prefix}
    ```
 
 ## Baseline components
@@ -63,7 +63,7 @@ Baseline components are required for all other automation areas.
    network layer is a Virtual Private Cloud (VPN) for AWS CodeBuild.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_ci_network.sh
+   ~/meta-aws-ci/core/scripts/setup_ci_network.sh ${prefix}
    ```
 
 ### Container components

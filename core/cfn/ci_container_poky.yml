@@ -14,6 +14,13 @@ Parameters:
         The secret you manually created to access DockerHub
     Type: String
 
+  DockerhubUsername:
+    Description: >-
+        The username for access to DockerHub.  The reason for passing
+        this value is it contributes to the unique Dockerhub secret in AWS
+        Secrets Manager.
+    Type: String
+
   Prefix:
     Description: >-
         A unique prefix for objects that might clash on multiple instances
@@ -55,10 +62,10 @@ Resources:
             Value: Latest
             Type: PLAINTEXT
           - Name: dockerhub_username
-            Value: dh:username
+            Value: !Sub "dockerhub_${Prefix}:username"
             Type: SECRETS_MANAGER
           - Name: dockerhub_password
-            Value: dh:password
+            Value: !Sub "dockerhub_${Prefix}:password"
             Type: SECRETS_MANAGER
       Name: !Join
         - ''
