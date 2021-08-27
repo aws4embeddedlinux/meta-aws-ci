@@ -15,7 +15,7 @@ fi
 echo invoking the template.
 
 URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/build_demos_prod.yml
-STACKNAME=${prefix}-el-ci-build-${vendor}-${board}-${demo}-${release}
+STACKNAME=${prefix}-el-build-${board}-${demo}-${release}
 PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
 CONTAINER_ARN=ParameterKey=ContainerRegisterUri,ParameterValue=${container_uri}
