@@ -87,7 +87,7 @@ Baseline components are required for all other automation areas.
    core-image-minimal image for the QEMU x86-64 MACHINE target that
    includes the AWS IoT Device Client.  The AWS CodeBuild project file for this
    project is in the
-   (https://github.com/aws-samples/meta-aws-demos)[meta-aws-demos] repository.
+   [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) repository.
 
    ```bash
    ~/meta-aws-ci/core/scripts/setup_build_poky.sh ${prefix} ${machine} ${target}
