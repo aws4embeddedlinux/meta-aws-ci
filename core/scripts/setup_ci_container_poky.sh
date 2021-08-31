@@ -2,8 +2,19 @@
 prefix=$1
 dockerhub_secret_arn=$2
 set +x
-if test $# -ne 3; then
-    echo you must pass in 3 arguments: prefix then dockerhub secret arn
+
+function help() {
+    printf "$0 [prefix] [dh_arn]\n"
+    printf "\n"
+    printf "prefix    the word used for the prefix naming convention.\n"
+    printf "dh_arn    the ARN for the dockerhub secret in AWS Secrets Manager.\n"
+    printf "\n"
+    printf "See documentation for details.\n"
+}
+
+if test $# -ne 2; then
+    printf "Error: not enough arguments.\n\n"
+    help
     exit 1
 fi
 
@@ -11,6 +22,7 @@ echo invoking the template.
 
 URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_container_poky.yml
 STACKNAME=${prefix}-el-ci-container-poky
+
 PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
 DOCKERHUB_SECRET_ARN=ParameterKey=DockerhubSecretArn,ParameterValue=${dockerhub_secret_arn}
@@ -21,6 +33,11 @@ stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
                --parameters ${NETWORK_STACK_NAME} ${DOCKERHUB_SECRET_ARN} ${PREFIX_PARAM}
                )
+
+if test $? -ne 0; then
+    printf "Error: template invocation failed.\n"
+    exit 1
+fi
 
 echo stack_id is [${stack_id}]
 deployment_status=CREATE_IN_PROGRESS
