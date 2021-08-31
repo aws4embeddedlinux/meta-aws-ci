@@ -34,6 +34,11 @@ stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --parameters ${NETWORK_STACK_NAME} ${DOCKERHUB_SECRET_ARN} ${PREFIX_PARAM}
                )
 
+if test $? -ne 0; then
+    printf "Error: template invocation failed.\n"
+    exit 1
+fi
+
 echo stack_id is [${stack_id}]
 deployment_status=CREATE_IN_PROGRESS
 
