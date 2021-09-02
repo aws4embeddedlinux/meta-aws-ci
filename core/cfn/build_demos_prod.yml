@@ -141,7 +141,7 @@ Resources:
       Description: The build process for a full Yocto image.
       Environment:
         Type: LINUX_CONTAINER
-        ComputeType: BUILD_GENERAL1_2XLARGE
+        ComputeType: BUILD_GENERAL1_LARGE
         Image: !Ref ContainerRegistryUri
         PrivilegedMode: true
         ImagePullCredentialsType: CODEBUILD
