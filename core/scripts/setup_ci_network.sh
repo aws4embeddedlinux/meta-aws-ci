@@ -7,11 +7,11 @@ fi
 
 echo invoking the template.
 PWD=$(pwd)
-URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_network.yml
+#URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_network.yml
 STACKNAME=${prefix}-el-ci-network
 stack_id=$(aws cloudformation create-stack --output text \
                --stack-name ${STACKNAME} \
-               --template-body file://$PWD/../cfn/ci_network.yml
+               --template-body file://$PWD/../cfn/ci_network.yml \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
                --query StackId)
 

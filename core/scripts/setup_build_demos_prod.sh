@@ -24,9 +24,10 @@ BOARD=ParameterKey=DemoBoard,ParameterValue=${board}
 DEMO=ParameterKey=DemoName,ParameterValue=${demo}
 RELEASE=ParameterKey=YoctoProjectRelease,ParameterValue=${release}
 
+PWD=$(pwd)
 stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --stack-name ${STACKNAME} \
-               --template-url "${URL}" \
+               --template-body file://$PWD/../cfn/build_demos_prod.yml \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
                               CAPABILITY_AUTO_EXPAND \
                --parameters ${NETWORK_STACK_NAME} ${CONTAINER_ARN} \
