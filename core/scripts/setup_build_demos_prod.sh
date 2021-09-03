@@ -7,7 +7,7 @@ demo=$5
 release=$6
 compute_type=$7
 set +x
-if test $# -ne 6; then
+if test $# -ne 7; then
     echo $0 [prefix] [container_uri] [vendor] [board] [demo] [yocto_release] [compute_type]
     echo See online documentation for more details.
     exit 1
