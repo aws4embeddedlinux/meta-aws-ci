@@ -5,6 +5,7 @@ vendor=$3
 board=$4
 demo=$5
 release=$6
+compute_type=$7
 set +x
 if test $# -ne 6; then
     echo $0 [prefix] [container_uri] [vendor] [board] [demo] [yocto_release] [compute_type]
