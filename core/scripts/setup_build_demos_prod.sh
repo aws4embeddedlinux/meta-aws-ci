@@ -23,7 +23,7 @@ VENDOR=ParameterKey=DemoVendor,ParameterValue=${vendor}
 BOARD=ParameterKey=DemoBoard,ParameterValue=${board}
 DEMO=ParameterKey=DemoName,ParameterValue=${demo}
 RELEASE=ParameterKey=YoctoProjectRelease,ParameterValue=${release}
-COMPUTE_TYPE=ParameterKey=ComputeType,ParameterValue=${compute_type}
+COMPUTE_TYPE=ParameterKey=DemoComputeType,ParameterValue=${compute_type}
 
 PWD=$(pwd)
 stack_id=$(aws cloudformation create-stack --output text --query StackId \
