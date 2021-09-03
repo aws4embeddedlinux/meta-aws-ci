@@ -142,6 +142,7 @@ Resources:
         Type: S3
       BadgeEnabled: true
       Description: The build process for a full Yocto image.
+      TimeoutInMinutes: 480
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: !Ref DemoComputeType
