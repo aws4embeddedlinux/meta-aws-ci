@@ -34,7 +34,10 @@ Parameters:
     Description: >-
         The name of the demonstration, i.e. aws_iot_greengrass.
     Type: String
-
+  DemoComputeType:
+    Description: >-
+        The compute type. i.e. BUILD_GENERAL1_LARGE (15Gb RAM, 8vCPU) or BUILD_GENERAL1_2XLARGE (145 Gb RAM, 72 vCPU)
+    Type: String
 Resources:
   BuildBucket:
     Type: 'AWS::S3::Bucket'
@@ -141,7 +144,7 @@ Resources:
       Description: The build process for a full Yocto image.
       Environment:
         Type: LINUX_CONTAINER
-        ComputeType: BUILD_GENERAL1_LARGE
+        ComputeType: !Ref DemoComputeType
         Image: !Ref ContainerRegistryUri
         PrivilegedMode: true
         ImagePullCredentialsType: CODEBUILD

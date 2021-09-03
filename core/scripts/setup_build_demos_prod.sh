@@ -7,14 +7,13 @@ demo=$5
 release=$6
 set +x
 if test $# -ne 6; then
-    echo $0 [prefix] [container_uri] [vendor] [board] [demo] [yocto_release]
+    echo $0 [prefix] [container_uri] [vendor] [board] [demo] [yocto_release] [compute_type]
     echo See online documentation for more details.
     exit 1
 fi
 
 echo invoking the template.
 
-URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/build_demos_prod.yml
 STACKNAME=${prefix}-el-build-${board}-${demo}-${release}
 PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
@@ -23,6 +22,7 @@ VENDOR=ParameterKey=DemoVendor,ParameterValue=${vendor}
 BOARD=ParameterKey=DemoBoard,ParameterValue=${board}
 DEMO=ParameterKey=DemoName,ParameterValue=${demo}
 RELEASE=ParameterKey=YoctoProjectRelease,ParameterValue=${release}
+COMPUTE_TYPE=ParameterKey=ComputeType,ParameterValue=${compute_type}
 
 PWD=$(pwd)
 stack_id=$(aws cloudformation create-stack --output text --query StackId \
@@ -31,7 +31,7 @@ stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
                               CAPABILITY_AUTO_EXPAND \
                --parameters ${NETWORK_STACK_NAME} ${CONTAINER_ARN} \
-                            ${PREFIX_PARAM} ${VENDOR} ${BOARD} ${DEMO} ${RELEASE}
+                            ${PREFIX_PARAM} ${VENDOR} ${BOARD} ${DEMO} ${RELEASE} ${COMPUTE_TYPE}
                )
 
 echo stack_id is [${stack_id}]
