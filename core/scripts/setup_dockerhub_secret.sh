@@ -9,10 +9,6 @@ printf "What is your dockerhub username (it will be used as part of the name)? "
 read username
 printf "\n"
 
-printf "What is your dockerhub password? "
-read password
-printf "\n"
-
 prompt="What is your dockerhub password?"
 while IFS= read -p "$prompt" -r -s -n 1 char
 do
