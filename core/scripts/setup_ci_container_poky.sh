@@ -20,16 +20,16 @@ fi
 
 echo invoking the template.
 
-URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_container_poky.yml
 STACKNAME=${prefix}-el-ci-container-poky
 
 PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
 DOCKERHUB_SECRET_ARN=ParameterKey=DockerhubSecretArn,ParameterValue=${dockerhub_secret_arn}
 
+PWD=$(pwd)
 stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --stack-name ${STACKNAME} \
-               --template-url "${URL}" \
+               --template-body file://$PWD/../cfn/ci_container_poky.yml \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
                --parameters ${NETWORK_STACK_NAME} ${DOCKERHUB_SECRET_ARN} ${PREFIX_PARAM}
                )

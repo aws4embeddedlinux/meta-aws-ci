@@ -6,12 +6,11 @@ if test $# -ne 1; then
 fi
 
 echo invoking the template.
-
-URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_network.yml
+PWD=$(pwd)
 STACKNAME=${prefix}-el-ci-network
 stack_id=$(aws cloudformation create-stack --output text \
                --stack-name ${STACKNAME} \
-               --template-url "${URL}" \
+               --template-body file://$PWD/../cfn/ci_network.yml \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
                --query StackId)
 
