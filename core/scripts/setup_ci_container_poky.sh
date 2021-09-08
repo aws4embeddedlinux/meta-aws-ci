@@ -20,7 +20,6 @@ fi
 
 echo invoking the template.
 
-#URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_container_poky.yml
 STACKNAME=${prefix}-el-ci-container-poky
 
 PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}

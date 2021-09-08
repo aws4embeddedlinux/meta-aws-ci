@@ -7,7 +7,6 @@ fi
 
 echo invoking the template.
 PWD=$(pwd)
-#URL=https://${prefix}-el-cloudformation-staging.s3.amazonaws.com/ci_network.yml
 STACKNAME=${prefix}-el-ci-network
 stack_id=$(aws cloudformation create-stack --output text \
                --stack-name ${STACKNAME} \
