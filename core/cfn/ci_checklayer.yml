@@ -15,8 +15,13 @@ Parameters:
     Description: >-
         The Yocto release, i.e. zeus, dunfell, etc.
     Type: String
+  GitHubOrg:
+    Description: >-
+       The GitHub organization or user to set the codebuild project for.
+    Type: String
+    Default: "aws"
 
-Resources:    
+Resources:
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -26,7 +31,7 @@ Resources:
       Description: Layercheck- check layer validity
       Environment:
         Type: LINUX_CONTAINER
-        ComputeType: BUILD_GENERAL1_2XLARGE
+        ComputeType: BUILD_GENERAL1_LARGE
         Image: !Ref ContainerRegistryUri
         PrivilegedMode: true
         ImagePullCredentialsType: CODEBUILD
@@ -36,9 +41,24 @@ Resources:
             Value: !Ref YoctoProjectRelease
       Name: !Ref AWS::StackName
       ServiceRole: !Ref CodeBuildRole
+      Triggers:
+        Webhook: true
+        FilterGroups:
+          - - Type: EVENT
+              Pattern: PULL_REQUEST_UPDATED,  PULL_REQUEST_CREATED, PULL_REQUEST_REOPENED
+            - Type: BASE_REF
+              Pattern: !Join
+                - ''
+                - - '^refs/heads/'
+                  - !Ref YoctoProjectRelease
+              ExcludeMatchedPattern: false
       Source:
         BuildSpec: qa/buildspec.checklayer.yml
-        Location: https://github.com/aws/meta-aws
+        Location: !Join
+          - ''
+          - - 'https://github.com/'
+            - !Ref GitHubOrg
+            - '/meta-aws'
         Type: GITHUB
         SourceIdentifier: meta_aws_layercheck
       SourceVersion: !Join
