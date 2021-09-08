@@ -30,29 +30,22 @@ Line Interface installed.  Run on a Windows machine at your own risk.
 
    ```bash
    git clone https://github.com/aws/meta-aws-ci
+   cd ~/meta-aws-ci/core/scripts/
+   export PREFIX=mod2-$ACCOUNT_ID
    ```
-
-You will also need an Amazon S3 bucket.
-
-1. In AWS CloudShell, run the script to create an Amazon S3
-   bucket for AWS Cloudformation scripts.  You may run this script as
-   many times as you wish to update the AWS CloudFormation files from
-   this repository to the S3 bucket.
-   
-   **INFO**: this step creates an S3 bucket in your account and will
-   copy files into the S3 bucket, possibly incurring storage charges.
-
-   ```bash
-   ~/meta-aws-ci/core/scripts/setup_s3_objects.sh
-   ```
-
-2. When building containers, you will need a secret setup in AWS Secret
-Manager.  Run this script without arguments and enter your Dockerhub username
+3. When building containers, you will need a secret setup in AWS Secret
+Manager. Run this script and enter your Dockerhub username
 and password.  It will create a Secrets Manager entry and return an
 ARN that you will use when doing setup for the container projects.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_dockerhub_secret.sh ${prefix}
+   ./setup_dockerhub_secret.sh $PREFIX
+   ```
+   
+4. Once this process is complete, store the secret ARN in an environment variable for later use.
+
+   ```bash
+   export SECRET_ARN=arn:aws:secretsmanager:eu-west-1:123456789123:secret:dockerhub_EXAMPLE
    ```
 
 ## Baseline components
@@ -63,32 +56,58 @@ Baseline components are required for all other automation areas.
    network layer is a Virtual Private Cloud (VPN) for AWS CodeBuild.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_ci_network.sh ${prefix}
+   ./setup_ci_network.sh $PREFIX
    ```
 
-### Container components
+## Container components
 
 1. Install the container build layer to your target. In this case, you
    install the container build for the reference distribution named **Poky**.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_ci_container_poky.sh ${prefix} ${secret_arn}
+   ./setup_ci_container_poky.sh $PREFIX $SECRET_ARN
    ```
 
-3. Invoke the container build.
+2. Once this process is complete, invoke the build process. The process takes about 15 minutes to complete. You can monitor it using the CLI or by logging into the AWS CodeBuild console. Make sure you select the right region.
 
-   ```bash
-   aws codebuild start-build --project-name ${prefix}-el-ci-container-poky_YPBuildImage
+   ```bash 
+   aws codebuild start-build --project-name $PREFIX-el-ci-container-poky_YPBuildImage
    ```
 
-### Embedded Linux build components
+3. Finally, find out the image URI and store it in an environment variable for later use.
 
-4. Install the AWS CodeBuild project to construct the
-   core-image-minimal image for the QEMU x86-64 MACHINE target that
-   includes the AWS IoT Device Client.  The AWS CodeBuild project file for this
-   project is in the
-   [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) repository.
+   ```bash 
+   aws ecr describe-repositories  | jq -r .repositories[].repositoryUri
+   export CONTAINER_URI=123456789123.dkr.ecr.eu-west-1.amazonaws.com/yoctoproject/EXAMPLE/buildmachine-poky
+   ```
+
+## Embedded Linux build components
+
+1. In AWS CloudShell, run the script to create the Linux build layer. IThis script installs an AWS CodeBuild project to construct the core-image-minimal image for the QEMU x86-64 MACHINE target that includes the AWS IoT Device Client. The AWS CodeBuild project file for this project is in the 
+   [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) It also creates a new S3 bucket to store images it creates.
 
    ```bash
-   ~/meta-aws-ci/core/scripts/setup_build_poky.sh ${prefix} ${machine} ${target}
+   export VENDOR=rpi_foundation
+   export BOARD=rpi4-64 
+   export DEMO=aws-iot-greengrass-v2 
+   export YOCTO_RELEASE=dunfell
+   export COMPUTE_TYPE=BUILD_GENERAL1_LARGE
+   ./setup_build_demos_prod.sh $PREFIX $CONTAINER_URI $VENDOR $BOARD $DEMO $YOCTO_RELEASE $COMPUTE_TYPE
+   ```
+2. Once the process complete, find out the name of the newly created S3 bucket and store in an environment variable for later use
+
+   ```bash
+   aws s3 ls | grep $PREFIX-el-build- | awk '{print $3}'
+   export S3_BUCKET=EXAMPLE-el-build-rpi4-64-aws-iot-gre-buildbucket-EXAMPLE
+   ```
+
+3. Invoke the build process. You can monitor it using the CLI or by logging into the AWS CodeBuild console. Make sure you select the right region.
+
+   ```bash
+   aws codebuild start-build --project-name $PREFIX-el-build-$BOARD-$DEMO-$YOCTO_RELEASE
+   ```
+
+4. Once the build process is complete you can review the contents of the S3 bucket
+   ```bash
+   aws s3 ls $S3_BUCKET
    ```
