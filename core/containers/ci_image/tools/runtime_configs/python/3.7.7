@@ -1,6 +1,6 @@
 export PYTHON_CONFIGURE_OPTS="\
             --enable-shared
-            --enable-loadable-sqlite-extensions"  
+            --enable-loadable-sqlite-extensions"
 
 # Don't change below this line.
 # https://github.com/pyenv/pyenv/blob/master/plugins/python-build/share/python-build/3.7.7
@@ -15,5 +15,3 @@ if has_tar_xz_support; then
 else
   install_package "Python-3.7.7" "https://www.python.org/ftp/python/3.7.7/Python-3.7.7.tgz#8c8be91cd2648a1a0c251f04ea0bb4c2a5570feb9c45eaaa2241c785585b475a" standard verify_py37 copy_python_gdb ensurepip
 fi
-
-

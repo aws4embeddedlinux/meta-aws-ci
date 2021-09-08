@@ -36,4 +36,3 @@ This project has three goals:
 ## License
 
 This library is licensed under the MIT-0 License.
-

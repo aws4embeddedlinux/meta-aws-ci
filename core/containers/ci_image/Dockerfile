@@ -54,7 +54,7 @@ RUN set -ex \
       gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath \
       socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils \
       iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm strace \
-    && rm -rf /var/lib/apt/lists/* 
+    && rm -rf /var/lib/apt/lists/*
 
 RUN useradd codebuild-user
 
@@ -171,7 +171,7 @@ ENV LANG=en_US.UTF-8
 # HOME is still root.  So, just give permission to aws-yocto-builder to
 # root's home directory, which is a big bag of crazy.
 # NOTE: the whole reason why we need to do this is bitbake requires
-#       we run from a non-root context, which is completely sane. 
+#       we run from a non-root context, which is completely sane.
 RUN mkdir /home/aws-yocto-builder && \
     groupadd -g 70 aws-yocto-builder && \
     useradd -N -m -u 70 -g 70 aws-yocto-builder && \
