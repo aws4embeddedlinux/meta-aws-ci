@@ -33,7 +33,24 @@ This project has three goals:
  workshop/          <= workshop source for working on Yocto on AWS
 ```
 
+## Repo Linting
+
+This repository uses [pre-commit](https://pre-commit.com/) to run yaml,
+whitespace, and
+[cloudformation](https://github.com/aws-cloudformation/cfn-lint) linters.
+
+To install pre-commit locally:
+```shell
+pip install pre-commit
+pre-commit install
+
+```
+
+To run the checks outside of git hooks:
+```shell
+pre-commit run --all-files
+```
+
 ## License
 
 This library is licensed under the MIT-0 License.
-

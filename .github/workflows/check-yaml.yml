@@ -1,0 +1,16 @@
+name: Linting
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [master]
+jobs:
+  Run-Pre-Commit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Install Pre-Commit
+        run: pip install pre-commit
+      - name: Run Pre-Commit
+        run: pre-commit run --all-files --color=always --show-diff-on-failure

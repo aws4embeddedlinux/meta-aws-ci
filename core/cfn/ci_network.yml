@@ -251,7 +251,7 @@ Outputs:
     Value: !Ref NoIngressSecurityGroup
     Export:
       Name: !Sub "${AWS::StackName}-NoIngressSecurityGroup"
-    
+
   DefaultSecurityGroup:
     Description: >-
       Security group with no ingress rule

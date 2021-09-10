@@ -8,10 +8,6 @@ Parameters:
     Description: >-
         The name of the network CFN stack used for this project.
     Type: String
-  Prefix:
-    Description: >-
-        An environment name that is prefixed to resource names
-    Type: String
   ContainerRegistryUri:
     Description: >-
         The URI where the build machine image lives in REPOSITORY:TAG format.
@@ -42,28 +38,29 @@ Resources:
   BuildBucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
 
   BuildSStateCacheFilesystem:
     Type: AWS::EFS::FileSystem
-    Properties: 
-      BackupPolicy: 
+    Properties:
+      BackupPolicy:
         Status: ENABLED
       Encrypted: False
-      FileSystemTags: 
+      FileSystemTags:
         - Key: Name
           Value: !Join
             - ''
             - - !Ref AWS::StackName
               - "/"
               - sstate-cache
-      LifecyclePolicies: 
+      LifecyclePolicies:
         - TransitionToIA: AFTER_30_DAYS
       PerformanceMode: generalPurpose
       ThroughputMode: bursting
 
   BuildSStateCacheMountTarget1:
     Type: AWS::EFS::MountTarget
-    Properties: 
+    Properties:
       FileSystemId: !Ref BuildSStateCacheFilesystem
       SubnetId:
         Fn::ImportValue:
@@ -76,7 +73,7 @@ Resources:
 
   BuildSStateCacheMountTarget2:
     Type: AWS::EFS::MountTarget
-    Properties: 
+    Properties:
       FileSystemId: !Ref BuildSStateCacheFilesystem
       SubnetId:
         Fn::ImportValue:
@@ -89,18 +86,18 @@ Resources:
 
   BuildDownloadFilesystem:
     Type: AWS::EFS::FileSystem
-    Properties: 
-      BackupPolicy: 
+    Properties:
+      BackupPolicy:
         Status: ENABLED
       Encrypted: False
-      FileSystemTags: 
+      FileSystemTags:
         - Key: Name
           Value: !Join
             - ''
             - - !Ref AWS::StackName
               - "/"
               - download
-      LifecyclePolicies: 
+      LifecyclePolicies:
         - TransitionToIA: AFTER_30_DAYS
       PerformanceMode: generalPurpose
       ThroughputMode: bursting
@@ -108,7 +105,7 @@ Resources:
 
   BuildDownloadMountTarget1:
     Type: AWS::EFS::MountTarget
-    Properties: 
+    Properties:
       FileSystemId: !Ref BuildDownloadFilesystem
       SubnetId:
         Fn::ImportValue:
@@ -121,7 +118,7 @@ Resources:
 
   BuildDownloadMountTarget2:
     Type: AWS::EFS::MountTarget
-    Properties: 
+    Properties:
       FileSystemId: !Ref BuildDownloadFilesystem
       SubnetId:
         Fn::ImportValue:
@@ -131,7 +128,7 @@ Resources:
             !Sub "${NetworkStackName}-NoIngressSecurityGroup"
         - Fn::ImportValue:
             !Sub "${NetworkStackName}-DefaultSecurityGroup"
-    
+
   CodeBuildProject:
     Type: AWS::CodeBuild::Project
     Properties:

@@ -279,4 +279,3 @@ gitversion :https://github.com/GitTools/GitVersion/blob/master/LICENSE
 ----------------
 docker	: https://www.docker.com/legal/components-licenses
 ----------------
-

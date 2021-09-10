@@ -41,7 +41,7 @@ ARN that you will use when doing setup for the container projects.
    ```bash
    ./setup_dockerhub_secret.sh $PREFIX
    ```
-   
+
 4. Once this process is complete, store the secret ARN in an environment variable for later use.
 
    ```bash
@@ -70,26 +70,26 @@ Baseline components are required for all other automation areas.
 
 2. Once this process is complete, invoke the build process. The process takes about 15 minutes to complete. You can monitor it using the CLI or by logging into the AWS CodeBuild console. Make sure you select the right region.
 
-   ```bash 
+   ```bash
    aws codebuild start-build --project-name $PREFIX-el-ci-container-poky_YPBuildImage
    ```
 
 3. Finally, find out the image URI and store it in an environment variable for later use.
 
-   ```bash 
+   ```bash
    aws ecr describe-repositories  | jq -r .repositories[].repositoryUri
    export CONTAINER_URI=123456789123.dkr.ecr.eu-west-1.amazonaws.com/yoctoproject/EXAMPLE/buildmachine-poky
    ```
 
 ## Embedded Linux build components
 
-1. In AWS CloudShell, run the script to create the Linux build layer. IThis script installs an AWS CodeBuild project to construct the core-image-minimal image for the QEMU x86-64 MACHINE target that includes the AWS IoT Device Client. The AWS CodeBuild project file for this project is in the 
+1. In AWS CloudShell, run the script to create the Linux build layer. IThis script installs an AWS CodeBuild project to construct the core-image-minimal image for the QEMU x86-64 MACHINE target that includes the AWS IoT Device Client. The AWS CodeBuild project file for this project is in the
    [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) It also creates a new S3 bucket to store images it creates.
 
    ```bash
    export VENDOR=rpi_foundation
-   export BOARD=rpi4-64 
-   export DEMO=aws-iot-greengrass-v2 
+   export BOARD=rpi4-64
+   export DEMO=aws-iot-greengrass-v2
    export YOCTO_RELEASE=dunfell
    export COMPUTE_TYPE=BUILD_GENERAL1_LARGE
    ./setup_build_demos_prod.sh $PREFIX $CONTAINER_URI $VENDOR $BOARD $DEMO $YOCTO_RELEASE $COMPUTE_TYPE
