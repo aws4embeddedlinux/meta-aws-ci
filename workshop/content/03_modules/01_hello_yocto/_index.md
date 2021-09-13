@@ -79,24 +79,20 @@ While we wait, we can create a new shell and proceed to the next step
 
 ### Step 3 - Integrate layers and your application layer
 
-Let's initialize the shell and can download our layers:
+Let's initialize the shell and download our layers:
 ```
 DEVHOME=$HOME/environment/src/mydev-proto
 cd $DEVHOME
 git clone -b hardknott git://git.openembedded.org/meta-openembedded
 git clone -b hardknott https://git.yoctoproject.org/git/meta-virtualization
 git clone -b hardknott https://github.com/aws/meta-aws
-git clone -b master https://git.yoctoproject.org/git/meta-java
-cd meta-java
-git checkout 04377d10225360bd27d018007889176911bb7532
 ```
 
-Then modify the `$DEVHOME/build/conf/bblayers.conf` file by adding the layers we download previously to our new custom layer (substitute $DEVHOME with the $DEVHOME path, e.g. `home/ubuntu/environment/src/mydev-proto`)
+Then modify the `$DEVHOME/build/conf/bblayers.conf` file by adding the layers we downloaded previously to our new custom layer (substitute $DEVHOME with the $DEVHOME path, e.g. `home/ubuntu/environment/src/mydev-proto`)
 ```
 $DEVHOME/meta-openembedded/meta-oe
 $DEVHOME/meta-openembedded/meta-python
 $DEVHOME/meta-openembedded/meta-networking
-$DEVHOME/meta-java
 $DEVHOME/meta-aws
 ```
 
@@ -110,16 +106,18 @@ BBLAYERS ?= " \
   /home/ubuntu/environment/src/mydev-proto/meta-openembedded/meta-oe \
   /home/ubuntu/environment/src/mydev-proto/meta-openembedded/meta-python \
   /home/ubuntu/environment/src/mydev-proto/meta-openembedded/meta-networking \
-  /home/ubuntu/environment/src/mydev-proto/meta-java \
   /home/ubuntu/environment/src/mydev-proto/meta-aws \
   "
 ```
+This basically enables the layers in the build system.
 
 Before baking the image, let's add the aws-ioto-device-client to the image.
 Let's modify `$DEVHOME/build/conf/local.conf` and add the following line at the end of the file.
 ```
 IMAGE_INSTALL_append = "aws-iot-device-client"
 ```
+
+Wonder what this does? Check https://github.com/aws/meta-aws/blob/hardknott/recipes-iot/aws-iot-device-client/aws-iot-device-client_1.2.0.bb
 
 Now let's bake the image again.
 
@@ -148,6 +146,12 @@ provide user __root__ and test that the aws-device-client-sdk is installed by ru
 /sbin/aws-iot-device-client --help
 ```
 
+{{% notice note %}}
+  You can fix the name lookup by modifying the /etc/resolv.conf and adding your preferred nameservers (e.g. 1.1.1.1 and 1.0.0.1). 
+  Wonder how to do it the "Yocto" way? Head over to: https://www.yoctoproject.org/docs/1.6/dev-manual/dev-manual.html#using-bbappend-files
+{{% /notice %}}
+
+
 If you want to exit the simulation, just run Ctrl+A and then press X
 
 ### Checkpoint
@@ -156,3 +160,10 @@ If you want to exit the simulation, just run Ctrl+A and then press X
 1. You have baked the image without any additional layer
 1. You have modified the configuration to include the cloned layers
 1. You have run the non graphical simulation of the firmware you just baked and ensured that the aws-iot-device-client sdk is present
+
+### Considerations
+Whew, this is fine if you are a single developer and are not maintaining a plethora of architectures, branches and distributions.
+
+What if we had an automation that the bitbake process would kick-off everytime our team did a pull request/committed to the code repository and generate and archive the different layers to further speed up the bitbake times for every set of PCBs, Firmware versions, Architectures?
+
+Follow along in the next module to discover more!
