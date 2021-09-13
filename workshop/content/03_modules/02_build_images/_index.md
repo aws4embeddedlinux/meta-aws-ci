@@ -22,7 +22,7 @@ Here is a high-level diagram of how the solution works and the services used:
 If you are continuing from Module 1, you can continue to use Cloud9. Otherwise you can use AWS CloudShell which is a browser-based shell that makes it easy to securely manage, explore, and interact with your AWS resources. CloudShell is pre-authenticated with your console credentials. Common development and operations tools are pre-installed, so no local installation or configuration is required.
 
 
-### Step 1 - Step 1 – Setup your environment
+### Step 1 - Setup your environment
 
 Open the AWS CloudShell service and run the following command to clone this repository and set `$PREFIX` to something unique like "mod2-YOUR_AWS_ACCOUNT_NUMBER".
 
