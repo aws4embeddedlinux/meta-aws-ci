@@ -16,7 +16,6 @@ fi
 echo invoking the template.
 
 STACKNAME=${prefix}-el-build-${board}-${demo}-${release}
-PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
 CONTAINER_ARN=ParameterKey=ContainerRegistryUri,ParameterValue=${container_uri}
 VENDOR=ParameterKey=DemoVendor,ParameterValue=${vendor}
@@ -32,7 +31,7 @@ stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
                               CAPABILITY_AUTO_EXPAND \
                --parameters ${NETWORK_STACK_NAME} ${CONTAINER_ARN} \
-                            ${PREFIX_PARAM} ${VENDOR} ${BOARD} ${DEMO} ${RELEASE} ${COMPUTE_TYPE}
+                            ${VENDOR} ${BOARD} ${DEMO} ${RELEASE} ${COMPUTE_TYPE}
                )
 
 echo stack_id is [${stack_id}]
