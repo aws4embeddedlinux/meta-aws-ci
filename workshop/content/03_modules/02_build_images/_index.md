@@ -73,12 +73,15 @@ Once this process is complete, invoke the build process. The process takes about
 aws codebuild start-build --project-name $PREFIX-el-ci-container-poky_YPBuildImage
 ```
 
-Finally, find out the image URI and store it in an environment variable for later use.
+Finally, find out the image URI and store it in an environment variable for later use. 
 
 ```bash
 aws ecr describe-repositories  | jq -r .repositories[].repositoryUri
 export CONTAINER_URI=123456789123.dkr.ecr.eu-west-1.amazonaws.com/yoctoproject/EXAMPLE/buildmachine-poky
 ```
+
+**Note**: Your OS may not have 'jq' installed. You can install it by typing 'sudo yum install jq -y' or 'sudo apt-get install jq -y' depeding on your Linux distribution.
+
 
 ### Step 5 – Install the Linux build layer and invoke the build process
 
