@@ -19,18 +19,19 @@ Here is a high-level diagram of how the solution works and the services used:
 - (Optional) A Raspberry Pi 4 and an SD card to test the produced image
 
 ### Expected Environment 
-You can use AWS CloudShell which is a browser-based shell that makes it easy to securely manage, explore, and interact with your AWS resources. CloudShell is pre-authenticated with your console credentials. Common development and operations tools are pre-installed, so no local installation or configuration is required.
+If you are continuing from Module 1, you can continue to use Cloud9. Otherwise you can use AWS CloudShell which is a browser-based shell that makes it easy to securely manage, explore, and interact with your AWS resources. CloudShell is pre-authenticated with your console credentials. Common development and operations tools are pre-installed, so no local installation or configuration is required.
 
 
-### Step 1 – Setup your environment
+### Step 1 - Setup your environment
 
-Open the AWS CloudShell service and run the following command to clone this repository.
+Open the AWS CloudShell service and run the following command to clone this repository and set `$PREFIX` to something unique like "mod2-YOUR_AWS_ACCOUNT_NUMBER".
 
 ```bash
+cd ~/
 git clone https://github.com/aws/meta-aws-ci
 cd ~/meta-aws-ci/core/scripts/
-export PREFIX=mod2-$ACCOUNT_ID
-export COMPUTE_TYPE=BUILD_GENERAL1_LARGE
+
+export PREFIX=mod2-<<YOUR_AWS_ACCOUNT_NUMBER>>
 ```
 
 ### Step 2 – Securely store your Dockerhub credentials
@@ -72,12 +73,15 @@ Once this process is complete, invoke the build process. The process takes about
 aws codebuild start-build --project-name $PREFIX-el-ci-container-poky_YPBuildImage
 ```
 
-Finally, find out the image URI and store it in an environment variable for later use.
+Finally, find out the image URI and store it in an environment variable for later use. 
 
 ```bash
 aws ecr describe-repositories  | jq -r .repositories[].repositoryUri
 export CONTAINER_URI=123456789123.dkr.ecr.eu-west-1.amazonaws.com/yoctoproject/EXAMPLE/buildmachine-poky
 ```
+
+**Note**: Your OS may not have 'jq' installed. You can install it by typing 'sudo yum install jq -y' or 'sudo apt-get install jq -y' depeding on your Linux distribution.
+
 
 ### Step 5 – Install the Linux build layer and invoke the build process
 
@@ -88,9 +92,10 @@ export VENDOR=rpi_foundation
 export BOARD=rpi4-64 
 export DEMO=aws-iot-greengrass-v2 
 export YOCTO_RELEASE=dunfell
+export COMPUTE_TYPE=BUILD_GENERAL1_LARGE
 ./setup_build_demos_prod.sh $PREFIX $CONTAINER_URI $VENDOR $BOARD $DEMO $YOCTO_RELEASE $COMPUTE_TYPE
 ```
-Once the process complete, find out the name of the newly created S3 bucket and store in an environment variable for later use
+Once the process is complete, find out the name of the newly created S3 bucket and store in an environment variable for later use
 
 ```bash
 aws s3 ls | grep $PREFIX-el-build- | awk '{print $3}'
