@@ -63,8 +63,8 @@ Baseline components are required for all other automation areas.
 
 1. Install the container build layer to your target.  The script
    naming convention is
-   `setup_ci_container_&lt;distro&rt;[.&lt;release&rt;].sh`. 
-   
+   `setup_ci_container_&lt;distro&rt;[.&lt;release&rt;].sh`.
+
    In the Poky case, you install the container build using the script
    with the name `poky` in it.
 
@@ -73,7 +73,7 @@ Baseline components are required for all other automation areas.
    ```
 
     In the TI (Arago) case, you will need to be more specific.
-    
+
    ```bash
    ./setup_ci_container_ti.dunfell.sh $PREFIX $SECRET_ARN
    ```
