@@ -28,7 +28,7 @@ GITHUB_ORG="${GITHUB_ORG:-aws}"
 
 echo invoking the template.
 
-STACKNAME=${prefix}-el-ci-container-${distro}
+STACKNAME=${prefix}-el-ci-container-$(echo ${distro} | sed -e 's/\./-/')
 
 PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
