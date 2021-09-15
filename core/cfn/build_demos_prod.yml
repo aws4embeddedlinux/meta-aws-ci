@@ -34,6 +34,12 @@ Parameters:
     Description: >-
         The compute type. i.e. BUILD_GENERAL1_LARGE (15Gb RAM, 8vCPU) or BUILD_GENERAL1_2XLARGE (145 Gb RAM, 72 vCPU)
     Type: String
+
+  GithubSourceOrg:
+    Description: >-
+        The Github organization for the Codebuild source repo target.
+    Default: aws-samples
+    Type: String
 Resources:
   BuildBucket:
     Type: 'AWS::S3::Bucket'
@@ -186,7 +192,11 @@ Resources:
             - !Ref YoctoProjectRelease
             - /
             - buildspec.yml
-        Location: https://github.com/aws-samples/meta-aws-demos
+        Location: !Join
+          - ''
+          - - "https://github.com/"
+            - !Ref GithubSourceOrg
+            - "/meta-aws-demos"
         Type: GITHUB
         SourceIdentifier: meta_aws_demos
       SourceVersion: refs/heads/master
