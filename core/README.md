@@ -112,6 +112,14 @@ Baseline components are required for all other automation areas.
    export COMPUTE_TYPE=BUILD_GENERAL1_LARGE
    ./setup_build_demos_prod.sh $PREFIX $CONTAINER_URI $VENDOR $BOARD $DEMO $YOCTO_RELEASE $COMPUTE_TYPE
    ```
+
+   If you are setting up this for a repo not in aws-samples, then you
+   can override the organization where your meta-aws-demos repo is running.
+
+   ```bash
+   GITHUB_ORG=rpcme ./setup_build_demos_prod.sh $PREFIX $CONTAINER_URI $VENDOR $BOARD $DEMO $YOCTO_RELEASE $COMPUTE_TYPE
+   ```
+
 2. Once the process complete, find out the name of the newly created S3 bucket and store in an environment variable for later use
 
    ```bash
