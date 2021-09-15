@@ -83,10 +83,7 @@ Resources:
           - Name: dockerhub_password
             Value: !Sub "dockerhub_${Prefix}:password"
             Type: SECRETS_MANAGER
-      Name: !Join
-        - ''
-        - - !Ref AWS::StackName
-          - "_YPBuildImage"
+      Name: !Ref AWS::StackName
       ServiceRole: !Ref CodeBuildRole
       Source:
         BuildSpec: core/buildspec/ci_image.yml
