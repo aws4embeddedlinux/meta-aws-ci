@@ -19,6 +19,12 @@ Parameters:
         A unique prefix for objects that might clash on multiple instances
     Type: String
 
+  GithubSourceOrg:
+    Description: >-
+        The Github organization for the Codebuild source repo target.
+    Default: aws
+    Type: String
+
 Resources:
 
   CodeBuildImageRepository:
@@ -84,7 +90,11 @@ Resources:
       ServiceRole: !Ref CodeBuildRole
       Source:
         BuildSpec: core/buildspec/ci_image.yml
-        Location: https://github.com/aws/meta-aws-ci
+        Location: !Join
+          - ''
+          - - "https://github.com/"
+            - !Ref GithubSourceOrg
+            - "/meta-aws-ci"
         Type: GITHUB
         SourceIdentifier: meta_aws_ci
       SourceVersion: master

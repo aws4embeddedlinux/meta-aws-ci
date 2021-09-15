@@ -78,6 +78,14 @@ Baseline components are required for all other automation areas.
    ./setup_ci_container_ti.dunfell.sh $PREFIX $SECRET_ARN
    ```
 
+   If you have forked the meta-aws-ci repository and need to use the
+   repo from your own context, set the `GITHUB_REPO` variable. For
+   example:
+
+
+   ```bash
+   GITHUB_ORG=rpcme ./setup_ci_container_ti.dunfell.sh $PREFIX $SECRET_ARN
+   ```
 2. Once this process is complete, invoke the build process. The process takes about 15 minutes to complete. You can monitor it using the CLI or by logging into the AWS CodeBuild console. Make sure you select the right region.
 
    ```bash

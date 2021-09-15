@@ -24,6 +24,8 @@ fi
 pushd $(dirname $0)
 PWD=$(pwd)
 
+GITHUB_ORG="${GITHUB_ORG:-aws}"
+
 echo invoking the template.
 
 STACKNAME=${prefix}-el-ci-container-${distro}
@@ -32,6 +34,7 @@ PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
 DOCKERHUB_SECRET_ARN=ParameterKey=DockerhubSecretArn,ParameterValue=${dockerhub_secret_arn}
 CFN_FILE=$PWD/../cfn/ci_container_${distro}.yml
+GITHUB_SOURCE_ORG=ParameterKey=GithubSourceOrg,ParameterValue=${GITHUB_ORG}
 
 if test ! -f $CFN_FILE; then
     echo CFN file ${CFN_FILE} not found.  ensure that the container cfn exists and
@@ -43,7 +46,7 @@ stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --stack-name ${STACKNAME} \
                --template-body file://$PWD/../cfn/ci_container_${distro}.yml \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND \
-               --parameters ${NETWORK_STACK_NAME} ${DOCKERHUB_SECRET_ARN} ${PREFIX_PARAM}
+               --parameters ${NETWORK_STACK_NAME} ${DOCKERHUB_SECRET_ARN} ${PREFIX_PARAM} ${GITHUB_SOURCE_ORG}
                )
 
 if test $? -ne 0; then
