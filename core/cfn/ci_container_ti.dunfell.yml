@@ -86,7 +86,7 @@ Resources:
       Name: !Ref AWS::StackName
       ServiceRole: !Ref CodeBuildRole
       Source:
-        BuildSpec: core/buildspec/ci_image.yml
+        BuildSpec: core/buildspec/ci_image_ti.dunfell.yml
         Location: !Join
           - ''
           - - "https://github.com/"
