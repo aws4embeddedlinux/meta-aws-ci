@@ -182,7 +182,6 @@ RUN rm gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
 RUN dpkg --add-architecture i386
 RUN apt-get update
 RUN apt-get install -y git build-essential diffstat texinfo gawk chrpath
-RUN apt-get install -y ia32-libs
 RUN apt-get install -y libstdc++6:i386 libncurses5:i386 libz1:i386 libc6:i386 libc6-dev-i386 g++-multilib
 RUN dpkg-reconfigure dash -fnoninteractive
 
