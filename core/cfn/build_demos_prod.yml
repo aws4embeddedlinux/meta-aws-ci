@@ -34,12 +34,11 @@ Parameters:
     Description: >-
         The compute type. i.e. BUILD_GENERAL1_LARGE (15Gb RAM, 8vCPU) or BUILD_GENERAL1_2XLARGE (145 Gb RAM, 72 vCPU)
     Type: String
-
-  GithubSourceOrg:
+  GitHubOrg:
     Description: >-
-        The Github organization for the Codebuild source repo target.
-    Default: aws-samples
+       The GitHub organization or user to set the codebuild project for.
     Type: String
+    Default: "aws"
 Resources:
   BuildBucket:
     Type: 'AWS::S3::Bucket'
@@ -195,7 +194,7 @@ Resources:
         Location: !Join
           - ''
           - - "https://github.com/"
-            - !Ref GithubSourceOrg
+            - !Ref GitHubOrg
             - "/meta-aws-demos"
         Type: GITHUB
         SourceIdentifier: meta_aws_demos

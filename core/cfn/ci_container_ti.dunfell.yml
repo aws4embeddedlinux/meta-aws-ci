@@ -18,12 +18,11 @@ Parameters:
     Description: >-
         A unique prefix for objects that might clash on multiple instances
     Type: String
-
-  GithubSourceOrg:
+  GitHubOrg:
     Description: >-
-        The Github organization for the Codebuild source repo target.
-    Default: aws
+       The GitHub organization or user to set the codebuild project for.
     Type: String
+    Default: "aws"
 
 Resources:
 
@@ -90,7 +89,7 @@ Resources:
         Location: !Join
           - ''
           - - "https://github.com/"
-            - !Ref GithubSourceOrg
+            - !Ref GitHubOrg
             - "/meta-aws-ci"
         Type: GITHUB
         SourceIdentifier: meta_aws_ci
