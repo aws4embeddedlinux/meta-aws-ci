@@ -166,6 +166,25 @@ RUN dpkg-reconfigure locales
 RUN update-locale LANG=en_US.UTF-8
 ENV LANG=en_US.UTF-8
 
+# Download and install ARM toolchains. The TI and Arago build process
+# uses external toolchain.
+# See: http://arago-project.org/wiki/index.php/Setting_Up_Build_Environment
+#
+# TI/Arago Dunfell release uses 9.2-2019.12
+
+RUN wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
+RUN wget --no-check-certificate https://developer.arm.com/-/media/Files/downloads/gnu-a/9.2-2019.12/binrel/gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+RUN tar -Jxvf gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz -C $HOME
+RUN tar -Jxvf gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz -C $HOME
+RUN rm gcc-arm-9.2-2019.12-x86_64-arm-none-linux-gnueabihf.tar.xz
+RUN rm gcc-arm-9.2-2019.12-x86_64-aarch64-none-linux-gnu.tar.xz
+
+RUN dpkg --add-architecture i386
+RUN apt-get update
+RUN apt-get install -y git build-essential diffstat texinfo gawk chrpath
+RUN apt-get install -y libstdc++6:i386 libncurses5:i386 libz1:i386 libc6:i386 libc6-dev-i386 g++-multilib
+RUN dpkg-reconfigure dash -fnoninteractive
+
 # When we run in a CodeBuild context, we can integrate with CodeCommit
 # only when run-as is root.  Also, when run-as is aws-yocto-builder,
 # HOME is still root.  So, just give permission to aws-yocto-builder to

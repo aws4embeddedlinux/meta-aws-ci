@@ -14,6 +14,7 @@ if test $# -ne 7; then
 fi
 
 echo invoking the template.
+GITHUB_ORG="${GITHUB_ORG:-aws-samples}"
 
 STACKNAME=${prefix}-el-build-${board}-${demo}-${release}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
@@ -23,6 +24,7 @@ BOARD=ParameterKey=DemoBoard,ParameterValue=${board}
 DEMO=ParameterKey=DemoName,ParameterValue=${demo}
 RELEASE=ParameterKey=YoctoProjectRelease,ParameterValue=${release}
 COMPUTE_TYPE=ParameterKey=DemoComputeType,ParameterValue=${compute_type}
+GITHUB_SOURCE_ORG=ParameterKey=GithubSourceOrg,ParameterValue=${GITHUB_ORG}
 
 PWD=$(pwd)
 stack_id=$(aws cloudformation create-stack --output text --query StackId \
@@ -31,7 +33,8 @@ stack_id=$(aws cloudformation create-stack --output text --query StackId \
                --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
                               CAPABILITY_AUTO_EXPAND \
                --parameters ${NETWORK_STACK_NAME} ${CONTAINER_ARN} \
-                            ${VENDOR} ${BOARD} ${DEMO} ${RELEASE} ${COMPUTE_TYPE}
+                            ${VENDOR} ${BOARD} ${DEMO} ${RELEASE} ${COMPUTE_TYPE} \
+                            ${GITHUB_SOURCE_ORG}
                )
 
 echo stack_id is [${stack_id}]

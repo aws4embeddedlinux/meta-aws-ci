@@ -29,7 +29,7 @@ Resources:
   CodeBuildImageRepository:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: !Sub 'yoctoproject/${Prefix}/buildmachine-poky'
+      RepositoryName: !Sub 'yoctoproject/${Prefix}/buildmachine-ti-dunfell'
       RepositoryPolicyText: >-
             {
               "Version": "2008-10-17",
@@ -65,7 +65,7 @@ Resources:
         PrivilegedMode: true
         EnvironmentVariables:
           - Name: IMAGE_REPO_NAME
-            Value: !Sub 'yoctoproject/${Prefix}/buildmachine-poky'
+            Value: !Sub 'yoctoproject/${Prefix}/buildmachine-ti-dunfell'
             Type: PLAINTEXT
           - Name: AWS_DEFAULT_REGION
             Value: !Ref 'AWS::Region'
@@ -85,7 +85,7 @@ Resources:
       Name: !Ref AWS::StackName
       ServiceRole: !Ref CodeBuildRole
       Source:
-        BuildSpec: core/buildspec/ci_image.yml
+        BuildSpec: core/buildspec/ci_image_ti.dunfell.yml
         Location: !Join
           - ''
           - - "https://github.com/"

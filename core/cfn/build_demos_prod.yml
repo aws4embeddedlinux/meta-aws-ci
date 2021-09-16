@@ -34,6 +34,11 @@ Parameters:
     Description: >-
         The compute type. i.e. BUILD_GENERAL1_LARGE (15Gb RAM, 8vCPU) or BUILD_GENERAL1_2XLARGE (145 Gb RAM, 72 vCPU)
     Type: String
+  GitHubOrg:
+    Description: >-
+       The GitHub organization or user to set the codebuild project for.
+    Type: String
+    Default: "aws"
 Resources:
   BuildBucket:
     Type: 'AWS::S3::Bucket'
@@ -186,7 +191,11 @@ Resources:
             - !Ref YoctoProjectRelease
             - /
             - buildspec.yml
-        Location: https://github.com/aws-samples/meta-aws-demos
+        Location: !Join
+          - ''
+          - - "https://github.com/"
+            - !Ref GitHubOrg
+            - "/meta-aws-demos"
         Type: GITHUB
         SourceIdentifier: meta_aws_demos
       SourceVersion: refs/heads/master
@@ -284,10 +293,7 @@ Resources:
                     - ':'
                     - !Ref 'AWS::AccountId'
                     - ':log-group:/aws/codebuild/'
-                    - !Join
-                      - ''
-                      - - !Ref AWS::StackName
-                        - "_YPBuildImage"
+                    - !Ref AWS::StackName
                 - !Join
                   - ''
                   - - 'arn:aws:logs:'
@@ -295,10 +301,7 @@ Resources:
                     - ':'
                     - !Ref 'AWS::AccountId'
                     - ':log-group:/aws/codebuild/'
-                    - !Join
-                      - ''
-                      - - !Ref AWS::StackName
-                        - "_YPBuildImage"
+                    - !Ref AWS::StackName
                     - ':*'
         - PolicyName: S3Access
           PolicyDocument:

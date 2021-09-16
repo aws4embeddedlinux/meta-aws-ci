@@ -61,13 +61,31 @@ Baseline components are required for all other automation areas.
 
 ## Container components
 
-1. Install the container build layer to your target. In this case, you
-   install the container build for the reference distribution named **Poky**.
+1. Install the container build layer to your target.  The script
+   naming convention is
+   `setup_ci_container_<distro>[.<release>].sh`.
+
+   In the Poky case, you install the container build using the script
+   with the name `poky` in it.
 
    ```bash
    ./setup_ci_container_poky.sh $PREFIX $SECRET_ARN
    ```
 
+    In the TI (Arago) case, you will need to be more specific.
+
+   ```bash
+   ./setup_ci_container_ti.dunfell.sh $PREFIX $SECRET_ARN
+   ```
+
+   If you have forked the meta-aws-ci repository and need to use the
+   repo from your own context, set the `GITHUB_REPO` variable. For
+   example:
+
+
+   ```bash
+   GITHUB_ORG=rpcme ./setup_ci_container_ti.dunfell.sh $PREFIX $SECRET_ARN
+   ```
 2. Once this process is complete, invoke the build process. The process takes about 15 minutes to complete. You can monitor it using the CLI or by logging into the AWS CodeBuild console. Make sure you select the right region.
 
    ```bash
@@ -94,6 +112,14 @@ Baseline components are required for all other automation areas.
    export COMPUTE_TYPE=BUILD_GENERAL1_LARGE
    ./setup_build_demos_prod.sh $PREFIX $CONTAINER_URI $VENDOR $BOARD $DEMO $YOCTO_RELEASE $COMPUTE_TYPE
    ```
+
+   If you are setting up this for a repo not in aws-samples, then you
+   can override the organization where your meta-aws-demos repo is running.
+
+   ```bash
+   GITHUB_ORG=rpcme ./setup_build_demos_prod.sh $PREFIX $CONTAINER_URI $VENDOR $BOARD $DEMO $YOCTO_RELEASE $COMPUTE_TYPE
+   ```
+
 2. Once the process complete, find out the name of the newly created S3 bucket and store in an environment variable for later use
 
    ```bash
