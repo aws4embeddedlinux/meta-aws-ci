@@ -49,7 +49,8 @@ RUN set -ex \
           netbase openssl patch pkg-config procps python-bzrlib \
           python-configobj python-openssl rsync sgml-base sgml-data subversion \
           tar tcl tcl8.6 tk tk-dev unzip wget xfsprogs xml-core xmlto xsltproc \
-        libzip4 libzip-dev vim xvfb xz-utils zip zlib1g-dev iproute2 zstd \
+          libzip4 libzip-dev vim xvfb xz-utils zip zlib1g-dev iproute2 zstd \
+          liblz4-1 liblz4-tool \
     && apt-get install -y --no-install-recommends \
       gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath \
       socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils \
