@@ -34,7 +34,7 @@ PREFIX_PARAM=ParameterKey=Prefix,ParameterValue=${prefix}
 NETWORK_STACK_NAME=ParameterKey=NetworkStackName,ParameterValue=${prefix}-el-ci-network
 DOCKERHUB_SECRET_ARN=ParameterKey=DockerhubSecretArn,ParameterValue=${dockerhub_secret_arn}
 CFN_FILE=$PWD/../cfn/ci_container_${distro}.yml
-GITHUB_SOURCE_ORG=ParameterKey=GithubSourceOrg,ParameterValue=${GITHUB_ORG}
+GITHUB_SOURCE_ORG=ParameterKey=GitHubOrg,ParameterValue=${GITHUB_ORG}
 
 if test ! -f $CFN_FILE; then
     echo CFN file ${CFN_FILE} not found.  ensure that the container cfn exists and

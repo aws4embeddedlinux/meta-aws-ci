@@ -24,7 +24,7 @@ BOARD=ParameterKey=DemoBoard,ParameterValue=${board}
 DEMO=ParameterKey=DemoName,ParameterValue=${demo}
 RELEASE=ParameterKey=YoctoProjectRelease,ParameterValue=${release}
 COMPUTE_TYPE=ParameterKey=DemoComputeType,ParameterValue=${compute_type}
-GITHUB_SOURCE_ORG=ParameterKey=GithubSourceOrg,ParameterValue=${GITHUB_ORG}
+GITHUB_SOURCE_ORG=ParameterKey=GitHubOrg,ParameterValue=${GITHUB_ORG}
 
 PWD=$(pwd)
 stack_id=$(aws cloudformation create-stack --output text --query StackId \
