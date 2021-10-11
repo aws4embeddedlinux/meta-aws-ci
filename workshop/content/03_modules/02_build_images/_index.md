@@ -70,7 +70,7 @@ Once this process is complete, invoke the build process. The process takes about
 
 
 ```bash
-aws codebuild start-build --project-name $PREFIX-el-ci-container-poky_YPBuildImage
+aws codebuild start-build --project-name $PREFIX-el-ci-container-poky
 ```
 
 Finally, find out the image URI and store it in an environment variable for later use. 
