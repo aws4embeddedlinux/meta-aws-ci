@@ -107,7 +107,7 @@ aws codebuild start-build --project-name $PREFIX-el-build-$BOARD-$DEMO-$YOCTO_RE
 Once the build process is complete you can review the contents of the S3 bucket
 
 ```bash
-aws s3 ls $S3_BUCKET
+aws s3 ls $S3_BUCKET --recursive
 ```
 
 ### Step 6 (Optional) - Download the image from S3 and test it
