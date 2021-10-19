@@ -89,13 +89,13 @@ Baseline components are required for all other automation areas.
 2. Once this process is complete, invoke the build process. The process takes about 15 minutes to complete. You can monitor it using the CLI or by logging into the AWS CodeBuild console. Make sure you select the right region.
 
    ```bash
-   aws codebuild start-build --project-name $PREFIX-el-ci-container-poky_YPBuildImage
+   aws codebuild start-build --project-name $PREFIX-el-ci-container-poky
    ```
 
 3. Finally, find out the image URI and store it in an environment variable for later use.
 
    ```bash
-   aws ecr describe-repositories  | jq -r .repositories[].repositoryUri
+   aws ecr describe-repositories --query repositories[].repositoryUri --output text
    export CONTAINER_URI=123456789123.dkr.ecr.eu-west-1.amazonaws.com/yoctoproject/EXAMPLE/buildmachine-poky
    ```
 
@@ -135,5 +135,5 @@ Baseline components are required for all other automation areas.
 
 4. Once the build process is complete you can review the contents of the S3 bucket
    ```bash
-   aws s3 ls $S3_BUCKET
+   aws s3 ls $S3_BUCKET --recursive
    ```
