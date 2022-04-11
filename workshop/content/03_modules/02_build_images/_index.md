@@ -28,7 +28,7 @@ Open the AWS CloudShell service and run the following command to clone this repo
 
 ```bash
 cd ~/
-git clone https://github.com/aws/meta-aws-ci
+git clone https://github.com/aws4embeddedlinux/meta-aws-ci
 cd ~/meta-aws-ci/core/scripts/
 
 export PREFIX=mod2-<<YOUR_AWS_ACCOUNT_NUMBER>>

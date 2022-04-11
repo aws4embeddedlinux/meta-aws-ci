@@ -29,7 +29,7 @@ Line Interface installed.  Run on a Windows machine at your own risk.
 2. In AWS CloudShell, run the following command to clone this repository.
 
    ```bash
-   git clone https://github.com/aws/meta-aws-ci
+   git clone https://github.com/aws4embeddedlinux/meta-aws-ci
    cd ~/meta-aws-ci/core/scripts/
    export PREFIX=mod2-$ACCOUNT_ID
    ```
