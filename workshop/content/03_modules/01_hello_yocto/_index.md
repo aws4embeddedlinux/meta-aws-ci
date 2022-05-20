@@ -85,7 +85,7 @@ DEVHOME=$HOME/environment/src/mydev-proto
 cd $DEVHOME
 git clone -b hardknott git://git.openembedded.org/meta-openembedded
 git clone -b hardknott https://git.yoctoproject.org/git/meta-virtualization
-git clone -b hardknott https://github.com/aws/meta-aws
+git clone -b hardknott https://github.com/aws4embeddedlinux/meta-aws
 ```
 
 Then modify the `$DEVHOME/build/conf/bblayers.conf` file by adding the layers we downloaded previously to our new custom layer (substitute $DEVHOME with the $DEVHOME path, e.g. `home/ubuntu/environment/src/mydev-proto`)
@@ -117,7 +117,7 @@ Let's modify `$DEVHOME/build/conf/local.conf` and add the following line at the 
 IMAGE_INSTALL_append = "aws-iot-device-client"
 ```
 
-Wonder what this does? Check https://github.com/aws/meta-aws/blob/hardknott/recipes-iot/aws-iot-device-client/aws-iot-device-client_1.2.0.bb
+Wonder what this does? Check https://github.com/aws4embeddedlinux/meta-aws/blob/hardknott/recipes-iot/aws-iot-device-client/aws-iot-device-client_1.2.0.bb
 
 Now let's bake the image again.
 
