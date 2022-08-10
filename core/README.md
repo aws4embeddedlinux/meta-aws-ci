@@ -31,6 +31,7 @@ Line Interface installed.  Run on a Windows machine at your own risk.
    ```bash
    git clone https://github.com/aws4embeddedlinux/meta-aws-ci
    cd ~/meta-aws-ci/core/scripts/
+   export ACCOUNT_ID=123456789123
    export PREFIX=mod2-$ACCOUNT_ID
    ```
 3. When building containers, you will need a secret setup in AWS Secret
@@ -101,7 +102,7 @@ Baseline components are required for all other automation areas.
 
 ## Embedded Linux build components
 
-1. In AWS CloudShell, run the script to create the Linux build layer. IThis script installs an AWS CodeBuild project to construct the core-image-minimal image for the QEMU x86-64 MACHINE target that includes the AWS IoT Device Client. The AWS CodeBuild project file for this project is in the
+1. In AWS CloudShell, run the script to create the Linux build layer. This script installs an AWS CodeBuild project to construct the core-image-minimal image for the QEMU x86-64 MACHINE target that includes the AWS IoT Device Client. The AWS CodeBuild project file for this project is in the
    [meta-aws-demos](https://github.com/aws-samples/meta-aws-demos) It also creates a new S3 bucket to store images it creates.
 
    ```bash
