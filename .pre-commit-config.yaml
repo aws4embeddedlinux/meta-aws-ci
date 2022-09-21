@@ -15,3 +15,21 @@ repos:
     hooks:
       - id: cfn-python-lint
         files: core/cfn/.*\.(json|yml|yaml)$
+  - repo: https://github.com/psf/black
+    rev: 22.8.0
+    hooks:
+    -  id: black
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 'v0.971'
+    hooks:
+    -  id: mypy
+  - repo: https://github.com/PyCQA/isort
+    rev: '5.10.1'
+    hooks:
+    - id: isort
+  - repo: https://github.com/PyCQA/flake8
+    rev: '5.0.4'
+    hooks:
+    - id: flake8
+      args: [--config=auto-upgrader/setup.cfg, auto-upgrader/]
+      additional_dependencies: [flake8-bugbear==22.9.11]
