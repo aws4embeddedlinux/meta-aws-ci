@@ -23,6 +23,8 @@ EXCLUDE = [
 ]  # TODO: Allow this to be passed as an argument.
 # e.g. w/ click https://click.palletsprojects.com/en/8.1.x/options/#multiple-options
 
+BRANCH_FILE = "branches.txt"
+
 
 @click.command()
 @click.option("--root", type=click.Path(exists=True))
@@ -102,6 +104,8 @@ def update(layer_path: Path, target_branch: str) -> None:
     logger.info("checking for recipe updates...")
     date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
+    Path(BRANCH_FILE).touch()
+
     # TODO(glimsdal): Convert Any to Union[str, NewType of upgrade]
     result: Dict[str, List[Any]] = {"success": list(), "fail": list(), "no_upgrade": list()}
 
@@ -156,7 +160,7 @@ def update(layer_path: Path, target_branch: str) -> None:
         run(f"git -C {layer_path} add --all")
         run(f'git -C {layer_path} commit -a -m "{commit_msg}"')
 
-        with open("branches.txt", "a") as f:
+        with open(BRANCH_FILE, "a") as f:
             f.write(new_branch + "\n")
         result["success"].append(upgrade)
 

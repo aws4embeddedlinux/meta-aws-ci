@@ -1,7 +1,7 @@
 import logging
 import os
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Optional, Sequence
 
 import click
 from github import Github
@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 @click.option("--repo", type=str)
 @click.argument("branches", nargs=-1)
 def create_pulls(
-    target_branch: str, repo: str, branch_file: Optional[Path], branches: Iterable[str]
+    target_branch: str, repo: str, branch_file: Optional[Path], branches: Sequence[str]
 ) -> None:
     """
     Create pull requests.
@@ -38,15 +38,19 @@ def create_pulls(
         logger.debug(f"creating branch list from file {branch_file}")
         with open(branch_file) as f:
             branches = [s.strip() for s in f.readlines()]
-    logger.info(f"creating pulls for branches {branches}")
-    _create_prs(target_branch, repo, branches)
+    if len(branches) == 0:
+        logger.info("no branches to create pulls for")
+    else:
+        logger.info(f"creating pulls for branches {branches}")
+        _create_prs(target_branch, repo, branches)
 
 
-def _create_prs(target_branch: str, repo: str, branches: Iterable[str]) -> None:
+def _create_prs(target_branch: str, repo: str, branches: Sequence[str]) -> None:
     assert "GITHUB_TOKEN" in os.environ, "GITHUB_TOKEN not found in env"
     token = os.environ.get("GITHUB_TOKEN")
     gh = Github(token)
     gh_repo = gh.get_repo(repo)
+
     for branch in branches:
         gh_repo.create_pull(
             base=target_branch, head=branch, title=branch, body="Automatically created."
