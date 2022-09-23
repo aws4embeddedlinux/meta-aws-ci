@@ -87,7 +87,7 @@ def _check_for_updates(recipe: str) -> Optional[dict]:
 
 @click.command()
 @click.option("--layer-path", type=click.Path(exists=True))
-@click.option("--target-branch", type=str, default="master")
+@click.option("--target-branch", type=str, default="master-next")
 def update(layer_path: Path, target_branch: str) -> None:
     """
     Update recipes in a layer with devtool.
