@@ -1,0 +1,34 @@
+[project]
+name = "auto-upgrader"
+version = "0.1.0"
+license = { file="LICENSE" }
+authors = [
+    { name="Nathan Glimsdale", email="glimsdal@amazon.com" },
+]
+requires-python = ">=3.8"
+dependencies = [
+    "click==8.1.3",
+    "PyGithub==1.55",
+]
+
+[project.scripts]
+upgrader = "upgrader:cli"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.mypy]
+check_untyped_defs = true
+show_error_codes = true
+pretty = true
+ignore_missing_imports = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
