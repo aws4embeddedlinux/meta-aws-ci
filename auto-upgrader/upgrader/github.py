@@ -50,8 +50,9 @@ def _create_prs(target_branch: str, repo: str, branches: Sequence[str]) -> None:
     token = os.environ.get("GITHUB_TOKEN")
     gh = Github(token)
     gh_repo = gh.get_repo(repo)
-
+    upgrade_label = gh_repo.get_label("version-upgrade")
     for branch in branches:
-        gh_repo.create_pull(
+        pull = gh_repo.create_pull(
             base=target_branch, head=branch, title=branch, body="Automatically created."
         )
+        pull.set_labels(upgrade_label)
