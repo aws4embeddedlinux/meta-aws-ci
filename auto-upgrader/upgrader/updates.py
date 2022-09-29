@@ -14,13 +14,7 @@ logger = logging.getLogger(__name__)
 
 RECIPE_NAME_RE = r"^(?P<name>[^_]+)_(?P<version>.+).bb$"
 
-EXCLUDE = [
-    "jailer",
-    "greengrass",
-    "corretto",
-    "neo-ai",
-    "firecracker",
-]  # TODO: Allow this to be passed as an argument.
+EXCLUDE = []  # TODO: Allow this to be passed as an argument.
 # e.g. w/ click https://click.palletsprojects.com/en/8.1.x/options/#multiple-options
 
 BRANCH_FILE = "branches.txt"
