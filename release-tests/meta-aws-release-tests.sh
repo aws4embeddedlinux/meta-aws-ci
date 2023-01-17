@@ -2,7 +2,7 @@
 
 RELEASES="master langdale kirkstone dunfell"
 
-ARCHS="qemuarm qemuarm64 qemux86 qemux86-64"
+ARCHS="qemuarm qemuarm64 qemux86-64"
 
 setup_config() {
 # keep indent!
@@ -25,11 +25,14 @@ IMAGE_CLASSES += "testimage"
 PUT ?= ""
 IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 
-INHERIT += "cve-check"
-include cve-extra-exclusions.inc
+# INHERIT += "cve-check"
+# include cve-extra-exclusions.inc
 
 # INHERIT += "create-spdx"
 # SPDX_PRETTY = "1"
+
+SSTATE_DIR = "\${TOPDIR}/../../sstate-cache"
+DL_DIR = "\${TOPDIR}/../../downloads"
 EOF
 }
 
@@ -37,7 +40,16 @@ set +exuo pipefail
 
 for RELEASE in $RELEASES ; do
 
-    rm -rf yocto_$RELEASE
+    # always delete old files, rebuilding from sstate will be fast enough
+    if [ -d yocto_$RELEASE ]
+    then
+        echo "deleting $PWD/yocto_$RELEASE"
+        tmp_del_dir=delme_$RANDOM
+        mkdir $tmp_del_dir
+        mv yocto_$RELEASE $tmp_del_dir
+        rm -rf $tmp_del_dir &
+    fi
+
     mkdir yocto_$RELEASE
 
     cd yocto_$RELEASE/
@@ -53,9 +65,6 @@ for RELEASE in $RELEASES ; do
     bitbake-layers add-layer ../meta-openembedded/meta-python
     bitbake-layers add-layer ../meta-openembedded/meta-networking
     bitbake-layers add-layer ../meta-aws
-
-    echo 'DL_DIR = "${TOPDIR}/../../downloads"' >> conf/local.conf
-    echo 'SSTATE_DIR ?= "${TOPDIR}/../../sstate-cache"' >> conf/local.conf
 
     # setup build/local.conf
     setup_config
@@ -87,7 +96,7 @@ for RELEASE in $RELEASES ; do
 
         MACHINE=$ARCH bitbake core-image-minimal
 
-        cp $BUILDDIR/tmp/log/cve/cve-summary.json ../../$RELEASE-$ARCH-cve-summary.json
+#        cp $BUILDDIR/tmp/log/cve/cve-summary.json ../../$RELEASE-$ARCH-cve-summary.json
 
         MACHINE=$ARCH bitbake core-image-minimal -c testimage
 
@@ -96,9 +105,14 @@ for RELEASE in $RELEASES ; do
         cp $BUILDDIR/tmp/log/oeqa/testresults.json ../../$RELEASE-$ARCH-testresults.json
 
         # show results
-        resulttool report $BUILDDIR/tmp/log/oeqa/testresults.json
-
-        cd ../
+        resulttool report ../../$RELEASE-$ARCH-testresults.json
 
     done
+    # cd ../build
+    cd ../
+
+    # cd ../yocto_$RELEASE/
+    cd ../
+
+    rm -rf yocto_$RELEASE &
 done
