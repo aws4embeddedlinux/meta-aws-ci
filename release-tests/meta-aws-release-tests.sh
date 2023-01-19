@@ -113,6 +113,4 @@ for RELEASE in $RELEASES ; do
 
     # cd ../yocto_$RELEASE/
     cd ../
-
-    rm -rf yocto_$RELEASE &
 done
