@@ -31,6 +31,8 @@ IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 # INHERIT += "create-spdx"
 # SPDX_PRETTY = "1"
 
+INHERIT += "rm_work"
+
 SSTATE_DIR = "\${TOPDIR}/../../sstate-cache"
 DL_DIR = "\${TOPDIR}/../../downloads"
 EOF
@@ -114,3 +116,7 @@ for RELEASE in $RELEASES ; do
     # cd ../yocto_$RELEASE/
     cd ../
 done
+
+# search for build errors
+echo  "manually check (if found) build errors: "
+grep -A3 "task failed"  *.log
