@@ -31,6 +31,8 @@ IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 # INHERIT += "create-spdx"
 # SPDX_PRETTY = "1"
 
+INHERIT += "rm_work"
+
 # BB_ENV_PASSTHROUGH_ADDITIONS="SSTATE_DIR $BB_ENV_PASSTHROUGH_ADDITIONS" SSTATE_DIR="/sstate" ./meta-aws-release-tests.sh
 SSTATE_DIR ?= "\${TOPDIR}/../../sstate-cache"
 DL_DIR ?= "\${TOPDIR}/../../downloads"
