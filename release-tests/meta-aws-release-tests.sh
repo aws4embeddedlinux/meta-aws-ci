@@ -1,8 +1,10 @@
 #!/bin/bash
 
-RELEASES="master langdale kirkstone dunfell"
+RELEASES=${1:-"master langdale kirkstone dunfell"}
+echo "RELEASES=$RELEASES"
 
-ARCHS="qemuarm qemuarm64 qemux86-64"
+ARCHS=${2:-"qemuarm qemuarm64 qemux86-64"}
+echo "ARCHS=$ARCHS"
 
 setup_config() {
 # keep indent!
@@ -67,13 +69,13 @@ for RELEASE in $RELEASES ; do
     bitbake-layers add-layer ../meta-openembedded/meta-oe
     bitbake-layers add-layer ../meta-openembedded/meta-python
     bitbake-layers add-layer ../meta-openembedded/meta-networking
+    bitbake-layers add-layer ../meta-openembedded/meta-multimedia
     bitbake-layers add-layer ../meta-aws
 
     # setup build/local.conf
     setup_config
 
     # find all recipes in meta-aws
-
     ALL_RECIPES=`find ../meta-aws -name *.bb -type f  | sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`
 
     # find all recipes having a ptest in meta-aws
@@ -120,4 +122,5 @@ done
 
 # search for build errors
 echo  "manually check (if found) build errors: "
-grep -A3 "task failed"  *.log
+grep -A3 " failed"  *.log
+grep -A3 " ERROR:"  *.log
