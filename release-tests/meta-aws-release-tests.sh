@@ -3,7 +3,7 @@
 RELEASES=${1:-"master langdale kirkstone dunfell"}
 echo "RELEASES=$RELEASES"
 
-ARCHS=${2:-"qemuarm qemuarm64 qemux86-64"}
+ARCHS=${2:-"qemuarm64 qemux86-64"}
 echo "ARCHS=$ARCHS"
 
 setup_config() {
