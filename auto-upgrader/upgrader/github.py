@@ -17,7 +17,11 @@ logger = logging.getLogger(__name__)
 @click.option("--delay", type=int)
 @click.argument("branches", nargs=-1)
 def create_pulls(
-    target_branch: str, repo: str, delay: Optional[int], branch_file: Optional[Path], branches: Sequence[str]
+    target_branch: str,
+    repo: str,
+    delay: Optional[int],
+    branch_file: Optional[Path],
+    branches: Sequence[str],
 ) -> None:
     """
     Create pull requests.
