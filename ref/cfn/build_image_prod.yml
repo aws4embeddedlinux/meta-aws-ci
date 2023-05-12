@@ -17,6 +17,7 @@ Resources:
   BuildBucket:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
 
   BuildSStateCacheFilesystem:
     Type: AWS::EFS::FileSystem

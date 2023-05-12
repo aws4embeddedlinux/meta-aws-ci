@@ -14,17 +14,17 @@ repos:
     rev: v0.54.0 # The version of cfn-lint to use
     hooks:
       - id: cfn-python-lint
-        files: core/cfn/.*\.(json|yml|yaml)$
+        files: (core|ref)/cfn/.*\.(json|yml|yaml)$
   - repo: https://github.com/psf/black
-    rev: 22.8.0
+    rev: 23.3.0
     hooks:
     -  id: black
   - repo: https://github.com/PyCQA/isort
-    rev: '5.10.1'
+    rev: '5.12.0'
     hooks:
     - id: isort
   - repo: https://github.com/PyCQA/flake8
-    rev: '5.0.4'
+    rev: '6.0.0'
     hooks:
     - id: flake8
       args: [--config=auto-upgrader/setup.cfg, auto-upgrader/]

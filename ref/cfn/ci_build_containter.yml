@@ -43,7 +43,7 @@ Resources:
     Type: AWS::CodeBuild::Project
     Properties:
       Artifacts:
-        Type: no_artifacts
+        Type: NO_ARTIFACTS
       BadgeEnabled: true
       Description: >-
           The build process for creating an image and propagating to
