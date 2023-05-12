@@ -4,5 +4,7 @@ node_modules
 public
 .DS_Store
 *.swp
-.vscode
 bucket-policy.json
+
+# In case you root the workspace in this directory:
+auto-upgrader/.vscode/
