@@ -2,8 +2,14 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { DemosPipelineStack } from '../lib/demos-pipeline-stack';
+import { BuildImageDataStack } from '../lib/build-image-data';
+import { Repository } from 'aws-cdk-lib/aws-ecr';
+import { BuildImagePipelineStack, ImageKind } from '../lib/build-image-pipeline';
+import { BuildImageRepoStack } from '../lib/build-image-repo';
 
 const app = new cdk.App();
+
+const env = { account: '019549032656', region: 'us-west-2' };
 
 /**
  * Use these default props to enable termination protection and tag related AWS
@@ -12,6 +18,7 @@ const app = new cdk.App();
 const defaultProps: cdk.StackProps = {
     tags: { PURPOSE: 'META-AWS-BUILD' },
     terminationProtection: true,
+    env,
 };
 
 new DemosPipelineStack(app, 'DemosPipelineStack', {
@@ -26,4 +33,18 @@ new DemosPipelineStack(app, 'DemosPipelineStack', {
     // env: { account: '123456789012', region: 'us-east-1' },
     /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
     ...defaultProps,
+});
+
+const buildImageData = new BuildImageDataStack(app, 'BuildImageData', {
+    ...defaultProps,
+    bucketName: `build-image-data-${env.account}-${env.region}`,
+});
+
+const buildImageRepo = new BuildImageRepoStack(app, 'BuildImageRepo', { ...defaultProps });
+
+new BuildImagePipelineStack(app, 'BuildImagePipeline', {
+    ...defaultProps,
+    dataBucket: buildImageData.bucket,
+    repository: buildImageRepo.repository,
+    imageKind: ImageKind.Ubuntu22_04,
 });

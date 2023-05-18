@@ -5,6 +5,7 @@
         "demos-pipeline": "dist/bin/demos-pipeline.js"
     },
     "scripts": {
+        "zip-data": "if [ -f dist/assets/build-image/data.zip ]; then rm -rf dist/assets/build-image; fi && mkdir -p dist/assets/build-image ; cd assets/build-image && zip -q -o ../../dist/assets/build-image/data.zip -r *",
         "clean": "rm -rf dist && rm -rf cdk.out",
         "build": "tsc",
         "watch": "tsc -w",

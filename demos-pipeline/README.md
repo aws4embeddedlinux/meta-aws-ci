@@ -20,4 +20,7 @@ npm install .
 npm run build
 
 cdk bootstrap
+
+npm run zip-data
+cdk deploy ...Stacks...
 ```
