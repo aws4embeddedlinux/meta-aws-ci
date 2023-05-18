@@ -2,9 +2,10 @@
     "name": "demos-pipeline",
     "version": "0.1.0",
     "bin": {
-        "demos-pipeline": "bin/demos-pipeline.js"
+        "demos-pipeline": "dist/bin/demos-pipeline.js"
     },
     "scripts": {
+        "clean": "rm -rf dist && rm -rf cdk.out",
         "build": "tsc",
         "watch": "tsc -w",
         "test": "jest",
