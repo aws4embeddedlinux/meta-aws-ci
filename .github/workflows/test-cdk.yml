@@ -1,0 +1,31 @@
+name: Test CDK Demos Pipeline
+on:
+  push:
+    branches: ["**"]
+    paths: ["demos-pipeline/**"]
+  pull_request:
+    branches: [master]
+    paths: ["demos-pipeline/**"]
+jobs:
+  Run-Demos-Pipeline-Tests:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: demos-pipeline
+
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x, 18.x, 20.x]
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run check
+      - run: npm run build --if-present
+      - run: npm test
