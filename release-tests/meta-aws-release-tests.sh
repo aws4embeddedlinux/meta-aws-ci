@@ -12,6 +12,9 @@ cat <<EOF >>$BUILDDIR/conf/local.conf
 # Required to disable KVM/hypervisor mode.
 QEMU_USE_KVM = ""
 
+# set to the same as core-image-ptest
+QB_MEM = "-m 1024"
+
 # use slirp networking instead of TAP interface (require root rights)
 QEMU_USE_SLIRP = "1"
 TEST_SERVER_IP = "127.0.0.1"
