@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RELEASES=${1:-"master langdale kirkstone dunfell"}
+RELEASES=${1:-"master mickledore kirkstone dunfell"}
 echo "RELEASES=$RELEASES"
 
 ARCHS=${2:-"qemuarm64 qemux86-64"}
