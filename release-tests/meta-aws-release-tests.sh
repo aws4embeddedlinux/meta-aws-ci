@@ -9,8 +9,6 @@ echo "ARCHS=$ARCHS"
 setup_config() {
 # keep indent!
 cat <<EOF >>$BUILDDIR/conf/local.conf
-# Required to disable KVM/hypervisor mode.
-QEMU_USE_KVM = ""
 
 # set to the same as core-image-ptest
 QB_MEM = "-m 1024"
