@@ -1,0 +1,19 @@
+version: 0.2
+run-as: yocto
+
+env:
+  shell: bash
+
+phases:
+  pre_build:
+    commands:
+      - git submodule update --init --recursive
+  build:
+    commands:
+      - echo Build started on `date`
+      - . ./init-build-env $TMP_DIR
+      - BUILD_DEVICE=qemu bitbake core-image-minimal
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo $TMP_DIR

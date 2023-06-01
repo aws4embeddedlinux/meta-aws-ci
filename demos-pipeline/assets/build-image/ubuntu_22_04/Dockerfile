@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN locale-gen en_US.UTF-8
 
+# Install CA Certificates so we can clone
+RUN apt-get -qq install -y ca-certificates
+
 # Create a non-root user to build.
 RUN mkdir /home/yocto && \
     groupadd -g 70 yocto && \

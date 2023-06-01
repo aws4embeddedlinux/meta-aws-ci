@@ -96,6 +96,7 @@ export class BuildImagePipelineStack extends cdk.Stack {
                     actions: [buildAction],
                 },
             ],
+            restartExecutionOnUpdate: true,
         });
 
         // Run this pipeline weekly to update the image OS.
