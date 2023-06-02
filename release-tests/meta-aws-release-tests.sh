@@ -103,11 +103,7 @@ for RELEASE in $RELEASES ; do
 
         MACHINE=$ARCH bitbake core-image-minimal
 
-#        cp $BUILDDIR/tmp/log/cve/cve-summary.json ../../$RELEASE-$ARCH-cve-summary.json
-
         MACHINE=$ARCH bitbake core-image-minimal -c testimage
-
-        rm  $BUILDDIR/conf/auto.conf
 
         cp $BUILDDIR/tmp/log/oeqa/testresults.json ../../$RELEASE-$ARCH-testresults.json
 
