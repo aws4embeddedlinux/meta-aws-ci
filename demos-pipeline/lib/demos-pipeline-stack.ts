@@ -2,8 +2,9 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
-import { BuildSpec, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
+import { BuildSpec, ComputeType, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 import { IRepository } from 'aws-cdk-lib/aws-ecr';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 /**
  *
@@ -35,13 +36,27 @@ export class DemosPipelineStack extends cdk.Stack {
 
         const project = new PipelineProject(this, 'DemoBuildProject', {
             buildSpec: BuildSpec.fromAsset('assets/demo/qemu/buildspec.yml'),
-            environment: { buildImage: LinuxBuildImage.fromEcrRepository(props.imageRepo, props.imageTag) },
+            environment: {
+                computeType: ComputeType.X2_LARGE,
+                buildImage: LinuxBuildImage.fromEcrRepository(props.imageRepo, props.imageTag),
+            },
+            timeout: cdk.Duration.hours(4),
         });
 
+        const buildOutput = new codepipeline.Artifact();
         const buildAction = new codepipeline_actions.CodeBuildAction({
             input: sourceOutput,
+            outputs: [buildOutput],
             actionName: 'Demo-Build',
             project,
+        });
+
+        const artifactBucket = new Bucket(this, 'ArtifactBucket', {});
+
+        const artifactAction = new codepipeline_actions.S3DeployAction({
+            input: buildOutput,
+            bucket: artifactBucket,
+            actionName: 'Demo-Artifact',
         });
 
         new codepipeline.Pipeline(this, 'DemoPipeline', {
@@ -54,6 +69,10 @@ export class DemosPipelineStack extends cdk.Stack {
                 {
                     stageName: 'Build',
                     actions: [buildAction],
+                },
+                {
+                    stageName: 'Artifacts',
+                    actions: [artifactAction],
                 },
             ],
         });

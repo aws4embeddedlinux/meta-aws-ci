@@ -1,5 +1,5 @@
 version: 0.2
-run-as: yocto
+run-as: yoctouser
 
 env:
   shell: bash
@@ -8,6 +8,7 @@ phases:
   pre_build:
     commands:
       - git submodule update --init --recursive
+      - echo $PATH
   build:
     commands:
       - echo Build started on `date`
@@ -16,4 +17,10 @@ phases:
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo $TMP_DIR
+      - ps aux | grep bitbake
+      - find $TMP_DIR -name '*.socket' -delete
+
+
+artifacts:
+  files:
+    - '/build-output/**/*'

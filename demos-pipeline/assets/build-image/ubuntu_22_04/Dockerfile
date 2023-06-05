@@ -12,22 +12,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN locale-gen en_US.UTF-8
 
-# Install CA Certificates so we can clone
-RUN apt-get -qq install -y ca-certificates
-
 # Create a non-root user to build.
-RUN mkdir /home/yocto && \
-    groupadd -g 70 yocto && \
-    useradd -N -m -u 70 -g 70 yocto && \
-    chown -R yocto:yocto /home/yocto
+RUN useradd -U -m yoctouser
+
+# This seems bad, but mesa-native is looking for something in /root/.cmake for some reason.
+RUN chown -R yoctouser /root
 
 # These will be mount points for an EFS volume. This allows the cache to be reused.
-RUN mkdir /downloads && chown -R yocto:yocto /downloads
-RUN mkdir /sstate-cache && chown -R yocto:yocto /sstate-cache
-RUN mkdir /build-output && chown -R yocto:yocto /build-output
+RUN mkdir /downloads && chown -R yoctouser /downloads
+RUN mkdir /sstate-cache && chown -R yoctouser /sstate-cache
+RUN mkdir /build-output && chown -R yoctouser /build-output
 
 ENV SSTATE_DIR=/sstate-cache
 ENV DL_DIR=/downloads
 ENV TMP_DIR=/build-output
+ENV BB_ENV_PASSTHROUGH_ADDITIONS="SSTATE_DIR DL_DIR"
 
-USER yocto
+
+USER yoctouser
