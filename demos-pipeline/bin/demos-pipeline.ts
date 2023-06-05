@@ -37,7 +37,7 @@ new DemosPipelineStack(app, 'DemosPipelineStack', {
     ...defaultProps,
     githubOrg: 'nateglims',
     githubRepo: 'meta-aws-demos',
-    codestarConnectionArn:'',
+    codestarConnectionArn: '',
     imageRepo: buildImageRepo.repository,
     imageTag: ImageKind.Ubuntu22_04,
 });
