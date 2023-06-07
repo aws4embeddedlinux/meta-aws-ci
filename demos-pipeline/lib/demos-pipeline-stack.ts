@@ -2,9 +2,18 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
-import { BuildSpec, ComputeType, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
+import { BuildSpec, ComputeType, FileSystemLocation, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 import { IRepository } from 'aws-cdk-lib/aws-ecr';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
+import { IFileSystem, IAccessPoint } from 'aws-cdk-lib/aws-efs';
+import { IVpc } from 'aws-cdk-lib/aws-ec2';
+import { assert } from 'console';
+
+export interface FileSystemAttachment {
+    readonly vpc: IVpc;
+    readonly filesystem: IFileSystem;
+    readonly accesspoint?: IAccessPoint;
+}
 
 /**
  *
@@ -15,6 +24,7 @@ export interface DemosPipelineProps extends cdk.StackProps {
     readonly codestarConnectionArn: string;
     readonly imageRepo: IRepository;
     readonly imageTag?: string;
+    readonly fileSystem: FileSystemAttachment;
 }
 
 /**
@@ -35,28 +45,55 @@ export class DemosPipelineStack extends cdk.Stack {
         });
 
         const project = new PipelineProject(this, 'DemoBuildProject', {
-            buildSpec: BuildSpec.fromAsset('assets/demo/qemu/buildspec.yml'),
+            buildSpec: BuildSpec.fromAsset('assets/demo/qemu/build.buildspec.yml'),
             environment: {
                 computeType: ComputeType.X2_LARGE,
                 buildImage: LinuxBuildImage.fromEcrRepository(props.imageRepo, props.imageTag),
+                privileged: true,
             },
             timeout: cdk.Duration.hours(4),
+            vpc: props.fileSystem.vpc,
+            fileSystemLocations: [
+                FileSystemLocation.efs({
+                    identifier: 'sstate_cache',
+                    location: `${props.fileSystem.filesystem.fileSystemId}.efs.${props.env!.region!}.amazonaws.com:/sstate-cache`,
+                    mountPoint: '/sstate-cache',
+                }),
+            ],
         });
 
+        // We require this dummy output to link stages.
         const buildOutput = new codepipeline.Artifact();
         const buildAction = new codepipeline_actions.CodeBuildAction({
             input: sourceOutput,
-            outputs: [buildOutput],
             actionName: 'Demo-Build',
+            outputs: [buildOutput],
             project,
         });
 
-        const artifactBucket = new Bucket(this, 'ArtifactBucket', {});
+        const testProject = new PipelineProject(this, 'DemoTestProject', {
+            buildSpec: BuildSpec.fromAsset('assets/demo/qemu/test.buildspec.yml'),
+            environment: {
+                computeType: ComputeType.X2_LARGE,
+                buildImage: LinuxBuildImage.fromEcrRepository(props.imageRepo, props.imageTag),
+                privileged: true,
+            },
+            timeout: cdk.Duration.hours(4),
+            vpc: props.fileSystem.vpc,
+            fileSystemLocations: [
+                FileSystemLocation.efs({
+                    identifier: 'sstate_cache',
+                    location: `${props.fileSystem.filesystem.fileSystemId}.efs.${props.env!.region!}.amazonaws.com:/sstate-cache`,
+                    mountPoint: '/sstate-cache',
+                }),
+            ],
+        });
 
-        const artifactAction = new codepipeline_actions.S3DeployAction({
+        const testAction = new codepipeline_actions.CodeBuildAction({
+            actionName: 'Demo-Test',
+            project: testProject,
             input: buildOutput,
-            bucket: artifactBucket,
-            actionName: 'Demo-Artifact',
+            type: codepipeline_actions.CodeBuildActionType.TEST,
         });
 
         new codepipeline.Pipeline(this, 'DemoPipeline', {
@@ -71,8 +108,8 @@ export class DemosPipelineStack extends cdk.Stack {
                     actions: [buildAction],
                 },
                 {
-                    stageName: 'Artifacts',
-                    actions: [artifactAction],
+                    stageName: 'Test',
+                    actions: [testAction],
                 },
             ],
         });

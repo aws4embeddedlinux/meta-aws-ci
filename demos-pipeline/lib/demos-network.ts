@@ -15,7 +15,7 @@ export class DemosNetworkStack extends cdk.Stack {
         // We will create a VPC with 3 Private and Public subnets for AWS
         // Resources that have network interfaces (e.g. Connecting and EFS
         // Filesystem to a CodeBuild Project).
-        this.vpc = new ec2.Vpc(scope, 'Vpc', {
+        this.vpc = new ec2.Vpc(this, 'PipelineVpc', {
             ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
         });
     }

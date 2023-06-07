@@ -1,0 +1,14 @@
+version: 0.2
+run-as: yoctouser
+
+env:
+  shell: bash
+
+phases:
+  build:
+    commands:
+      - echo Test started on `date`
+      - ls /sstate-cache
+  post_build:
+    commands:
+      - echo Test completed on `date`

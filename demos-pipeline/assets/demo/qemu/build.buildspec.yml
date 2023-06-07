@@ -19,8 +19,3 @@ phases:
       - echo Build completed on `date`
       - ps aux | grep bitbake
       - find $TMP_DIR -name '*.socket' -delete
-
-
-artifacts:
-  files:
-    - '/build-output/**/*'

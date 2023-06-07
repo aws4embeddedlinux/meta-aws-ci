@@ -4,6 +4,8 @@ import { DemosPipelineStack } from '../lib/demos-pipeline-stack';
 import { BuildImageDataStack } from '../lib/build-image-data';
 import { BuildImagePipelineStack, ImageKind } from '../lib/build-image-pipeline';
 import { BuildImageRepoStack } from '../lib/build-image-repo';
+import { DemosPipelineCache } from '../lib/demos-cache-data';
+import { DemosNetworkStack } from '../lib/demos-network';
 
 const app = new cdk.App();
 
@@ -33,6 +35,15 @@ new BuildImagePipelineStack(app, 'BuildImagePipeline', {
     imageKind: ImageKind.Ubuntu22_04,
 });
 
+const vpc = new DemosNetworkStack(app, 'DemoPipelineNetwork', {
+    ...defaultProps,
+});
+
+const demoPipelineFilesystem = new DemosPipelineCache(app, 'DemoPipelineData', {
+    ...defaultProps,
+    vpc: vpc.vpc,
+});
+
 new DemosPipelineStack(app, 'DemosPipelineStack', {
     ...defaultProps,
     githubOrg: 'nateglims',
@@ -40,4 +51,8 @@ new DemosPipelineStack(app, 'DemosPipelineStack', {
     codestarConnectionArn: '',
     imageRepo: buildImageRepo.repository,
     imageTag: ImageKind.Ubuntu22_04,
+    fileSystem: {
+        filesystem: demoPipelineFilesystem.filesystem,
+        vpc: vpc.vpc,
+    },
 });
