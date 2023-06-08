@@ -8,7 +8,7 @@ phases:
   pre_build:
     commands:
       - git submodule update --init --recursive
-      - echo $PATH
+      - chown -R yoctouser /sstate-cache
   build:
     commands:
       - echo Build started on `date`

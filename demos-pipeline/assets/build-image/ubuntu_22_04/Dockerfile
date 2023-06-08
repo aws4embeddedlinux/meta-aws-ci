@@ -13,7 +13,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN locale-gen en_US.UTF-8
 
 # Create a non-root user to build.
-RUN useradd -U -m yoctouser
+RUN groupadd -g 1000 yoctouser
+RUN useradd -u 1000 -g 1000 -m yoctouser
 
 # This seems bad, but mesa-native is looking for something in /root/.cmake for some reason.
 RUN chown -R yoctouser /root
