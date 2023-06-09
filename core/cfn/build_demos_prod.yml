@@ -44,6 +44,11 @@ Resources:
     Type: 'AWS::S3::Bucket'
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
+    Properties:
+        BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
 
   BuildSStateCacheFilesystem:
     Type: AWS::EFS::FileSystem
