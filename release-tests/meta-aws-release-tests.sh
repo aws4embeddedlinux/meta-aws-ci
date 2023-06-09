@@ -59,7 +59,7 @@ for RELEASE in $RELEASES ; do
     mkdir yocto_$RELEASE
 
     cd yocto_$RELEASE/
-   
+
     git clone git://git.yoctoproject.org/poky -b  $RELEASE --depth=1 --single-branch
     git clone https://github.com/aws4embeddedlinux/meta-aws.git -b $RELEASE-next --depth=1 --single-branch
     git clone https://github.com/openembedded/meta-openembedded.git -b $RELEASE --depth=1 --single-branch
