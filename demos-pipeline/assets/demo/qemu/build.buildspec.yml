@@ -6,16 +6,33 @@ env:
 
 phases:
   pre_build:
+    run-as: root
     commands:
-      - git submodule update --init --recursive
       - chown -R yoctouser /sstate-cache
+      - chown -R yoctouser /downloads
+      - chown yoctouser /build-output
+      - chmod 755 /sstate-cache
+      - chmod 755 /downloads
+      - chmod 755 /build-output
+      - find /sstate-cache -atime +30 -delete
+      - find /downloads -atime +30 -delete
+      - env
   build:
     commands:
+      - git submodule update --init --recursive
       - echo Build started on `date`
       - . ./init-build-env $TMP_DIR
       - BUILD_DEVICE=qemu bitbake core-image-minimal
   post_build:
     commands:
       - echo Build completed on `date`
+      - bitbake -m
       - ps aux | grep bitbake
       - find $TMP_DIR -name '*.socket' -delete
+      - export BUILD_OUTPUT="$(uuidgen -t).tar"
+      - tar cf $BUILD_OUTPUT -C $TMP_DIR tmp
+      - cp -r $BUILD_OUTPUT /build-output
+      - echo $BUILD_OUTPUT > /build-output/tmpfile
+
+artifacts:
+  files: /build-output/tmpfile

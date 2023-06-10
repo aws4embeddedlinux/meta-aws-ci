@@ -11,7 +11,7 @@ import {
 } from 'aws-cdk-lib/aws-codebuild';
 import { IRepository } from 'aws-cdk-lib/aws-ecr';
 import * as efs from 'aws-cdk-lib/aws-efs';
-import { IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
 
 /**
  *
@@ -32,30 +32,15 @@ export class DemosPipelineStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: DemosPipelineProps) {
         super(scope, id, props);
 
-        const sstateFilesystem = new efs.FileSystem(this, 'DemosPipelineFilesystem', {
-            vpc: props.vpc,
-        });
-        sstateFilesystem.addAccessPoint('sstate', {
-            posixUser: {
-                uid: '1000',
-                gid: '1000',
-            },
-            createAcl: {
-                ownerGid: '1000',
-                ownerUid: '1000',
-                permissions: '0755',
-            },
-        });
-
-        const sstateFilesystemId = sstateFilesystem.fileSystemId;
-        const region = cdk.Stack.of(this).region;
-
         const projectSg = new SecurityGroup(this, 'BuildProjectSecurityGroup', {
             vpc: props.vpc,
             description: 'Security Group to allow attaching EFS',
         });
         projectSg.addIngressRule(Peer.ipv4(props.vpc.vpcCidrBlock), Port.tcp(2049), 'NFS Mount Port');
-        sstateFilesystem.connections.allowFrom(projectSg, Port.tcp(2049));
+
+        const sstateFS = this.addFileSystem('SState', props.vpc, projectSg);
+        const dlFS = this.addFileSystem('Downloads', props.vpc, projectSg);
+        const tmpFS = this.addFileSystem('Temp', props.vpc, projectSg);
 
         const sourceOutput = new codepipeline.Artifact();
         const sourceAction = new codepipeline_actions.CodeStarConnectionsSourceAction({
@@ -79,9 +64,19 @@ export class DemosPipelineStack extends cdk.Stack {
             securityGroups: [projectSg],
             fileSystemLocations: [
                 FileSystemLocation.efs({
+                    identifier: 'tmp_dir',
+                    location: tmpFS,
+                    mountPoint: '/build-output',
+                }),
+                FileSystemLocation.efs({
                     identifier: 'sstate_cache',
-                    location: `${sstateFilesystemId}.efs.${region}.amazonaws.com:/`,
+                    location: sstateFS,
                     mountPoint: '/sstate-cache',
+                }),
+                FileSystemLocation.efs({
+                    identifier: 'dl_dir',
+                    location: dlFS,
+                    mountPoint: '/downloads',
                 }),
             ],
         });
@@ -107,9 +102,9 @@ export class DemosPipelineStack extends cdk.Stack {
             vpc: props.vpc,
             fileSystemLocations: [
                 FileSystemLocation.efs({
-                    identifier: 'sstate_cache',
-                    location: `${sstateFilesystemId}.efs.${region}.amazonaws.com:/`,
-                    mountPoint: '/sstate-cache',
+                    identifier: 'tmp_dir',
+                    location: tmpFS,
+                    mountPoint: '/build-output',
                 }),
             ],
         });
@@ -138,5 +133,17 @@ export class DemosPipelineStack extends cdk.Stack {
                 },
             ],
         });
+    }
+
+    private addFileSystem(name: string, vpc: IVpc, securityGroup: ISecurityGroup): string {
+        const fs = new efs.FileSystem(this, `DemosPipeline${name}Filesystem`, {
+            vpc,
+        });
+        fs.connections.allowFrom(securityGroup, Port.tcp(2049));
+
+        const fsId = fs.fileSystemId;
+        const region = cdk.Stack.of(this).region;
+
+        return `${fsId}.efs.${region}.amazonaws.com:/`;
     }
 }

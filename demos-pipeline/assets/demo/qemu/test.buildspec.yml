@@ -8,7 +8,9 @@ phases:
   build:
     commands:
       - echo Test started on `date`
-      - ls /sstate-cache
+      - ls -lha build-output
+      - ls -lha /build-output
+      - tar xvf "/build-output/$(cat build-output/tmpfile)"
   post_build:
     commands:
       - echo Test completed on `date`
