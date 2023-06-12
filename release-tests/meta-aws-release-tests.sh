@@ -93,16 +93,17 @@ for RELEASE in $RELEASES ; do
     PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX="${ptest_recipes_names_array_with_ptest[@]}"
 
     for ARCH in $ARCHS ; do
-        # delete all sstate and downloads regarding tested recipes
-        MACHINE=$ARCH bitbake $ALL_RECIPES -c cleanall
+        # delete all sstate regarding tested recipes
+        MACHINE=$ARCH bitbake $ALL_RECIPES -c cleansstate
 
-        # build everything in meta-aws layer and save errors
-        MACHINE=$ARCH bitbake $ALL_RECIPES -k | tee -a ../../$RELEASE-$ARCH-build.log
+        # force build everything in meta-aws layer and save errors
+        MACHINE=$ARCH bitbake $ALL_RECIPES -f -k | tee -a ../../$RELEASE-$ARCH-build.log
 
         # do ptests for all recipes having a ptest in meta-aws
         echo PUT = \"${PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX}\" > $BUILDDIR/conf/auto.conf
 
-        MACHINE=$ARCH bitbake core-image-minimal
+        # force build image
+        MACHINE=$ARCH bitbake core-image-minimal -f
 
         MACHINE=$ARCH bitbake core-image-minimal -c testimage
 
