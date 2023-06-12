@@ -122,5 +122,8 @@ done
 
 # search for build errors
 echo  "manually check (if found) build errors: "
-grep -A3 " failed"  *.log
-grep -A3 " ERROR:"  *.log
+
+# note ! will invert return code
+! grep -A3 " failed"  *.log
+! grep -A3 " ERROR:"  *.log
+
