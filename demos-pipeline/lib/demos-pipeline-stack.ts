@@ -12,6 +12,7 @@ import {
 import { IRepository } from 'aws-cdk-lib/aws-ecr';
 import * as efs from 'aws-cdk-lib/aws-efs';
 import { ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws-ec2';
+import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 /**
  *
@@ -109,11 +110,24 @@ export class DemosPipelineStack extends cdk.Stack {
             ],
         });
 
+        const testOutput = new codepipeline.Artifact();
         const testAction = new codepipeline_actions.CodeBuildAction({
             actionName: 'Demo-Test',
             project: testProject,
             input: buildOutput,
             type: codepipeline_actions.CodeBuildActionType.TEST,
+            outputs: [testOutput],
+        });
+
+        const artifactBucket = new Bucket(this, 'DemoArtifact', {
+            versioned: true,
+            enforceSSL: true,
+        });
+
+        const artifactAction = new codepipeline_actions.S3DeployAction({
+            actionName: 'Demo-Artifact',
+            input: testOutput,
+            bucket: artifactBucket,
         });
 
         new codepipeline.Pipeline(this, 'DemoPipeline', {
@@ -130,6 +144,10 @@ export class DemosPipelineStack extends cdk.Stack {
                 {
                     stageName: 'Test',
                     actions: [testAction],
+                },
+                {
+                    stageName: 'Artifact',
+                    actions: [artifactAction],
                 },
             ],
         });

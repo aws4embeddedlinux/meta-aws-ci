@@ -10,7 +10,12 @@ phases:
       - echo Test started on `date`
       - ls -lha build-output
       - ls -lha /build-output
-      - tar xvf "/build-output/$(cat build-output/tmpfile)"
+      - tar xf "/build-output/$(cat build-output/tmpfile)"
+      - ls -lha .
   post_build:
     commands:
       - echo Test completed on `date`
+artifacts:
+  discard-paths: true
+  files:
+    - tmp/deploy/images/qemux86-64/core-image-minimal-qemux86-64*

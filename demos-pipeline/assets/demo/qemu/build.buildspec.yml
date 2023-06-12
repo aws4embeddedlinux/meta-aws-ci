@@ -35,4 +35,5 @@ phases:
       - echo $BUILD_OUTPUT > /build-output/tmpfile
 
 artifacts:
-  files: /build-output/tmpfile
+  files:
+    - /build-output/tmpfile
