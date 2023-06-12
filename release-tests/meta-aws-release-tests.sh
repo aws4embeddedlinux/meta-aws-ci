@@ -94,7 +94,8 @@ for RELEASE in $RELEASES ; do
 
     for ARCH in $ARCHS ; do
         # delete all sstate regarding tested recipes
-        MACHINE=$ARCH bitbake $ALL_RECIPES -c cleansstate
+	# may takes long! 
+        # MACHINE=$ARCH bitbake $ALL_RECIPES -c cleansstate
 
         # force build everything in meta-aws layer and save errors
         MACHINE=$ARCH bitbake $ALL_RECIPES -f -k | tee -a ../../$RELEASE-$ARCH-build.log
