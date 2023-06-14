@@ -19,7 +19,7 @@ TEST_SERVER_IP = "127.0.0.1"
 
 # this will specify what test should run when running testimage cmd - oeqa layer tests + ptests:
 # Ping and SSH are not required, but do help in debugging. ptest will discover all ptest packages.
-TEST_SUITES = " ping ssh ptest"
+TEST_SUITES = " ping ssh parselogs ptest"
 
 # this will allow - running testimage cmd: bitbake core-image-minimal -c testimage
 IMAGE_CLASSES += "testimage"
