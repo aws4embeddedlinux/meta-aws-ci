@@ -1,7 +1,7 @@
 #!/bin/bash
 
 showHelp() {
-cat << EOF  
+cat << EOF
 This tool will run a ptest from a specified recipe
 
 -h, -help,          --help                  Display help
@@ -21,22 +21,22 @@ ARCHS="qemuarm64 qemux86-64"
 while true
 do
 case "$1" in
--h|--help) 
+-h|--help)
     showHelp
     exit 0
     ;;
---archs) 
+--archs)
     shift
     export ARCHS="$1"
-    ;;    
---releases) 
+    ;;
+--releases)
     shift
     export RELEASES="$1"
     ;;
---package) 
+--package)
     shift
     export PACKAGE="$1"
-    ;;    
+    ;;
 --)
     shift
     break;;
@@ -172,4 +172,4 @@ echo  "manually check (if found) build errors: "
 # note ! will invert return code
 ! grep -A3 " failed"  *.log
 ! grep -A3 " ERROR:"  *.log
-! grep -B3 "\"FAILED\""  *.json 
+! grep -B3 "\"FAILED\""  *.json
