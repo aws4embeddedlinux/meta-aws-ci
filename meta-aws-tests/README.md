@@ -10,6 +10,14 @@ in this stage there should be:
 # usage
 run
 
-`meta-aws-release-tests.sh`
+```bash
+meta-aws-tests.sh
+```
 
-and have time, cpu and memory!
+for a full test, build and have time, cpu and memory!
+
+or run a specific build and save time e.g.
+
+```bash
+meta-aws-tests.sh --releases=master --arch=qemuarm64 --package=aws-iot-fleetwise-edge
+```

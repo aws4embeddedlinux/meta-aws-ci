@@ -1,10 +1,52 @@
 #!/bin/bash
 
-RELEASES=${1:-"master mickledore kirkstone dunfell"}
-echo "RELEASES=$RELEASES"
+showHelp() {
+cat << EOF  
+This tool will run a ptest from a specified recipe
 
-ARCHS=${2:-"qemuarm64 qemux86-64"}
+-h, -help,          --help                  Display help
+--archs                                     Set architecture to build and test
+--releases                                  Set release to build and test
+--package                                   Set recipe / package to build and test
+EOF
+}
+
+options=$(getopt --long "help,releases::,archs:,package:" -o "h" -- "$@")
+
+eval set -- "$options"
+
+RELEASES="master mickledore kirkstone dunfell"
+ARCHS="qemuarm64 qemux86-64"
+
+while true
+do
+case "$1" in
+-h|--help) 
+    showHelp
+    exit 0
+    ;;
+--archs) 
+    shift
+    export ARCHS="$1"
+    ;;    
+--releases) 
+    shift
+    export RELEASES="$1"
+    ;;
+--package) 
+    shift
+    export PACKAGE="$1"
+    ;;    
+--)
+    shift
+    break;;
+esac
+shift
+done
+
 echo "ARCHS=$ARCHS"
+echo "RELEASES=$RELEASES"
+echo "PACKAGE=$PACKAGE"
 
 setup_config() {
 # keep indent!
@@ -80,11 +122,11 @@ for RELEASE in $RELEASES ; do
     # setup build/local.conf
     setup_config
 
-    # find all recipes in meta-aws
-    ALL_RECIPES=`find ../meta-aws -name *.bb -type f  | sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`
+    # find all recipes in meta-aws or use package
+    ALL_RECIPES=${PACKAGE-`find ../meta-aws -name *.bb -type f  | sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
 
     # find all recipes having a ptest in meta-aws
-    ptest_recipes=`find ../meta-aws -name *.bb -type f -print | xargs grep -l 'inherit.*ptest.*'| sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`
+    ptest_recipes=${PACKAGE-`find ../meta-aws -name *.bb -type f -print | xargs grep -l 'inherit.*ptest.*'| sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
 
     # make array out of string
     ptest_recipes_array=($(echo "$ptest_recipes" | tr ',' '\n'))
@@ -96,9 +138,9 @@ for RELEASE in $RELEASES ; do
     PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX="${ptest_recipes_names_array_with_ptest[@]}"
 
     for ARCH in $ARCHS ; do
-	# force rebuild
-	# https://stackoverflow.com/questions/51838878/execute-bitbake-recipe-discarding-what-sstate-cache-is
-        MACHINE=$ARCH bitbake $ALL_RECIPES -C unpack
+	    # force rebuild
+	    # https://stackoverflow.com/questions/51838878/execute-bitbake-recipe-discarding-what-sstate-cache-is
+        # MACHINE=$ARCH bitbake $ALL_RECIPES -C unpack
 
         # force build everything in meta-aws layer and save errors
         MACHINE=$ARCH bitbake $ALL_RECIPES -f -k | tee -a ../../$RELEASE-$ARCH-build.log
@@ -131,4 +173,3 @@ echo  "manually check (if found) build errors: "
 ! grep -A3 " failed"  *.log
 ! grep -A3 " ERROR:"  *.log
 ! grep -B3 "\"FAILED\""  *.json 
-
