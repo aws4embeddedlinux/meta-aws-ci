@@ -63,6 +63,7 @@ for RELEASE in $RELEASES ; do
     git clone git://git.yoctoproject.org/poky -b  $RELEASE --depth=1 --single-branch
     git clone https://github.com/aws4embeddedlinux/meta-aws.git -b $RELEASE-next --depth=1 --single-branch
     git clone https://github.com/openembedded/meta-openembedded.git -b $RELEASE --depth=1 --single-branch
+    git clone git://git.yoctoproject.org/meta-virtualization -b $RELEASE --depth=1 --single-branch
 
 
     source poky/oe-init-build-env build
@@ -72,6 +73,8 @@ for RELEASE in $RELEASES ; do
     bitbake-layers add-layer ../meta-openembedded/meta-python
     bitbake-layers add-layer ../meta-openembedded/meta-networking
     bitbake-layers add-layer ../meta-openembedded/meta-multimedia
+    bitbake-layers add-layer ../meta-openembedded/meta-filesystems
+    bitbake-layers add-layer ../meta-virtualization
     bitbake-layers add-layer ../meta-aws
 
     # setup build/local.conf
@@ -93,9 +96,9 @@ for RELEASE in $RELEASES ; do
     PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX="${ptest_recipes_names_array_with_ptest[@]}"
 
     for ARCH in $ARCHS ; do
-        # delete all sstate regarding tested recipes
-	# may takes long! 
-        # MACHINE=$ARCH bitbake $ALL_RECIPES -c cleansstate
+	# force rebuild
+	# https://stackoverflow.com/questions/51838878/execute-bitbake-recipe-discarding-what-sstate-cache-is
+        MACHINE=$ARCH bitbake $ALL_RECIPES -C unpack
 
         # force build everything in meta-aws layer and save errors
         MACHINE=$ARCH bitbake $ALL_RECIPES -f -k | tee -a ../../$RELEASE-$ARCH-build.log
