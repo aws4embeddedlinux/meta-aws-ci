@@ -130,4 +130,5 @@ echo  "manually check (if found) build errors: "
 # note ! will invert return code
 ! grep -A3 " failed"  *.log
 ! grep -A3 " ERROR:"  *.log
+! grep -B3 "\"FAILED\""  *.json 
 
