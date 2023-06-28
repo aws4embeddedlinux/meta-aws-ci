@@ -20,3 +20,5 @@ Project Specific:
 ## Contributing
 
 TODO: Notes contribution process (pre-commit, running tests, formatting and test standards, etc)
+
+TODO: Quickstart based on `docs/setup.md`

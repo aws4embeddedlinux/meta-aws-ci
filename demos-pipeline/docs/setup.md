@@ -2,17 +2,18 @@
 
 TODO: CDK background...
 
-1. Create a `CodeStar` `Connection` in your AWS account.
+1. Fork `meta-aws-demos` repository.
+1. Create a `CodeStar` `Connection` in your AWS account with access to your fork from the previous step.
 1. Put the ARN for this `Connection` in `bin/demos-pipeline.ts`
-1. TODO: customizing the pipeline, creating a new one, etc.
+1. Set the account, region, and GitHub Repository Owner in `bin/demos-pipeline.ts`
 1. Run the following:
 ```
 npm install .
 npm run build
+npm run zip-data
 
 cdk bootstrap
 
-npm run zip-data
 cdk deploy \
     BuildImageData \
     BuildImageRepo \

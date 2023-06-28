@@ -9,6 +9,8 @@ import { PipelineNetworkStack } from '../lib/network';
 const app = new cdk.App();
 
 const env = { account: '019549032656', region: 'us-west-2' };
+const githubRepository = { org: 'nateglims', repo: 'meta-aws-demos' };
+const codestarConnectionArn = '';
 
 /**
  * Use these default props to enable termination protection and tag related AWS
@@ -49,9 +51,9 @@ const vpc = new PipelineNetworkStack(app, 'DemoPipelineNetwork', {
  */
 new DemoPipelineStack(app, 'QemuDemoPipeline', {
     ...defaultProps,
-    githubOrg: 'nateglims',
-    githubRepo: 'meta-aws-demos',
-    codestarConnectionArn: '',
+    githubOrg: githubRepository.org,
+    githubRepo: githubRepository.repo,
+    codestarConnectionArn: codestarConnectionArn,
     imageRepo: buildImageRepo.repository,
     imageTag: ImageKind.Ubuntu22_04,
     device: DeviceKind.Qemu,
