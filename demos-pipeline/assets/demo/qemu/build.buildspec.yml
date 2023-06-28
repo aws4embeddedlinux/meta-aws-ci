@@ -14,15 +14,16 @@ phases:
       - chmod 755 /sstate-cache
       - chmod 755 /downloads
       - chmod 755 /build-output
+      # Maybe not needed?
       - find /sstate-cache -atime +30 -delete
       - find /downloads -atime +30 -delete
-      - env
   build:
     commands:
       - git submodule update --init --recursive
       - echo Build started on `date`
       - . ./init-build-env $TMP_DIR
       - BUILD_DEVICE=qemu bitbake core-image-minimal
+      - BUILD_DEVICE=qemu bitbake -c testexport core-image-minimal
   post_build:
     commands:
       - echo Build completed on `date`

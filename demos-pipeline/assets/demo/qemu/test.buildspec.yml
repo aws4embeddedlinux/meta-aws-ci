@@ -11,7 +11,7 @@ phases:
       - ls -lha build-output
       - ls -lha /build-output
       - tar xf "/build-output/$(cat build-output/tmpfile)"
-      - ls -lha .
+      - ls -lha tmp
   post_build:
     commands:
       - echo Test completed on `date`

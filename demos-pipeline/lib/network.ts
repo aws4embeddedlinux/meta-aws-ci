@@ -5,7 +5,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 /**
  * The network resources to run the pipeline in.
  */
-export class DemosNetworkStack extends cdk.Stack {
+export class PipelineNetworkStack extends cdk.Stack {
     /** The VPC for the pipeline to reside in. */
     public readonly vpc: ec2.IVpc;
 

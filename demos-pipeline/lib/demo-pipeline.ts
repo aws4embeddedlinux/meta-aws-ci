@@ -15,23 +15,43 @@ import { ISecurityGroup, IVpc, Peer, Port, SecurityGroup } from 'aws-cdk-lib/aws
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 
 /**
- *
+ * The device to build demos for.
  */
-export interface DemosPipelineProps extends cdk.StackProps {
-    readonly githubOrg?: string;
-    readonly githubRepo?: string;
-    readonly codestarConnectionArn: string;
-    readonly imageRepo: IRepository;
-    readonly imageTag?: string;
-    readonly vpc: IVpc;
+export enum DeviceKind {
+    /**  Qemu x86-64 */
+    Qemu = 'qemu',
 }
 
 /**
- * The core pipeline stack.
+ * Properties to allow customizing the build.
  */
-export class DemosPipelineStack extends cdk.Stack {
-    constructor(scope: Construct, id: string, props: DemosPipelineProps) {
+export interface DemoPipelineProps extends cdk.StackProps {
+    /** GitHub Repository Owner */
+    readonly githubOrg?: string;
+    /** GitHub Repository Name. */
+    readonly githubRepo?: string;
+    /** ARN for the CodeStar Connection with access to GitHub. */
+    readonly codestarConnectionArn: string;
+    /** ECR Repository where the Build Host Image resides. */
+    readonly imageRepo: IRepository;
+    /** Tag for the Build Host Image */
+    readonly imageTag?: string;
+    /** VPC where the networking setup resides. */
+    readonly vpc: IVpc;
+    /** Demo Device to build for. */
+    readonly device?: DeviceKind;
+}
+
+/**
+ * The stack demonstrating how to build a pipeline for meta-aws-demos
+ */
+export class DemoPipelineStack extends cdk.Stack {
+    constructor(scope: Construct, id: string, props: DemoPipelineProps) {
         super(scope, id, props);
+        /** Set up a default value for the demo BUILD_DEVICE. */
+        const device = props.device ?? DeviceKind.Qemu;
+
+        /** Set up networking access and EFS FileSystems. */
 
         const projectSg = new SecurityGroup(this, 'BuildProjectSecurityGroup', {
             vpc: props.vpc,
@@ -42,6 +62,8 @@ export class DemosPipelineStack extends cdk.Stack {
         const sstateFS = this.addFileSystem('SState', props.vpc, projectSg);
         const dlFS = this.addFileSystem('Downloads', props.vpc, projectSg);
         const tmpFS = this.addFileSystem('Temp', props.vpc, projectSg);
+
+        /** Create our CodePipeline Actions. */
 
         const sourceOutput = new codepipeline.Artifact();
         const sourceAction = new codepipeline_actions.CodeStarConnectionsSourceAction({
@@ -54,7 +76,7 @@ export class DemosPipelineStack extends cdk.Stack {
         });
 
         const project = new PipelineProject(this, 'DemoBuildProject', {
-            buildSpec: BuildSpec.fromAsset('assets/demo/qemu/build.buildspec.yml'),
+            buildSpec: BuildSpec.fromAsset(`assets/demo/${device}/build.buildspec.yml`),
             environment: {
                 computeType: ComputeType.X2_LARGE,
                 buildImage: LinuxBuildImage.fromEcrRepository(props.imageRepo, props.imageTag),
@@ -82,7 +104,6 @@ export class DemosPipelineStack extends cdk.Stack {
             ],
         });
 
-        // We require this dummy output to link stages.
         const buildOutput = new codepipeline.Artifact();
         const buildAction = new codepipeline_actions.CodeBuildAction({
             input: sourceOutput,
@@ -92,7 +113,7 @@ export class DemosPipelineStack extends cdk.Stack {
         });
 
         const testProject = new PipelineProject(this, 'DemoTestProject', {
-            buildSpec: BuildSpec.fromAsset('assets/demo/qemu/test.buildspec.yml'),
+            buildSpec: BuildSpec.fromAsset(`assets/demo/${device}/test.buildspec.yml`),
             environment: {
                 computeType: ComputeType.X2_LARGE,
                 buildImage: LinuxBuildImage.fromEcrRepository(props.imageRepo, props.imageTag),
@@ -130,6 +151,7 @@ export class DemosPipelineStack extends cdk.Stack {
             bucket: artifactBucket,
         });
 
+        /** Now create the actual Pipeline */
         new codepipeline.Pipeline(this, 'DemoPipeline', {
             restartExecutionOnUpdate: true,
             stages: [
@@ -153,8 +175,17 @@ export class DemosPipelineStack extends cdk.Stack {
         });
     }
 
+    /**
+     * Adds an EFS FileSystem to the VPC and SecurityGroup.
+     *
+     * @param name - A name to differentiate the filesystem.
+     * @param vpc - The VPC the Filesystem resides in.
+     * @param securityGroup - A SecurityGroup to allow access to the filesystem from.
+     * @returns The filesystem location URL.
+     *
+     */
     private addFileSystem(name: string, vpc: IVpc, securityGroup: ISecurityGroup): string {
-        const fs = new efs.FileSystem(this, `DemosPipeline${name}Filesystem`, {
+        const fs = new efs.FileSystem(this, `DemoPipeline${name}Filesystem`, {
             vpc,
         });
         fs.connections.allowFrom(securityGroup, Port.tcp(2049));

@@ -36,7 +36,7 @@ cdk deploy \
     BuildImageRepo \
     DemoPipelineNetwork \
     BuildImagePipeline \
-    DemosPipelineStack
+    QemuDemoPipeline
 
 ```
 

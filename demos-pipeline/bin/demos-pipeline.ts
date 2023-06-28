@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { DemosPipelineStack } from '../lib/demos-pipeline-stack';
+import { DemoPipelineStack, DeviceKind } from '../lib/demo-pipeline';
 import { BuildImageDataStack } from '../lib/build-image-data';
 import { BuildImagePipelineStack, ImageKind } from '../lib/build-image-pipeline';
 import { BuildImageRepoStack } from '../lib/build-image-repo';
-import { DemosNetworkStack } from '../lib/demos-network';
+import { PipelineNetworkStack } from '../lib/network';
 
 const app = new cdk.App();
 
@@ -20,6 +20,9 @@ const defaultProps: cdk.StackProps = {
     env,
 };
 
+/**
+ * Set up the Stacks that create our Build Host.
+ */
 const buildImageData = new BuildImageDataStack(app, 'BuildImageData', {
     ...defaultProps,
     bucketName: `build-image-data-${env.account}-${env.region}`,
@@ -34,16 +37,23 @@ new BuildImagePipelineStack(app, 'BuildImagePipeline', {
     imageKind: ImageKind.Ubuntu22_04,
 });
 
-const vpc = new DemosNetworkStack(app, 'DemoPipelineNetwork', {
+/**
+ * Set up networking to allow us to securely attach EFS to our CodeBuild instances.
+ */
+const vpc = new PipelineNetworkStack(app, 'DemoPipelineNetwork', {
     ...defaultProps,
 });
 
-new DemosPipelineStack(app, 'DemosPipelineStack', {
+/**
+ * Create a Qemu Pipeline based on meta-aws-demos.
+ */
+new DemoPipelineStack(app, 'QemuDemoPipeline', {
     ...defaultProps,
     githubOrg: 'nateglims',
     githubRepo: 'meta-aws-demos',
     codestarConnectionArn: '',
     imageRepo: buildImageRepo.repository,
     imageTag: ImageKind.Ubuntu22_04,
+    device: DeviceKind.Qemu,
     vpc: vpc.vpc,
 });
