@@ -1,8 +1,6 @@
-# Welcome to your CDK TypeScript project
+# Meta-AWS CDK Library
 
-This is a CDK development with TypeScript.
-
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+An AWS [Cloud Developer Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/home.html) Library for building Yocto projects in AWS.
 
 ## Useful commands
 
@@ -17,50 +15,7 @@ Project Specific:
 -   `npm run format` runs prettier and eslint on the repository
 -   `npm run zip-data` bundles the files for creating build host containers
 -   `npm run check` checks for lint and format issues
-
-## Setting Up
-
-1. Create a `CodeStar` `Connection` in your AWS account.
-1. Put the ARN for this `Connection` in `bin/demos-pipeline.ts`
-1. TODO: customizing the pipeline, creating a new one, etc.
-1. Run the following:
-```
-npm install .
-npm run build
-
-cdk bootstrap
-
-npm run zip-data
-cdk deploy \
-    BuildImageData \
-    BuildImageRepo \
-    DemoPipelineNetwork \
-    BuildImagePipeline \
-    QemuDemoPipeline
-
-```
-
-Run the resulting `BuildImagePipeline` (e.g. `ubuntu_22_04BuildImagePipeline` when using Ubuntu 22.04) to create the build host.
-
-After that completes, the DemoPipeline is ready to run.
-
-## Stacks and Constructs
-
-### Build Image Stacks
-
-Used to create a build host container image.
-
-#### BuildImageData
-
-The assets required to create a build host container (Dockerfile, Buildspec, etc).
-
-#### BuildImageRepo
-
-The ECR repository to store build host container images in. To prevent data loss on a pipeline update and ease development, this stack is separated.
-
-#### BuildImagePipeline
-
-A CodePipeline Pipeline which builds the host container images.
+-   `npm run docs` to generate documentation
 
 ## Contributing
 
