@@ -14,6 +14,6 @@ test('S3 Bucket Has Versioning Enabled', () => {
     });
 
     template.allResourcesProperties('AWS::S3::Bucket', {
-        VersioningConfiguration: { Status: "Enabled" },
+        VersioningConfiguration: { Status: 'Enabled' },
     });
 });
