@@ -8,10 +8,13 @@ This tool will run a ptest from a specified recipe
 --archs                                     Set architecture to build and test
 --releases                                  Set release to build and test
 --package                                   Set recipe / package to build and test
+--oldsrcuri                                 Remove old recipe / package srcuri
+--newsrcuri                                 Set new recipe / package srcurl
+--srcrev                                    Set recipe / package srcrev
 EOF
 }
 
-options=$(getopt --long "help,releases::,archs:,package:" -o "h" -- "$@")
+options=$(getopt --long "help,releases::,archs:,package:,oldsrcuri:,newsrcuri:,srcrev:" -o "h" -- "$@")
 
 eval set -- "$options"
 
@@ -37,6 +40,18 @@ case "$1" in
     shift
     export PACKAGE="$1"
     ;;
+--oldsrcuri) 
+    shift
+    export OLDSRCURI="$1"
+    ;;        
+--newsrcuri) 
+    shift
+    export NEWSRCURI="$1"
+    ;;
+--srcrev) 
+    shift
+    export SRCREV="$1"
+    ;;       
 --)
     shift
     break;;
@@ -47,6 +62,9 @@ done
 echo "ARCHS=$ARCHS"
 echo "RELEASES=$RELEASES"
 echo "PACKAGE=$PACKAGE"
+echo "OLDSRCURI=$OLDSRCURI"
+echo "NEWSRCURI=$NEWSRCURI"
+echo "SRCREV=$SRCREV"
 
 setup_config() {
 # keep indent!
@@ -76,7 +94,7 @@ IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 # INHERIT += "create-spdx"
 # SPDX_PRETTY = "1"
 
-INHERIT += "rm_work"
+# INHERIT += "rm_work"
 
 # BB_ENV_PASSTHROUGH_ADDITIONS="SSTATE_DIR $BB_ENV_PASSTHROUGH_ADDITIONS" SSTATE_DIR="/sstate" ./meta-aws-release-tests.sh
 SSTATE_DIR ?= "\${TOPDIR}/../../sstate-cache"
@@ -147,6 +165,13 @@ for RELEASE in $RELEASES ; do
 
         # do ptests for all recipes having a ptest in meta-aws
         echo PUT = \"${PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX}\" > $BUILDDIR/conf/auto.conf
+
+        # set SRC_URI and SRCREV for ONE specific package
+        if [ -n "$OLDSRCURI" ] && [ -n "$NEWSRCURI" ] && [ -n "$PACKAGE" ]; then
+            echo SRC_URI:remove:pn-$PACKAGE = \"${OLDSRCURI}\" >> $BUILDDIR/conf/auto.conf
+            echo SRC_URI:append:pn-$PACKAGE = \"${NEWSRCURI}\" >> $BUILDDIR/conf/auto.conf
+            echo SRCREV:pn-$PACKAGE = \"${SRCREV-\${AUTOREV}}\" >> $BUILDDIR/conf/auto.conf
+        fi
 
         # force build image
         MACHINE=$ARCH bitbake core-image-minimal -f
