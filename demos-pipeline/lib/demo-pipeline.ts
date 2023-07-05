@@ -30,6 +30,8 @@ export interface DemoPipelineProps extends cdk.StackProps {
     readonly githubOrg?: string;
     /** GitHub Repository Name. */
     readonly githubRepo?: string;
+    /** GitHub Branch Name. */
+    readonly githubBranch?: string;
     /** ARN for the CodeStar Connection with access to GitHub. */
     readonly codestarConnectionArn: string;
     /** ECR Repository where the Build Host Image resides. */
@@ -70,6 +72,7 @@ export class DemoPipelineStack extends cdk.Stack {
             output: sourceOutput,
             actionName: 'Demo-Source',
             repo: props.githubRepo ?? 'meta-aws-demos',
+            branch: props.githubBranch ?? 'main',
             owner: props.githubOrg ?? 'aws4embeddedlinux',
             connectionArn: props.codestarConnectionArn,
             codeBuildCloneOutput: true,
