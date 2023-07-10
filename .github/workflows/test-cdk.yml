@@ -2,10 +2,10 @@ name: Test CDK Demos Pipeline
 on:
   push:
     branches: ["**"]
-    paths: ["demos-pipeline/**"]
+    paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
   pull_request:
     branches: [master]
-    paths: ["demos-pipeline/**"]
+    paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
 jobs:
   Run-Demos-Pipeline-Tests:
     runs-on: ubuntu-latest
@@ -27,5 +27,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm ci
       - run: npm run check
+      - run: npm run zip-data
       - run: npm run build --if-present
       - run: npm test
