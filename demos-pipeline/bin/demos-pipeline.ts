@@ -10,7 +10,7 @@ const app = new cdk.App();
 
 const env = { account: '743600277648', region: 'eu-central-1' };
 const githubRepository = { org: 'thomas-roos', repo: 'meta-aws-demos', branch: 'pipeline' };
-const codestarConnectionArn = 'arn:aws:codestar-connections:eu-central-1:743600277648:connection/6cd98bb7-5c5f-4227-95da-4e58a6629fbb';
+const codestarConnectionArn = '';
 
 /**
  * Use these default props to enable termination protection and tag related AWS
