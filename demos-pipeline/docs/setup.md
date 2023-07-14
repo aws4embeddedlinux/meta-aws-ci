@@ -26,3 +26,7 @@ cdk deploy \
 Run the resulting `BuildImagePipeline` (e.g. `ubuntu_22_04BuildImagePipeline` when using Ubuntu 22.04) to create the build host.
 
 After that completes, the DemoPipeline is ready to run.
+
+Force deploy is necessary when updating BuildImageData (e.g. installed packages in build image)
+npm run zip-data
+cdk deploy BuildImageData --force
