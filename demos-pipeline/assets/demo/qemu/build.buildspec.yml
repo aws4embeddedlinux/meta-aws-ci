@@ -20,11 +20,11 @@ phases:
   build:
     commands:
 # submodule approach
-#     - git submodule update --init --recursive
+     - git submodule update --init --recursive
 # repo tool approach
-      - repo init -u file://$(pwd) -b main -m qemu.xml && repo sync
-# kas approach     
-#      - kas build kas.yml
+#      - repo init -u file://$(pwd) -b main -m qemu.xml && repo sync
+# kas approach wip
+#      - kas checkout kas.yml
       - echo Build started on `date`
       - . ./init-build-env $TMP_DIR
       - BUILD_DEVICE=qemu bitbake core-image-minimal

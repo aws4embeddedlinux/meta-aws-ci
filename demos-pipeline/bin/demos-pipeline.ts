@@ -9,8 +9,18 @@ import { PipelineNetworkStack } from '../lib/network';
 const app = new cdk.App();
 
 const env = { account: '743600277648', region: 'eu-central-1' };
+
+// submodules
 const githubRepository = { org: 'thomas-roos', repo: 'meta-aws-demos', branch: 'pipeline' };
+
+// repo
+// const githubRepository = { org: 'thomas-roos', repo: 'repo', branch: 'maini' };
+
+// kas (wip)
+//const githubRepository = { org: 'thomas-roos', repo: 'kas', branch: 'main' };
+
 const codestarConnectionArn = '';
+
 
 /**
  * Use these default props to enable termination protection and tag related AWS
