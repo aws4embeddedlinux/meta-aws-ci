@@ -99,6 +99,10 @@ IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 # BB_ENV_PASSTHROUGH_ADDITIONS="SSTATE_DIR $BB_ENV_PASSTHROUGH_ADDITIONS" SSTATE_DIR="/sstate" ./meta-aws-release-tests.sh
 SSTATE_DIR ?= "\${TOPDIR}/../../sstate-cache"
 DL_DIR ?= "\${TOPDIR}/../../downloads"
+
+# temporary fix to disable new ptestrunner
+SRCREV:pn-ptest-runner = "a6c7dcda520402adb62a31b8b1c7686c5b8a4875"
+
 EOF
 }
 
