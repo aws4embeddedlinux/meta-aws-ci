@@ -9,7 +9,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     socat cpio python3 python3-pip python3-pexpect xz-utils debianutils \
     iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
     python3-subunit mesa-common-dev zstd liblz4-tool file locales \
-    uuid-runtime sysstat iproute2 openssh-client
+    uuid-runtime sysstat iproute2 openssh-client curl python-is-python3
+
+# install repo tool
+RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
+RUN chmod a+rx /bin/repo
+
+# install kas tool
+RUN git clone https://github.com/siemens/kas && cd kas && pip3 install .
 
 RUN locale-gen en_US.UTF-8
 
