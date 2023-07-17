@@ -8,7 +8,7 @@ import { PipelineNetworkStack } from '../lib/network';
 
 const app = new cdk.App();
 
-const env = { account: '743600277648', region: 'eu-central-1' };
+const env = { account: '', region: '' };
 
 // submodules
 const githubRepository = { org: 'thomas-roos', repo: 'meta-aws-demos', branch: 'pipeline' };
