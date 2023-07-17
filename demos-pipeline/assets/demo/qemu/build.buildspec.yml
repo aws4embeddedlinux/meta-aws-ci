@@ -25,9 +25,9 @@ phases:
 #      - repo init -u file://$(pwd) -b main -m qemu.xml && repo sync
 # kas approach wip
 #      - kas checkout kas.yml
-      - echo Build started on `date`
-      - . ./init-build-env $TMP_DIR
-      - BUILD_DEVICE=qemu bitbake core-image-minimal
+     - echo Build started on `date`
+     - . ./init-build-env $TMP_DIR
+     - BUILD_DEVICE=qemu bitbake core-image-minimal
 # not necessary yet      
 #      - BUILD_DEVICE=qemu bitbake -c testexport core-image-minimal
   post_build:
