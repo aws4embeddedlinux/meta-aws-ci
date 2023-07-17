@@ -11,7 +11,7 @@ const app = new cdk.App();
 const env = { account: '', region: '' };
 
 // submodules
-const githubRepository = { org: 'thomas-roos', repo: 'meta-aws-demos', branch: 'pipeline' };
+const githubRepository = { org: 'thomas-roos', repo: 'meta-aws-demos', branch: 'bugbash' };
 
 // repo
 // const githubRepository = { org: 'thomas-roos', repo: 'repo', branch: 'maini' };
@@ -20,6 +20,7 @@ const githubRepository = { org: 'thomas-roos', repo: 'meta-aws-demos', branch: '
 //const githubRepository = { org: 'thomas-roos', repo: 'kas', branch: 'main' };
 
 const codestarConnectionArn = '';
+
 
 
 /**
