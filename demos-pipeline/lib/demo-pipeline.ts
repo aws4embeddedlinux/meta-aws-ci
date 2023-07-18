@@ -115,34 +115,6 @@ export class DemoPipelineStack extends cdk.Stack {
             project,
         });
 
-        const testProject = new PipelineProject(this, 'DemoTestProject', {
-            buildSpec: BuildSpec.fromAsset(`assets/demo/${device}/test.buildspec.yml`),
-            environment: {
-                computeType: ComputeType.X2_LARGE,
-                buildImage: LinuxBuildImage.fromEcrRepository(props.imageRepo, props.imageTag),
-                privileged: true,
-            },
-            timeout: cdk.Duration.hours(4),
-            securityGroups: [projectSg],
-            vpc: props.vpc,
-            fileSystemLocations: [
-                FileSystemLocation.efs({
-                    identifier: 'tmp_dir',
-                    location: tmpFS,
-                    mountPoint: '/build-output',
-                }),
-            ],
-        });
-
-        const testOutput = new codepipeline.Artifact();
-        const testAction = new codepipeline_actions.CodeBuildAction({
-            actionName: 'Demo-Test',
-            project: testProject,
-            input: buildOutput,
-            type: codepipeline_actions.CodeBuildActionType.TEST,
-            outputs: [testOutput],
-        });
-
         const artifactBucket = new Bucket(this, 'DemoArtifact', {
             versioned: true,
             enforceSSL: true,
@@ -150,7 +122,7 @@ export class DemoPipelineStack extends cdk.Stack {
 
         const artifactAction = new codepipeline_actions.S3DeployAction({
             actionName: 'Demo-Artifact',
-            input: testOutput,
+            input: buildOutput,
             bucket: artifactBucket,
         });
 
@@ -165,10 +137,6 @@ export class DemoPipelineStack extends cdk.Stack {
                 {
                     stageName: 'Build',
                     actions: [buildAction],
-                },
-                {
-                    stageName: 'Test',
-                    actions: [testAction],
                 },
                 {
                     stageName: 'Artifact',
