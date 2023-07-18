@@ -32,8 +32,6 @@ export interface DemoPipelineProps extends cdk.StackProps {
     readonly githubRepo?: string;
     /** GitHub Branch Name. */
     readonly githubBranch?: string;
-    /** ARN for the CodeStar Connection with access to GitHub. */
-    readonly codestarConnectionArn: string;
     /** ECR Repository where the Build Host Image resides. */
     readonly imageRepo: IRepository;
     /** Tag for the Build Host Image */
@@ -65,6 +63,12 @@ export class DemoPipelineStack extends cdk.Stack {
         const dlFS = this.addFileSystem('Downloads', props.vpc, projectSg);
         const tmpFS = this.addFileSystem('Temp', props.vpc, projectSg);
 
+        const connectionArn = this.node.getContext('connectionarn');
+
+        if (connectionArn === undefined) {
+            throw new Error('No CodeStar Connection ARN provided in CDK Context!');
+        }
+
         /** Create our CodePipeline Actions. */
 
         const sourceOutput = new codepipeline.Artifact();
@@ -72,9 +76,9 @@ export class DemoPipelineStack extends cdk.Stack {
             output: sourceOutput,
             actionName: 'Demo-Source',
             repo: props.githubRepo ?? 'meta-aws-demos',
-            branch: props.githubBranch ?? 'main',
+            branch: props.githubBranch ?? 'master-next',
             owner: props.githubOrg ?? 'aws4embeddedlinux',
-            connectionArn: props.codestarConnectionArn,
+            connectionArn,
             codeBuildCloneOutput: true,
         });
 

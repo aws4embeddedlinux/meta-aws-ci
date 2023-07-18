@@ -2,6 +2,10 @@
 
 An AWS [Cloud Developer Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/home.html) Library for building Yocto projects in AWS.
 
+## Quickstart
+
+Refer to [`docs/setup.md`](docs/setup.md)
+
 ## Useful commands
 
 -   `npm run build` compile typescript to js
@@ -20,5 +24,3 @@ Project Specific:
 ## Contributing
 
 TODO: Notes contribution process (pre-commit, running tests, formatting and test standards, etc)
-
-TODO: Quickstart based on `docs/setup.md`

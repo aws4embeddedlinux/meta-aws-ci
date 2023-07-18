@@ -8,20 +8,19 @@ import { PipelineNetworkStack } from '../lib/network';
 
 const app = new cdk.App();
 
-const env = { account: '', region: '' };
+/**
+ * User Data
+ */
+const env = {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+};
 
-// submodules
-const githubRepository = { org: 'thomas-roos', repo: 'meta-aws-demos', branch: 'bugbash' };
-
-// repo
-// const githubRepository = { org: 'thomas-roos', repo: 'repo', branch: 'maini' };
-
-// kas (wip)
-//const githubRepository = { org: 'thomas-roos', repo: 'kas', branch: 'main' };
-
-const codestarConnectionArn = '';
-
-
+const githubRepository = {
+    org: process.env.GH_ORG ?? 'aws4embeddedlinux',
+    repo: process.env.GH_REPO ?? 'meta-aws-demos',
+    branch: process.env.GH_BRANCH ?? 'master-next',
+};
 
 /**
  * Use these default props to enable termination protection and tag related AWS
@@ -65,7 +64,6 @@ new DemoPipelineStack(app, 'QemuDemoPipeline', {
     githubOrg: githubRepository.org,
     githubRepo: githubRepository.repo,
     githubBranch: githubRepository.branch,
-    codestarConnectionArn: codestarConnectionArn,
     imageRepo: buildImageRepo.repository,
     imageTag: ImageKind.Ubuntu22_04,
     device: DeviceKind.Qemu,
