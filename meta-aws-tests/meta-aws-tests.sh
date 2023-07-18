@@ -101,7 +101,8 @@ SSTATE_DIR ?= "\${TOPDIR}/../../sstate-cache"
 DL_DIR ?= "\${TOPDIR}/../../downloads"
 
 # temporary fix to disable new ptestrunner
-SRCREV:pn-ptest-runner = "a6c7dcda520402adb62a31b8b1c7686c5b8a4875"
+# SRCREV:pn-ptest-runner = "a6c7dcda520402adb62a31b8b1c7686c5b8a4875"
+SRCREV:pn-ptest-runner = "e50f2175d9c6b8aeb8b0bf687e5cca64a0f6e61a"
 
 EOF
 }
