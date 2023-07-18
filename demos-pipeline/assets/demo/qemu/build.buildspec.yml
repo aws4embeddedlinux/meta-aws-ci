@@ -28,7 +28,7 @@ phases:
      - echo Build started on `date`
      - . ./init-build-env $TMP_DIR
      - BUILD_DEVICE=qemu bitbake core-image-minimal
-# not necessary yet      
+# not necessary yet
 #      - BUILD_DEVICE=qemu bitbake -c testexport core-image-minimal
   post_build:
     commands:
