@@ -100,9 +100,8 @@ IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 SSTATE_DIR ?= "\${TOPDIR}/../../sstate-cache"
 DL_DIR ?= "\${TOPDIR}/../../downloads"
 
-# temporary fix to disable new ptestrunner
-# SRCREV:pn-ptest-runner = "a6c7dcda520402adb62a31b8b1c7686c5b8a4875"
-SRCREV:pn-ptest-runner = "e50f2175d9c6b8aeb8b0bf687e5cca64a0f6e61a"
+# known good version
+SRCREV:pn-ptest-runner = "4148e75284e443fc8ffaef425c467aa5523528ff"
 
 EOF
 }
@@ -165,8 +164,8 @@ for RELEASE in $RELEASES ; do
 	    # https://stackoverflow.com/questions/51838878/execute-bitbake-recipe-discarding-what-sstate-cache-is
         # MACHINE=$ARCH bitbake $ALL_RECIPES -C unpack
 
-        # force build everything in meta-aws layer and save errors
-        MACHINE=$ARCH bitbake $ALL_RECIPES -f -k | tee -a ../../$RELEASE-$ARCH-build.log
+        # build everything in meta-aws layer and save errors
+        MACHINE=$ARCH bitbake $ALL_RECIPES -k | tee -a ../../$RELEASE-$ARCH-build.log
 
         # do ptests for all recipes having a ptest in meta-aws
         echo PUT = \"${PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX}\" > $BUILDDIR/conf/auto.conf
@@ -199,7 +198,8 @@ done
 # search for build errors
 echo  "manually check (if found) build errors: "
 
-# note ! will invert return code
-! grep -A3 " failed"  *.log
-! grep -A3 " ERROR:"  *.log
-! grep -B3 "\"FAILED\""  *.json
+# note ! will invert return code, 
+# check for exsisting file is necessary as a non existing file would not cause an error if inverted
+[ -f *.log ] && ! grep -A3 " failed"  *.log
+[ -f *.log ] && ! grep -A3 " ERROR:"  *.log
+[ -f *.json ] && ! grep -B3 "\"FAILED\""  *.json
