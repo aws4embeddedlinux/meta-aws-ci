@@ -11,9 +11,7 @@ cdk bootstrap
 
 export GH_ORG=[owner of the fork created above]
 
-cdk deploy \
-    --context connectionarn=[CODESTAR_CONNECTION_ARN] \
-    --all
+cdk deploy --context connectionarn=[CODESTAR_CONNECTION_ARN] --all
 ```
 
 Run the newly created pipeline `ubuntu_22_04BuildImagePipeline` from the CodePipeline console page to create the build host.

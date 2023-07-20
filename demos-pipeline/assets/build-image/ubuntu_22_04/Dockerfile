@@ -16,7 +16,7 @@ RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
 RUN chmod a+rx /bin/repo
 
 # install kas tool
-RUN git clone https://github.com/siemens/kas && cd kas && pip3 install .
+RUN pip3 install PyYAML==5.3.1 && pip3 install kas==3.0.2
 
 RUN locale-gen en_US.UTF-8
 
