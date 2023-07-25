@@ -1,15 +1,10 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { DemoPipelineStack, DeviceKind } from '../../lib/';
-// import { DemoPipelineStack, DeviceKind } from '../../lib/lib/demo-pipeline';
-import { BuildImageDataStack } from '../../lib/';
-// import { BuildImageDataStack } from '../../lib/lib/build-image-data';
-import { BuildImagePipelineStack, ImageKind } from '../../lib/';
-// import { BuildImagePipelineStack, ImageKind } from '../../lib/lib/build-image-pipeline';
-import { BuildImageRepoStack } from '../../lib/';
-// import { BuildImageRepoStack } from '../../lib/lib/build-image-repo';
-import { PipelineNetworkStack } from '../../lib/';
-// import { PipelineNetworkStack } from '../../lib/lib/network';
+import { DemoPipelineStack, DeviceKind } from 'aws4embeddedlinux-cdk-lib';
+import { BuildImageDataStack } from 'aws4embeddedlinux-cdk-lib';
+import { BuildImagePipelineStack, ImageKind } from 'aws4embeddedlinux-cdk-lib';
+import { BuildImageRepoStack } from 'aws4embeddedlinux-cdk-lib';
+import { PipelineNetworkStack } from 'aws4embeddedlinux-cdk-lib';
 
 const app = new cdk.App();
 
