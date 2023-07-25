@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { DemoPipelineStack, DeviceKind } from '../lib/demo-pipeline';
-import { BuildImageDataStack } from '../lib/build-image-data';
-import { BuildImagePipelineStack, ImageKind } from '../lib/build-image-pipeline';
-import { BuildImageRepoStack } from '../lib/build-image-repo';
-import { PipelineNetworkStack } from '../lib/network';
+import { DemoPipelineStack, DeviceKind } from '../../lib/';
+// import { DemoPipelineStack, DeviceKind } from '../../lib/lib/demo-pipeline';
+import { BuildImageDataStack } from '../../lib/';
+// import { BuildImageDataStack } from '../../lib/lib/build-image-data';
+import { BuildImagePipelineStack, ImageKind } from '../../lib/';
+// import { BuildImagePipelineStack, ImageKind } from '../../lib/lib/build-image-pipeline';
+import { BuildImageRepoStack } from '../../lib/';
+// import { BuildImageRepoStack } from '../../lib/lib/build-image-repo';
+import { PipelineNetworkStack } from '../../lib/';
+// import { PipelineNetworkStack } from '../../lib/lib/network';
 
 const app = new cdk.App();
 
@@ -19,7 +24,7 @@ const env = {
 const githubRepository = {
     org: process.env.GH_ORG ?? 'aws4embeddedlinux',
     repo: process.env.GH_REPO ?? 'meta-aws-demos',
-    branch: process.env.GH_BRANCH ?? 'master-next',
+    branch: process.env.GH_BRANCH ?? 'master',
 };
 
 /**
