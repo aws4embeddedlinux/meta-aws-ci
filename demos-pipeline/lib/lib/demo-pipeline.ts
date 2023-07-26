@@ -20,6 +20,8 @@ import { Bucket } from 'aws-cdk-lib/aws-s3';
 export enum DeviceKind {
     /**  Qemu x86-64 */
     Qemu = 'qemu',
+    /**  AGL + NXP Goldbox */
+    AglNxpGoldbox = 'agl-nxp-goldbox',
 }
 
 /**

@@ -19,7 +19,7 @@ const env = {
 const githubRepository = {
     org: process.env.GH_ORG ?? 'aws4embeddedlinux',
     repo: process.env.GH_REPO ?? 'meta-aws-demos',
-    branch: process.env.GH_BRANCH ?? 'master',
+    branch: process.env.GH_BRANCH ?? 'master-next',
 };
 
 /**
@@ -67,5 +67,19 @@ new DemoPipelineStack(app, 'QemuDemoPipeline', {
     imageRepo: buildImageRepo.repository,
     imageTag: ImageKind.Ubuntu22_04,
     device: DeviceKind.Qemu,
+    vpc: vpc.vpc,
+});
+
+/**
+ * Create a Qemu Pipeline based on meta-aws-demos.
+ */
+new DemoPipelineStack(app, 'AglNxpPipeline', {
+    ...defaultProps,
+    githubOrg: githubRepository.org,
+    githubRepo: githubRepository.repo,
+    githubBranch: githubRepository.branch,
+    imageRepo: buildImageRepo.repository,
+    imageTag: ImageKind.Ubuntu22_04,
+    device: DeviceKind.AglNxpGoldbox,
     vpc: vpc.vpc,
 });
