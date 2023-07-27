@@ -5,9 +5,7 @@
     "demos-pipeline": "bin/demos-pipeline.js"
   },
   "scripts": {
-    "zip-data": "if [ -f dist/assets/build-image/data.zip ]; then rm -rf dist/assets/build-image; fi && mkdir -p dist/assets/build-image ; cd ../lib/assets/build-image && zip -q -o ../../../examples/dist/assets/build-image/data.zip -r *",
-    "clean": "rm -rf dist && rm -rf cdk.out",
-    "prebuild": "npm run zip-data",
+    "clean": "tsc --build --clean && rm -rf dist && rm -rf cdk.out",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
@@ -31,11 +29,11 @@
     "ts-node": "^10.9.1",
     "typedoc": "^0.24.8",
     "typescript": "~5.0.4"
-},
-"dependencies": {
-   "aws4embeddedlinux-cdk-lib": "file:../lib/lib",
-   "aws-cdk-lib": "2.86.0",
-   "constructs": "^10.0.0",
-   "source-map-support": "^0.5.21"
+  },
+  "dependencies": {
+    "aws4embeddedlinux-cdk-lib": "file:../lib/lib",
+    "aws-cdk-lib": "2.86.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
   }
 }
