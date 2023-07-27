@@ -43,5 +43,8 @@ phases:
       - echo $BUILD_OUTPUT > /build-output/tmpfile
 
 artifacts:
+  discard-paths: true
   files:
     - /build-output/tmpfile
+    - $TMP_DIR/tmp/deploy/images/s32g274ardb2/*
+    - $TMP_DIR/tmp/deploy/sdk/*
