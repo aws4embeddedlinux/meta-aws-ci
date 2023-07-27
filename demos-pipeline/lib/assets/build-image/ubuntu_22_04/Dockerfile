@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
     python3-subunit mesa-common-dev zstd liblz4-tool file locales \
     uuid-runtime sysstat iproute2 openssh-client curl python-is-python3 \
-    parted mtools dosfstools 
+    parted mtools dosfstools
 
 # install repo tool
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /bin/repo
