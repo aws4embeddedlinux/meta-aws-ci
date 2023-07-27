@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "tsc --build --clean && rm -rf dist && rm -rf cdk.out",
     "build": "tsc",
-    "prebuild": "cd ../lib/ && npm install",
+    "prebuild": "cd ../lib/ && npm install && npm run zip-data",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",

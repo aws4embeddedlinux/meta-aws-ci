@@ -63,7 +63,7 @@ export class BuildImageDataStack extends cdk.Stack {
 
     new BucketDeployment(this, "BuildImageBucketDeployment", {
       // Note: Run `npm run zip-data` before deploying this stack!
-      sources: [Source.asset("dist/assets/build-image")],
+      sources: [Source.asset("../lib/dist/assets/build-image")],
       destinationBucket: dataBucket,
       role: dataBucketDeploymentRole,
       extract: true,
