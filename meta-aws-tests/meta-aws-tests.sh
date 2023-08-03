@@ -100,6 +100,9 @@ IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 SSTATE_DIR ?= "\${TOPDIR}/../../sstate-cache"
 DL_DIR ?= "\${TOPDIR}/../../downloads"
 
+# known good version
+SRCREV:pn-ptest-runner = "4148e75284e443fc8ffaef425c467aa5523528ff"
+
 EOF
 }
 
