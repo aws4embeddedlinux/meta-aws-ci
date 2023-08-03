@@ -10,7 +10,7 @@ This tool will run a ptest from a specified recipe
 --package                                   Set recipe / package to build and test
 --oldsrcuri                                 Remove old recipe / package srcuri
 --newsrcuri                                 Set new recipe / package srcurl
---srcrev                                    Set recipe / package srcrev
+--srcrev                                    Set recipe / package srcrev also AUTOREV possible
 EOF
 }
 
@@ -100,9 +100,6 @@ IMAGE_INSTALL:append = " ptest-runner ssh \${PUT}"
 SSTATE_DIR ?= "\${TOPDIR}/../../sstate-cache"
 DL_DIR ?= "\${TOPDIR}/../../downloads"
 
-# known good version
-SRCREV:pn-ptest-runner = "4148e75284e443fc8ffaef425c467aa5523528ff"
-
 EOF
 }
 
@@ -170,15 +167,19 @@ for RELEASE in $RELEASES ; do
         # do ptests for all recipes having a ptest in meta-aws
         echo PUT = \"${PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX}\" > $BUILDDIR/conf/auto.conf
 
-        # set SRC_URI and SRCREV for ONE specific package
+        # set SRC_URI for ONE specific package
         if [ -n "$OLDSRCURI" ] && [ -n "$NEWSRCURI" ] && [ -n "$PACKAGE" ]; then
             echo SRC_URI:remove:pn-$PACKAGE = \"${OLDSRCURI}\" >> $BUILDDIR/conf/auto.conf
             echo SRC_URI:append:pn-$PACKAGE = \"${NEWSRCURI}\" >> $BUILDDIR/conf/auto.conf
-            echo SRCREV:pn-$PACKAGE = \"${SRCREV-\${AUTOREV}}\" >> $BUILDDIR/conf/auto.conf
+        fi
+
+        # set SRCREV for ONE specific package
+        if [ -n "$SRCREV" ] && [ -n "$PACKAGE" ]; then
+            echo SRCREV:pn-$PACKAGE = \"${SRCREV}\" >> $BUILDDIR/conf/auto.conf
         fi
 
         # force build image
-        MACHINE=$ARCH bitbake core-image-minimal -f
+        MACHINE=$ARCH bitbake core-image-minimal
 
         MACHINE=$ARCH bitbake core-image-minimal -c testimage
 
