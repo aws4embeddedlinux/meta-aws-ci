@@ -73,7 +73,7 @@ new DemoPipelineStack(app, "QemuDemoPipeline", {
 });
 
 /**
- * Create a Qemu Pipeline based on meta-aws-demos.
+ * Create a AGL NXP Pipeline based on meta-aws-demos.
  */
 new DemoPipelineStack(app, "AglNxpPipeline", {
   ...defaultProps,

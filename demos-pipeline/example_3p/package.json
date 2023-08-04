@@ -1,8 +1,8 @@
 {
-  "name": "demos-pipeline",
+  "name": "poky-pipeline",
   "version": "0.1.0",
   "bin": {
-    "demos-pipeline": "bin/demos-pipeline.js"
+    "demos-pipeline": "bin/poky-pipeline.js"
   },
   "scripts": {
     "clean": "tsc --build --clean && rm -rf dist && rm -rf cdk.out",
@@ -38,3 +38,4 @@
     "source-map-support": "^0.5.21"
   }
 }
+
