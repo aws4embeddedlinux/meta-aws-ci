@@ -5,4 +5,3 @@ export * from "./build-image-pipeline";
 export * from "./demo-pipeline";
 export * from "./simple-pipeline";
 export * from "./advanced-pipeline";
-

@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
-import { SimplePipelineStack, SimpleDeviceKind } from "aws4embeddedlinux-cdk-lib";
+import {
+  SimplePipelineStack,
+  SimpleDeviceKind,
+} from "aws4embeddedlinux-cdk-lib";
 import { BuildImageDataStack } from "aws4embeddedlinux-cdk-lib";
 import { BuildImagePipelineStack, ImageKind } from "aws4embeddedlinux-cdk-lib";
 import { BuildImageRepoStack } from "aws4embeddedlinux-cdk-lib";
@@ -57,7 +60,6 @@ new BuildImagePipelineStack(app, "BuildImagePipeline", {
 const vpc = new PipelineNetworkStack(app, "SimplePipelineNetwork", {
   ...defaultProps,
 });
-
 
 /**
  * Create a poky pipeline.
