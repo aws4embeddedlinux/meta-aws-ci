@@ -160,13 +160,6 @@ for RELEASE in $RELEASES ; do
     PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX="${ptest_recipes_names_array_with_ptest[@]}"
 
     for ARCH in $ARCHS ; do
-	    # force rebuild
-	    # https://stackoverflow.com/questions/51838878/execute-bitbake-recipe-discarding-what-sstate-cache-is
-        # MACHINE=$ARCH bitbake $ALL_RECIPES -C unpack
-
-        # build everything in meta-aws layer and save errors
-        MACHINE=$ARCH bitbake $ALL_RECIPES -k | tee -a ../../$RELEASE-$ARCH-build.log
-
         # do ptests for all recipes having a ptest in meta-aws
         echo PUT = \"${PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX}\" > $BUILDDIR/conf/auto.conf
 
@@ -181,7 +174,14 @@ for RELEASE in $RELEASES ; do
             echo SRCREV:pn-$PACKAGE = \"${SRCREV}\" >> $BUILDDIR/conf/auto.conf
         fi
 
-        # force build image
+	    # force rebuild
+	    # https://stackoverflow.com/questions/51838878/execute-bitbake-recipe-discarding-what-sstate-cache-is
+        # MACHINE=$ARCH bitbake $ALL_RECIPES -C unpack
+
+        # build everything in meta-aws layer and save errors
+        MACHINE=$ARCH bitbake $ALL_RECIPES -k | tee -a ../../$RELEASE-$ARCH-build.log
+
+        # build image
         MACHINE=$ARCH bitbake core-image-minimal
 
         MACHINE=$ARCH bitbake core-image-minimal -c testimage
