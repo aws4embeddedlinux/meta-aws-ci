@@ -204,6 +204,6 @@ echo  "manually check (if found) build errors: "
 
 # note ! will invert return code, 
 # check for exsisting file is necessary as a non existing file would not cause an error if inverted
-[ -f *.log ] && ! grep -A3 " failed"  *.log
-[ -f *.log ] && ! grep -A3 " ERROR:"  *.log
-[ -f *.json ] && ! grep -B3 "\"FAILED\""  *.json
+find . -maxdepth 1 -name "*.log" | grep . &>/dev/null && ! grep -A3 " failed"  *.log
+find . -maxdepth 1 -name "*.log" | grep . &>/dev/null && ! grep -A3 " ERROR:"  *.log
+find . -maxdepth 1 -name "*.json" | grep . &>/dev/null && ! grep -B3 "\"FAILED\""  *.json
