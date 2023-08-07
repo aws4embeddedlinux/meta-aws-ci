@@ -19,12 +19,6 @@ const env = {
   region: process.env.CDK_DEFAULT_REGION,
 };
 
-const githubRepository = {
-  org: process.env.GH_ORG ?? "yoctoproject",
-  repo: process.env.GH_REPO ?? "poky",
-  branch: process.env.GH_BRANCH ?? "master-next",
-};
-
 /**
  * Use these default props to enable termination protection and tag related AWS
  * Resources for tracking purposes.
@@ -57,7 +51,7 @@ new BuildImagePipelineStack(app, "BuildImagePipeline", {
 /**
  * Set up networking to allow us to securely attach EFS to our CodeBuild instances.
  */
-const vpc = new PipelineNetworkStack(app, "SimplePipelineNetwork", {
+const vpc = new PipelineNetworkStack(app, "DemoPipelineNetwork", {
   ...defaultProps,
 });
 
@@ -66,9 +60,6 @@ const vpc = new PipelineNetworkStack(app, "SimplePipelineNetwork", {
  */
 new SimplePipelineStack(app, "PokyPipeline", {
   ...defaultProps,
-  githubOrg: githubRepository.org,
-  githubRepo: githubRepository.repo,
-  githubBranch: githubRepository.branch,
   imageRepo: buildImageRepo.repository,
   imageTag: ImageKind.Ubuntu22_04,
   device: SimpleDeviceKind.Qemu,

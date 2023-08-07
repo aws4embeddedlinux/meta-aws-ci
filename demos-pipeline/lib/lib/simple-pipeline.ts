@@ -19,6 +19,7 @@ import {
   SecurityGroup,
 } from "aws-cdk-lib/aws-ec2";
 import { Bucket } from "aws-cdk-lib/aws-s3";
+import { SourceRepo, RepoKind } from "./source-repo";
 
 /**
  * The device to build demos for.
@@ -32,12 +33,6 @@ export enum SimpleDeviceKind {
  * Properties to allow customizing the build.
  */
 export interface SimplePipelineProps extends cdk.StackProps {
-  /** GitHub Repository Owner */
-  readonly githubOrg?: string;
-  /** GitHub Repository Name. */
-  readonly githubRepo?: string;
-  /** GitHub Branch Name. */
-  readonly githubBranch?: string;
   /** ECR Repository where the Build Host Image resides. */
   readonly imageRepo: IRepository;
   /** Tag for the Build Host Image */
@@ -46,6 +41,7 @@ export interface SimplePipelineProps extends cdk.StackProps {
   readonly vpc: IVpc;
   /** Demo Device to build for. */
   readonly device?: SimpleDeviceKind;
+  readonly layerKind?: RepoKind;
 }
 
 /**
@@ -73,30 +69,25 @@ export class SimplePipelineStack extends cdk.Stack {
     const dlFS = this.addFileSystem("Downloads", props.vpc, projectSg);
     const tmpFS = this.addFileSystem("Temp", props.vpc, projectSg);
 
-    const connectionArn = this.node.getContext("connectionarn");
-
-    if (connectionArn === undefined) {
-      throw new Error("No CodeStar Connection ARN provided in CDK Context!");
-    }
+    const sourceRepo = new SourceRepo(this, "SourceRepo", {
+      ...props,
+      repoName: "layer-repo",
+      kind: RepoKind.Poky,
+    });
 
     /** Create our CodePipeline Actions. */
 
     const sourceOutput = new codepipeline.Artifact();
-    const sourceAction =
-      new codepipeline_actions.CodeStarConnectionsSourceAction({
-        output: sourceOutput,
-        actionName: "Demo-Source",
-        repo: props.githubRepo ?? "meta-aws-demos",
-        branch: props.githubBranch ?? "master-next",
-        owner: props.githubOrg ?? "aws4embeddedlinux",
-        connectionArn,
-        codeBuildCloneOutput: true,
-      });
+    const sourceAction = new codepipeline_actions.CodeCommitSourceAction({
+      output: sourceOutput,
+      actionName: "Source",
+      repository: sourceRepo.repo,
+      branch: "main",
+      codeBuildCloneOutput: true,
+    });
 
     const project = new PipelineProject(this, "DemoBuildProject", {
-      buildSpec: BuildSpec.fromAsset(
-        `assets/demo/${device}/build.buildspec.yml`
-      ),
+      buildSpec: BuildSpec.fromSourceFilename("build.buildspec.yml"),
       environment: {
         computeType: ComputeType.X2_LARGE,
         buildImage: LinuxBuildImage.fromEcrRepository(
