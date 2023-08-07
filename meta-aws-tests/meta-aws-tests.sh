@@ -10,7 +10,7 @@ This tool will run a ptest from a specified recipe
 --package                                   Set recipe / package to build and test
 --oldsrcuri                                 Remove old recipe / package srcuri
 --newsrcuri                                 Set new recipe / package srcurl
---srcrev                                    Set recipe / package srcrev
+--srcrev                                    Set recipe / package srcrev also AUTOREV possible
 EOF
 }
 
@@ -160,6 +160,20 @@ for RELEASE in $RELEASES ; do
     PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX="${ptest_recipes_names_array_with_ptest[@]}"
 
     for ARCH in $ARCHS ; do
+        # do ptests for all recipes having a ptest in meta-aws
+        echo PUT = \"${PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX}\" > $BUILDDIR/conf/auto.conf
+
+        # set SRC_URI for ONE specific package
+        if [ -n "$OLDSRCURI" ] && [ -n "$NEWSRCURI" ] && [ -n "$PACKAGE" ]; then
+            echo SRC_URI:remove:pn-$PACKAGE = \"${OLDSRCURI}\" >> $BUILDDIR/conf/auto.conf
+            echo SRC_URI:append:pn-$PACKAGE = \"${NEWSRCURI}\" >> $BUILDDIR/conf/auto.conf
+        fi
+
+        # set SRCREV for ONE specific package
+        if [ -n "$SRCREV" ] && [ -n "$PACKAGE" ]; then
+            echo SRCREV:pn-$PACKAGE = \"${SRCREV}\" >> $BUILDDIR/conf/auto.conf
+        fi
+
 	    # force rebuild
 	    # https://stackoverflow.com/questions/51838878/execute-bitbake-recipe-discarding-what-sstate-cache-is
         # MACHINE=$ARCH bitbake $ALL_RECIPES -C unpack
@@ -167,18 +181,8 @@ for RELEASE in $RELEASES ; do
         # build everything in meta-aws layer and save errors
         MACHINE=$ARCH bitbake $ALL_RECIPES -k | tee -a ../../$RELEASE-$ARCH-build.log
 
-        # do ptests for all recipes having a ptest in meta-aws
-        echo PUT = \"${PTEST_RECIPE_NAMES_WITH_PTEST_SUFFIX}\" > $BUILDDIR/conf/auto.conf
-
-        # set SRC_URI and SRCREV for ONE specific package
-        if [ -n "$OLDSRCURI" ] && [ -n "$NEWSRCURI" ] && [ -n "$PACKAGE" ]; then
-            echo SRC_URI:remove:pn-$PACKAGE = \"${OLDSRCURI}\" >> $BUILDDIR/conf/auto.conf
-            echo SRC_URI:append:pn-$PACKAGE = \"${NEWSRCURI}\" >> $BUILDDIR/conf/auto.conf
-            echo SRCREV:pn-$PACKAGE = \"${SRCREV-\${AUTOREV}}\" >> $BUILDDIR/conf/auto.conf
-        fi
-
-        # force build image
-        MACHINE=$ARCH bitbake core-image-minimal -f
+        # build image
+        MACHINE=$ARCH bitbake core-image-minimal
 
         MACHINE=$ARCH bitbake core-image-minimal -c testimage
 
@@ -200,6 +204,6 @@ echo  "manually check (if found) build errors: "
 
 # note ! will invert return code, 
 # check for exsisting file is necessary as a non existing file would not cause an error if inverted
-[ -f *.log ] && ! grep -A3 " failed"  *.log
-[ -f *.log ] && ! grep -A3 " ERROR:"  *.log
-[ -f *.json ] && ! grep -B3 "\"FAILED\""  *.json
+find . -maxdepth 1 -name "*.log" | grep . &>/dev/null && ! grep -A3 " failed"  *.log
+find . -maxdepth 1 -name "*.log" | grep . &>/dev/null && ! grep -A3 " ERROR:"  *.log
+find . -maxdepth 1 -name "*.json" | grep . &>/dev/null && ! grep -B3 "\"FAILED\""  *.json
