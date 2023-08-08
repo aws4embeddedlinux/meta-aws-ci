@@ -16,12 +16,6 @@ const env = {
   region: process.env.CDK_DEFAULT_REGION,
 };
 
-const githubRepository = {
-  org: process.env.GH_ORG ?? "aws4embeddedlinux",
-  repo: process.env.GH_REPO ?? "meta-aws-demos",
-  branch: process.env.GH_BRANCH ?? "master-next",
-};
-
 /**
  * Use these default props to enable termination protection and tag related AWS
  * Resources for tracking purposes.
@@ -63,9 +57,6 @@ const vpc = new PipelineNetworkStack(app, "DemoPipelineNetwork", {
  */
 new DemoPipelineStack(app, "QemuDemoPipeline", {
   ...defaultProps,
-  githubOrg: githubRepository.org,
-  githubRepo: githubRepository.repo,
-  githubBranch: githubRepository.branch,
   imageRepo: buildImageRepo.repository,
   imageTag: ImageKind.Ubuntu22_04,
   device: DeviceKind.Qemu,
@@ -77,9 +68,6 @@ new DemoPipelineStack(app, "QemuDemoPipeline", {
  */
 new DemoPipelineStack(app, "AglNxpPipeline", {
   ...defaultProps,
-  githubOrg: githubRepository.org,
-  githubRepo: githubRepository.repo,
-  githubBranch: githubRepository.branch,
   imageRepo: buildImageRepo.repository,
   imageTag: ImageKind.Ubuntu22_04,
   device: DeviceKind.AglNxpGoldbox,
