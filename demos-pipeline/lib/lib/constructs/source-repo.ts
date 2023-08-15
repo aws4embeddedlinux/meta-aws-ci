@@ -7,6 +7,7 @@ import * as path from "path";
 export enum RepoKind {
   /** A Poky Based Repository */
   Poky = "poky",
+  MetaAwsDemo = "meta-aws-demo",
 }
 
 export interface SourceRepoProps extends cdk.StackProps {
@@ -17,17 +18,17 @@ export interface SourceRepoProps extends cdk.StackProps {
 /**
  * The repository for the Source Stage of the pipeline.
  */
-export class SourceRepo extends cdk.Stack {
+export class SourceRepo extends Construct {
   /** The CodeCommit Repo itself. */
   readonly repo: Repository;
 
   constructor(scope: Construct, id: string, props: SourceRepoProps) {
-    super(scope, id, props);
+    super(scope, id);
 
     this.repo = new Repository(this, "SourceRepository", {
       repositoryName: props.repoName,
       code: Code.fromDirectory(
-        path.join(__dirname, "..", "source-repo", props.kind),
+        path.join(__dirname, "..", "..", "source-repo", props.kind),
         "main"
       ),
     });

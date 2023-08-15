@@ -1,5 +1,5 @@
 {
-  "name": "poky-pipeline",
+  "name": "meta-aws-cdk-pipeline-reference",
   "version": "0.1.0",
   "bin": {
     "demos-pipeline": "bin/poky-pipeline.js"

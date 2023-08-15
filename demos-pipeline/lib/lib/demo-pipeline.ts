@@ -19,18 +19,7 @@ import {
   SecurityGroup,
 } from "aws-cdk-lib/aws-ec2";
 import { Bucket } from "aws-cdk-lib/aws-s3";
-
-import { SourceRepo, RepoKind } from "./source-repo";
-
-/**
- * The device to build demos for.
- */
-export enum DeviceKind {
-  /**  Qemu x86-64 */
-  Qemu = "qemu",
-  /**  AGL + NXP Goldbox */
-  AglNxpGoldbox = "agl-nxp-goldbox",
-}
+import { SourceRepo, RepoKind } from "./constructs/source-repo";
 
 /**
  * Properties to allow customizing the build.
@@ -42,9 +31,10 @@ export interface DemoPipelineProps extends cdk.StackProps {
   readonly imageTag?: string;
   /** VPC where the networking setup resides. */
   readonly vpc: IVpc;
-  /** Demo Device to build for. */
-  readonly device?: DeviceKind;
+  /** The type of Layer  */
   readonly layerKind?: RepoKind;
+  /** A name for the layer-repo that is created. Default is 'layer-repo' */
+  readonly layerRepoName?: string;
 }
 
 /**
@@ -53,8 +43,6 @@ export interface DemoPipelineProps extends cdk.StackProps {
 export class DemoPipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: DemoPipelineProps) {
     super(scope, id, props);
-    /** Set up a default value for the demo BUILD_DEVICE. */
-    const device = props.device ?? DeviceKind.Qemu;
 
     /** Set up networking access and EFS FileSystems. */
 
@@ -74,8 +62,8 @@ export class DemoPipelineStack extends cdk.Stack {
 
     const sourceRepo = new SourceRepo(this, "SourceRepo", {
       ...props,
-      repoName: "layer-repo",
-      kind: RepoKind.Poky,
+      repoName: props.layerRepoName ?? "layer-repo",
+      kind: props.layerKind ?? RepoKind.Poky,
     });
 
     /** Create our CodePipeline Actions. */
@@ -85,12 +73,12 @@ export class DemoPipelineStack extends cdk.Stack {
       output: sourceOutput,
       actionName: "Source",
       repository: sourceRepo.repo,
+      branch: "main",
+      codeBuildCloneOutput: true,
     });
 
     const project = new PipelineProject(this, "DemoBuildProject", {
-      buildSpec: BuildSpec.fromAsset(
-        `assets/demo/${device}/build.buildspec.yml`
-      ),
+      buildSpec: BuildSpec.fromSourceFilename("build.buildspec.yml"),
       environment: {
         computeType: ComputeType.X2_LARGE,
         buildImage: LinuxBuildImage.fromEcrRepository(
@@ -176,6 +164,8 @@ export class DemoPipelineStack extends cdk.Stack {
   ): string {
     const fs = new efs.FileSystem(this, `DemoPipeline${name}Filesystem`, {
       vpc,
+      // TODO(nateglims): Reconsider this when development is slowing down.
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
     fs.connections.allowFrom(securityGroup, Port.tcp(2049));
 

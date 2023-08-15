@@ -14,15 +14,17 @@ phases:
       - chmod 755 /sstate-cache
       - chmod 755 /downloads
       - chmod 755 /build-output
-      # Maybe not needed?
+      # Prune old files in our EFS Mounts
       - find /sstate-cache -atime +30 -delete
       - find /downloads -atime +30 -delete
   build:
     commands:
-     - echo Build started on `date`
-     - . oe-init-build-env $TMP_DIR
-     - bitbake core-image-minimal
-
+      - git clone https://github.com/aws4embeddedlinux/meta-aws-demos
+      - cd meta-aws-demos
+      - git submodule update --init --recursive
+      - echo Build started on `date`
+      - . ./init-build-env $TMP_DIR
+      - BUILD_DEVICE=qemu bitbake core-image-minimal
   post_build:
     commands:
       - echo Build completed on `date`

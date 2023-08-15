@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x, 18.x, 20.x]
-        dir: ['demos-pipeline/lib', 'demos-pipeline/example_3p', 'demos-pipeline/example_demos', 'demos-pipeline/example_poky']
+        dir: ['demos-pipeline/lib', 'demos-pipeline/example']
 
     defaults:
       run:

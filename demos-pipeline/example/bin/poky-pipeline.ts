@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
 import {
-  SimplePipelineStack,
-  SimpleDeviceKind,
+  DemoPipelineStack,
+  RepoKind,
+  BuildImageDataStack,
+  BuildImagePipelineStack,
+  BuildImageRepoStack,
+  PipelineNetworkStack,
+  ImageKind,
 } from "aws4embeddedlinux-cdk-lib";
-import { BuildImageDataStack } from "aws4embeddedlinux-cdk-lib";
-import { BuildImagePipelineStack, ImageKind } from "aws4embeddedlinux-cdk-lib";
-import { BuildImageRepoStack } from "aws4embeddedlinux-cdk-lib";
-import { PipelineNetworkStack } from "aws4embeddedlinux-cdk-lib";
 
 const app = new cdk.App();
 
@@ -25,7 +26,7 @@ const env = {
  */
 const defaultProps: cdk.StackProps = {
   tags: { PURPOSE: "META-AWS-BUILD" },
-  terminationProtection: false,
+  terminationProtection: false, // TODO: enable.
   env,
 };
 
@@ -51,17 +52,39 @@ new BuildImagePipelineStack(app, "BuildImagePipeline", {
 /**
  * Set up networking to allow us to securely attach EFS to our CodeBuild instances.
  */
-const vpc = new PipelineNetworkStack(app, "DemoPipelineNetwork", {
+const vpc = new PipelineNetworkStack(app, "PipelineNetwork", {
   ...defaultProps,
 });
 
 /**
  * Create a poky pipeline.
  */
-new SimplePipelineStack(app, "PokyPipeline", {
+new DemoPipelineStack(app, "PokyPipeline", {
   ...defaultProps,
   imageRepo: buildImageRepo.repository,
   imageTag: ImageKind.Ubuntu22_04,
-  device: SimpleDeviceKind.Qemu,
   vpc: vpc.vpc,
 });
+
+/**
+ * Create a meta-aws-demos pipeline for the Qemu example.
+ */
+new DemoPipelineStack(app, "QemuDemoPipeline", {
+  ...defaultProps,
+  imageRepo: buildImageRepo.repository,
+  imageTag: ImageKind.Ubuntu22_04,
+  vpc: vpc.vpc,
+  layerKind: RepoKind.MetaAwsDemo,
+  layerRepoName: "qemu-demo-layer-repo",
+});
+
+/**
+ * Create a poky pipeline.
+ */
+// TODO(nateglims): implement
+// new DemoPipelineStack(app, "three-p-Pipeline", {
+//   ...defaultProps,
+//   imageRepo: buildImageRepo.repository,
+//   imageTag: ImageKind.Ubuntu22_04,
+//   vpc: vpc.vpc,
+// });
