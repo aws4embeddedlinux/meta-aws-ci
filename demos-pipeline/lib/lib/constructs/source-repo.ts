@@ -4,15 +4,21 @@ import { Code, Repository } from "aws-cdk-lib/aws-codecommit";
 
 import * as path from "path";
 
-export enum RepoKind {
-  /** A Poky Based Repository */
+/**
+ * The kind of Yocto Distribution built.
+ */
+export enum DistributionKind {
+  /** A Poky Based Distribution. */
   Poky = "poky",
+  /** The meta-aws Demonstration Distribution. */
   MetaAwsDemo = "meta-aws-demo",
 }
 
 export interface SourceRepoProps extends cdk.StackProps {
+  /** The name of the CodeCommit Repository created. */
   readonly repoName: string;
-  readonly kind: RepoKind;
+  /** The type of distribution to see this repository with. */
+  readonly kind: DistributionKind;
 }
 
 /**

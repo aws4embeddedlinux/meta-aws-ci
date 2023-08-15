@@ -19,7 +19,7 @@ import {
   SecurityGroup,
 } from "aws-cdk-lib/aws-ec2";
 import { Bucket } from "aws-cdk-lib/aws-s3";
-import { SourceRepo, RepoKind } from "./constructs/source-repo";
+import { SourceRepo, DistributionKind } from "./constructs/source-repo";
 
 /**
  * Properties to allow customizing the build.
@@ -32,7 +32,7 @@ export interface DemoPipelineProps extends cdk.StackProps {
   /** VPC where the networking setup resides. */
   readonly vpc: IVpc;
   /** The type of Layer  */
-  readonly layerKind?: RepoKind;
+  readonly distroKind?: DistributionKind;
   /** A name for the layer-repo that is created. Default is 'layer-repo' */
   readonly layerRepoName?: string;
 }
@@ -60,13 +60,13 @@ export class DemoPipelineStack extends cdk.Stack {
     const dlFS = this.addFileSystem("Downloads", props.vpc, projectSg);
     const tmpFS = this.addFileSystem("Temp", props.vpc, projectSg);
 
+    /** Create our CodePipeline Actions. */
+
     const sourceRepo = new SourceRepo(this, "SourceRepo", {
       ...props,
       repoName: props.layerRepoName ?? `layer-repo-${this.stackName}`,
-      kind: props.layerKind ?? RepoKind.Poky,
+      kind: props.distroKind ?? DistributionKind.Poky,
     });
-
-    /** Create our CodePipeline Actions. */
 
     const sourceOutput = new codepipeline.Artifact();
     const sourceAction = new codepipeline_actions.CodeCommitSourceAction({
