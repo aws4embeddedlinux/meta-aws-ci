@@ -1,11 +1,11 @@
 name: Test CDK Demos Pipeline
 on:
   push:
-    branches: ["**"]
-    paths: ["demos-pipeline/**"]
+    branches: ["cdk-pipeline"]
+    paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
   pull_request:
-    branches: [master]
-    paths: ["demos-pipeline/**"]
+    branches: ["cdk-pipeline"]
+    paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
 jobs:
   Run-CDK-Tests:
     runs-on: ubuntu-latest
