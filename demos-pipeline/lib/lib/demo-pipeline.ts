@@ -60,9 +60,9 @@ export class DemoPipelineStack extends cdk.Stack {
     const dlFS = this.addFileSystem("Downloads", props.vpc, projectSg);
     const tmpFS = this.addFileSystem("Temp", props.vpc, projectSg);
 
-      /** Create our CodePipeline Actions. */
+    /** Create our CodePipeline Actions. */
 
-      const sourceRepo = new SourceRepo(this, "SourceRepo", {
+    const sourceRepo = new SourceRepo(this, "SourceRepo", {
       ...props,
       repoName: props.layerRepoName ?? `layer-repo-${this.stackName}`,
       kind: props.distroKind ?? DistributionKind.Poky,

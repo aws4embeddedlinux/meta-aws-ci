@@ -15,9 +15,9 @@ export enum DistributionKind {
 }
 
 export interface SourceRepoProps extends cdk.StackProps {
-    /** The name of the CodeCommit Repository created. */
-    readonly repoName: string;
-    /** The type of distribution to see this repository with. */
+  /** The name of the CodeCommit Repository created. */
+  readonly repoName: string;
+  /** The type of distribution to see this repository with. */
   readonly kind: DistributionKind;
 }
 
