@@ -40,18 +40,18 @@ case "$1" in
     shift
     export PACKAGE="$1"
     ;;
---oldsrcuri) 
+--oldsrcuri)
     shift
     export OLDSRCURI="$1"
-    ;;        
---newsrcuri) 
+    ;;
+--newsrcuri)
     shift
     export NEWSRCURI="$1"
     ;;
---srcrev) 
+--srcrev)
     shift
     export SRCREV="$1"
-    ;;       
+    ;;
 --)
     shift
     break;;
@@ -202,7 +202,7 @@ done
 # search for build errors
 echo  "manually check (if found) build errors: "
 
-# note ! will invert return code, 
+# note ! will invert return code,
 # check for exsisting file is necessary as a non existing file would not cause an error if inverted
 find . -maxdepth 1 -name "*.log" | grep . &>/dev/null && ! grep -A3 " failed"  *.log
 find . -maxdepth 1 -name "*.log" | grep . &>/dev/null && ! grep -A3 " ERROR:"  *.log
