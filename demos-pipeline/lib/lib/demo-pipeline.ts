@@ -62,7 +62,7 @@ export class DemoPipelineStack extends cdk.Stack {
 
     const sourceRepo = new SourceRepo(this, "SourceRepo", {
       ...props,
-      repoName: props.layerRepoName ?? "layer-repo",
+      repoName: props.layerRepoName ?? `layer-repo-${this.stackName}`,
       kind: props.layerKind ?? RepoKind.Poky,
     });
 
