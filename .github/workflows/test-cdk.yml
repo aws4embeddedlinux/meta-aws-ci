@@ -4,7 +4,7 @@ on:
     branches: ["cdk-pipeline"]
     paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
   pull_request:
-    branches: ["cdk-pipeline"]
+    branches: ["**"]
     paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
 jobs:
   Run-CDK-Tests:
