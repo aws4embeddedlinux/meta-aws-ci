@@ -2,19 +2,17 @@
 import * as cdk from "aws-cdk-lib";
 import {
   DemoPipelineStack,
-  RepoKind,
   BuildImageDataStack,
   BuildImagePipelineStack,
   BuildImageRepoStack,
   PipelineNetworkStack,
   ImageKind,
+  DistributionKind,
 } from "aws4embeddedlinux-cdk-lib";
 
 const app = new cdk.App();
 
-/**
- * User Data
- */
+/* See https://docs.aws.amazon.com/sdkref/latest/guide/access.html for details on how to access AWS. */
 const env = {
   account: process.env.CDK_DEFAULT_ACCOUNT,
   region: process.env.CDK_DEFAULT_REGION,
@@ -26,7 +24,7 @@ const env = {
  */
 const defaultProps: cdk.StackProps = {
   tags: { PURPOSE: "META-AWS-BUILD" },
-  terminationProtection: false, // TODO: enable.
+  terminationProtection: false, // TODO: enable or remove.
   env,
 };
 
@@ -57,7 +55,7 @@ const vpc = new PipelineNetworkStack(app, "PipelineNetwork", {
 });
 
 /**
- * Create a poky pipeline.
+ * Create a poky distribution pipeline.
  */
 new DemoPipelineStack(app, "PokyPipeline", {
   ...defaultProps,
@@ -74,12 +72,12 @@ new DemoPipelineStack(app, "QemuDemoPipeline", {
   imageRepo: buildImageRepo.repository,
   imageTag: ImageKind.Ubuntu22_04,
   vpc: vpc.vpc,
-  layerKind: RepoKind.MetaAwsDemo,
   layerRepoName: "qemu-demo-layer-repo",
+  distroKind: DistributionKind.MetaAwsDemo,
 });
 
 /**
- * Create a poky pipeline.
+ * Create a 3rd Party Distribution Pipeline.
  */
 // TODO(nateglims): implement
 // new DemoPipelineStack(app, "three-p-Pipeline", {
