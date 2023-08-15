@@ -12,6 +12,8 @@ export class BuildImageRepoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    this.repository = new ecr.Repository(this, "BuildImageRepo", {});
+    this.repository = new ecr.Repository(this, "BuildImageRepo", {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
   }
 }

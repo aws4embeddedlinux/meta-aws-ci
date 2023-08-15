@@ -36,6 +36,7 @@ export class BuildImageDataStack extends cdk.Stack {
     const dataBucket = new s3.Bucket(this, "BuildImageDataBucket", {
       bucketName,
       versioned: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     const dataBucketDeploymentRole = new iam.Role(
