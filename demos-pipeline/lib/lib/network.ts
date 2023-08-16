@@ -10,7 +10,7 @@ export class PipelineNetworkStack extends cdk.Stack {
   public readonly vpc: ec2.IVpc;
 
   constructor(scope: Construct, props?: cdk.StackProps) {
-    super(scope, 'PipelineNetwork', props);
+    super(scope, "PipelineNetwork", props);
 
     // We will create a VPC with 3 Private and Public subnets for AWS
     // Resources that have network interfaces (e.g. Connecting and EFS
