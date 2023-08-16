@@ -50,7 +50,7 @@ new BuildImagePipelineStack(app, "BuildImagePipeline", {
 /**
  * Set up networking to allow us to securely attach EFS to our CodeBuild instances.
  */
-const vpc = new PipelineNetworkStack(app, "PipelineNetwork", {
+const vpc = new PipelineNetworkStack(app,  {
   ...defaultProps,
 });
 
