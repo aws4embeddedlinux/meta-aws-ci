@@ -3,8 +3,8 @@ on:
   push:
     branches: ["cdk-pipeline"]
     paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
-  pull_request:
-    branches: ["**"]
+  pull_request_target:
+    branches: ["cdk-pipeline"]
     paths: ["demos-pipeline/**", ".github/workflows/test-cdk.yml"]
 jobs:
   Run-CDK-Tests:
