@@ -167,11 +167,11 @@ ecr_client = boto3.client('ecr')
 codepipeline_client = boto3.client('codepipeline')
 
 def handler(event, context):
-    response = ecr_client.describe_images(repositoryName=${props.imageRepo.repositoryName}, filter={'tagStatus': 'TAGGED'})
-      for i in response['imageDetails']:
-          if ${props.imageTag} in i['imageTags']:
-             codepipeline_response = codepipeline_client.start_pipeline_execution(name=${pipeline.pipelineName})
-             break 
+    response = ecr_client.describe_images(repositoryName='${props.imageRepo.repositoryName}', filter={'tagStatus': 'TAGGED'})
+    for i in response['imageDetails']:
+      if '${props.imageTag}' in i['imageTags']:
+        codepipeline_response = codepipeline_client.start_pipeline_execution(name='${pipeline.pipelineName}')
+      break 
              `
       ),
     });
