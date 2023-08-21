@@ -215,52 +215,6 @@ def handler(event, context):
         },
       ],
     });
-
-    /** Here we create the logic to check for presence of ECR image on CodeCommit repo creation,
-     * and only start pipeline if image exists. On CodeCommit repo updates, just trigger pipeline.  */
-    /** const fn = new lambda.Function(this, "OSImageCheck", {
-            runtime: lambda.Runtime.PYTHON_3_10,
-            handler: "index.handler",
-            code: lambda.Code.fromInline(`
-import boto3
-
-codecommit_client = boto3.client('codecommit')
-ecr_client = boto3.client('ecr')
-codepipeline_client = boto3.client('codepipeline')
-
-def handler(event, context):
-    response = ecr_client.describe_images(repositoryName='${props.imageRepo.repositoryName}', filter={'tagStatus': 'TAGGED'})
-    for i in response['imageDetails']:
-      if '${props.imageTag}' in i['imageTags']:
-        codepipeline_response = codepipeline_client.start_pipeline_execution(name='${pipeline.pipelineName}')
-      break 
-             `),
-        });**/
-
-    /**   const startPipelinePolicy = new iam.PolicyStatement({
-            actions: ["codepipeline:StartPipelineExecution"],
-            resources: [pipeline.pipelineArn],
-        });**/
-
-    /**    fn.role?.attachInlinePolicy(
-            new iam.Policy(this, "CheckOSAndStart", {
-                statements: [startPipelinePolicy, ecrPolicy],
-            })
-        );
-**/
-
-    /**   const ruleOnCreateOrUpdate = new events.Rule(this, "BuildTriggerRule", {
-            eventPattern: {
-                source: ["aws.codecommit"],
-                resources: [sourceRepo.repo.repositoryArn],
-                detail: {
-                    event: ["referenceCreated", "referenceUpdated"],
-                    referenceName: ["main"],
-                },
-                detailType: ["CodeCommit Repository State Change"],
-            },
-        });
-        ruleOnCreateOrUpdate.addTarget(new targets.LambdaFunction(fn));**/
   }
 
   /**
