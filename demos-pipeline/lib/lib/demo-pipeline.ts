@@ -4,8 +4,8 @@ import * as codepipeline from "aws-cdk-lib/aws-codepipeline";
 import * as codepipeline_actions from "aws-cdk-lib/aws-codepipeline-actions";
 import * as events from "aws-cdk-lib/aws-events";
 import * as targets from "aws-cdk-lib/aws-events-targets";
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as iam from 'aws-cdk-lib/aws-iam';
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as iam from "aws-cdk-lib/aws-iam";
 import * as efs from "aws-cdk-lib/aws-efs";
 
 import {
@@ -26,7 +26,7 @@ import {
 } from "aws-cdk-lib/aws-ec2";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { SourceRepo, DistributionKind } from "./constructs/source-repo";
-import {CodeCommitTrigger} from "aws-cdk-lib/aws-codepipeline-actions";
+import { CodeCommitTrigger } from "aws-cdk-lib/aws-codepipeline-actions";
 
 /**
  * Properties to allow customizing the build.
@@ -77,7 +77,7 @@ export class DemoPipelineStack extends cdk.Stack {
 
     const sourceOutput = new codepipeline.Artifact();
     const sourceAction = new codepipeline_actions.CodeCommitSourceAction({
-      trigger: CodeCommitTrigger.NONE,
+      // trigger: CodeCommitTrigger.NONE,
       output: sourceOutput,
       actionName: "Source",
       repository: sourceRepo.repo,
@@ -135,6 +135,68 @@ export class DemoPipelineStack extends cdk.Stack {
       bucket: artifactBucket,
     });
 
+    /** Here we create the logic to check for presence of ECR image on the CodePipeline automatic triggering upon resource creation,
+     * and stop the execution if the image does not exist.  */
+    const fnOnPipelineCreate = new lambda.Function(
+      this,
+      "OSImageCheckOnStart",
+      {
+        runtime: lambda.Runtime.PYTHON_3_10,
+        handler: "index.handler",
+        code: lambda.Code.fromInline(`
+import boto3
+import json
+
+ecr_client = boto3.client('ecr')
+codepipeline_client = boto3.client('codepipeline')
+
+def handler(event, context):
+  print("Received event: " + json.dumps(event, indent=2))
+  response = ecr_client.describe_images(repositoryName='${props.imageRepo.repositoryName}', filter={'tagStatus': 'TAGGED'})
+  for i in response['imageDetails']:
+    if '${props.imageTag}' in i['imageTags']:
+      break
+  else:
+    print('OS image not found. Stopping execution.')
+    response = codepipeline_client.stop_pipeline_execution(
+    pipelineName=event['detail']['pipeline'],
+    pipelineExecutionId=event['detail']['execution-id'],
+    abandon=False,
+    reason='OS image not found in ECR repository. Stopping pipeline until image is present.')
+    `),
+      }
+    );
+    const stopPipelinePolicy = new iam.PolicyStatement({
+      actions: ["codepipeline:StopPipelineExecution"],
+      resources: ["*"], //TODO: fix.
+    });
+
+    const ecrPolicy = new iam.PolicyStatement({
+      actions: ["ecr:DescribeImages"],
+      resources: [props.imageRepo.repositoryArn],
+    });
+    fnOnPipelineCreate.role?.attachInlinePolicy(
+      new iam.Policy(this, "CheckOSAndStop", {
+        statements: [stopPipelinePolicy, ecrPolicy],
+      })
+    );
+
+    const pipelineCreateRule = new events.Rule(this, "OnPipelineStartRule", {
+      eventPattern: {
+        detailType: ["CodePipeline Pipeline Execution State Change"],
+        source: ["aws.codepipeline"],
+        detail: {
+          state: ["STARTED"],
+          "execution-trigger": {
+            "trigger-type": ["CreatePipeline"],
+          },
+        },
+      },
+    });
+    pipelineCreateRule.addTarget(
+      new targets.LambdaFunction(fnOnPipelineCreate)
+    );
+
     /** Now create the actual Pipeline */
     const pipeline = new codepipeline.Pipeline(this, "DemoPipeline", {
       restartExecutionOnUpdate: true,
@@ -156,10 +218,10 @@ export class DemoPipelineStack extends cdk.Stack {
 
     /** Here we create the logic to check for presence of ECR image on CodeCommit repo creation,
      * and only start pipeline if image exists. On CodeCommit repo updates, just trigger pipeline.  */
-    const fn = new lambda.Function(this, 'OSImageCheck', {
-      runtime: lambda.Runtime.PYTHON_3_10,
-      handler: 'index.handler',
-      code: lambda.Code.fromInline(`
+    /** const fn = new lambda.Function(this, "OSImageCheck", {
+            runtime: lambda.Runtime.PYTHON_3_10,
+            handler: "index.handler",
+            code: lambda.Code.fromInline(`
 import boto3
 
 codecommit_client = boto3.client('codecommit')
@@ -172,37 +234,33 @@ def handler(event, context):
       if '${props.imageTag}' in i['imageTags']:
         codepipeline_response = codepipeline_client.start_pipeline_execution(name='${pipeline.pipelineName}')
       break 
-             `
-      ),
-    });
+             `),
+        });**/
 
-    const startPipelinePolicy = new iam.PolicyStatement({
-      actions: ['codepipeline:StartPipelineExecution'],
-      resources: [pipeline.pipelineArn],
-    });
-    const ecrPolicy = new iam.PolicyStatement({
-      actions: ['ecr:DescribeImages'],
-      resources: [props.imageRepo.repositoryArn],
-    });
+    /**   const startPipelinePolicy = new iam.PolicyStatement({
+            actions: ["codepipeline:StartPipelineExecution"],
+            resources: [pipeline.pipelineArn],
+        });**/
 
-    fn.role?.attachInlinePolicy(
-        new iam.Policy(this, 'CheckOSAndStart', {
-          statements: [startPipelinePolicy, ecrPolicy],
-        }),
-    );
+    /**    fn.role?.attachInlinePolicy(
+            new iam.Policy(this, "CheckOSAndStart", {
+                statements: [startPipelinePolicy, ecrPolicy],
+            })
+        );
+**/
 
-    const ruleOnCreateOrUpdate = new events.Rule(this, 'BuildTriggerRule', {
-      eventPattern: {
-        source: ['aws.codecommit'],
-        resources: [sourceRepo.repo.repositoryArn],
-        detail: {
-          event: ['referenceCreated', 'referenceUpdated'],
-          referenceName: ['main']
-        },
-        detailType: ['CodeCommit Repository State Change'],
-      },
-    });
-    ruleOnCreateOrUpdate.addTarget(new targets.LambdaFunction(fn));
+    /**   const ruleOnCreateOrUpdate = new events.Rule(this, "BuildTriggerRule", {
+            eventPattern: {
+                source: ["aws.codecommit"],
+                resources: [sourceRepo.repo.repositoryArn],
+                detail: {
+                    event: ["referenceCreated", "referenceUpdated"],
+                    referenceName: ["main"],
+                },
+                detailType: ["CodeCommit Repository State Change"],
+            },
+        });
+        ruleOnCreateOrUpdate.addTarget(new targets.LambdaFunction(fn));**/
   }
 
   /**
