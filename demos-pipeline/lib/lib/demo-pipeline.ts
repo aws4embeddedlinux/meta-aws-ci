@@ -161,25 +161,12 @@ def handler(event, context):
     response = codepipeline_client.stop_pipeline_execution(
     pipelineName=event['detail']['pipeline'],
     pipelineExecutionId=event['detail']['execution-id'],
-    abandon=False,
+    abandon=True,
     reason='OS image not found in ECR repository. Stopping pipeline until image is present.')
     `),
       }
     );
-    const stopPipelinePolicy = new iam.PolicyStatement({
-      actions: ["codepipeline:StopPipelineExecution"],
-      resources: ["*"], //TODO: fix.
-    });
 
-    const ecrPolicy = new iam.PolicyStatement({
-      actions: ["ecr:DescribeImages"],
-      resources: [props.imageRepo.repositoryArn],
-    });
-    fnOnPipelineCreate.role?.attachInlinePolicy(
-      new iam.Policy(this, "CheckOSAndStop", {
-        statements: [stopPipelinePolicy, ecrPolicy],
-      })
-    );
 
     const pipelineCreateRule = new events.Rule(this, "OnPipelineStartRule", {
       eventPattern: {
@@ -215,7 +202,24 @@ def handler(event, context):
         },
       ],
     });
+
+    const stopPipelinePolicy = new iam.PolicyStatement({
+      actions: ["codepipeline:StopPipelineExecution"],
+      resources: [pipeline.pipelineArn],
+    });
+
+    const ecrPolicy = new iam.PolicyStatement({
+      actions: ["ecr:DescribeImages"],
+      resources: [props.imageRepo.repositoryArn],
+    });
+    fnOnPipelineCreate.role?.attachInlinePolicy(
+        new iam.Policy(this, "CheckOSAndStop", {
+          statements: [stopPipelinePolicy, ecrPolicy],
+        })
+    );
   }
+
+
 
   /**
    * Adds an EFS FileSystem to the VPC and SecurityGroup.
