@@ -167,7 +167,6 @@ def handler(event, context):
       }
     );
 
-
     const pipelineCreateRule = new events.Rule(this, "OnPipelineStartRule", {
       eventPattern: {
         detailType: ["CodePipeline Pipeline Execution State Change"],
@@ -213,13 +212,11 @@ def handler(event, context):
       resources: [props.imageRepo.repositoryArn],
     });
     fnOnPipelineCreate.role?.attachInlinePolicy(
-        new iam.Policy(this, "CheckOSAndStop", {
-          statements: [stopPipelinePolicy, ecrPolicy],
-        })
+      new iam.Policy(this, "CheckOSAndStop", {
+        statements: [stopPipelinePolicy, ecrPolicy],
+      })
     );
   }
-
-
 
   /**
    * Adds an EFS FileSystem to the VPC and SecurityGroup.
