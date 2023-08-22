@@ -11,10 +11,11 @@ describe("Build Image Repository", () => {
     const app = new cdk.App();
     const stack = new BuildImageRepoStack(app, "MyTestStack", props);
     const template = Template.fromStack(stack);
-    template.resourceCountIs("AWS::ECR::Repository", 1); // TODO: remove after investigating following comment.
-    //    template.hasResourceProperties("AWS::ECR::Repository", {
-    //      EmptyOnDelete: true,
-    //    });
+    template.resourceCountIs("AWS::ECR::Repository", 1);
+    // TODO: Investigate why we cannot set EmptyOnDelete in CDK.
+    // template.hasResourceProperties("AWS::ECR::Repository", {
+    //   EmptyOnDelete: true,
+    // });
   });
 
   test("Snapshot", () => {
