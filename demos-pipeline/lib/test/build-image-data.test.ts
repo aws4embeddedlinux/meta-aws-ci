@@ -24,7 +24,14 @@ describe("Build Image Data", () => {
   test("Snapshot", () => {
     const app = new cdk.App();
     const stack = new BuildImageDataStack(app, "MyTestStack", props);
-    const template = Template.fromStack(stack);
-    expect(template).toMatchSnapshot();
+    /* We must change some randomly generated file names used in the S3 asset construct. */
+    const templateWithRandomKeys = Template.fromStack(stack);
+    const templateWithConstKeys = JSON.parse(
+      JSON.stringify(templateWithRandomKeys.toJSON()).replace(
+        /[a-z0-9]{64}\.zip/g,
+        "arbitrary-file.zip"
+      )
+    );
+    expect(templateWithConstKeys).toMatchSnapshot();
   });
 });
