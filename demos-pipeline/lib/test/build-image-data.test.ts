@@ -5,7 +5,7 @@ import { BuildImageDataStack } from "../lib/build-image-data";
 describe("Build Image Data", () => {
   const props = {
     bucketName: "test-bucket",
-    env: { account: "12341234", region: "eu-central-1" },
+    env: { account: "111111111111", region: "eu-central-1" },
   };
 
   test("S3 Bucket Has Versioning Enabled", () => {
@@ -21,7 +21,7 @@ describe("Build Image Data", () => {
     });
   });
 
-  test("Build Image Snapshot", () => {
+  test("Snapshot", () => {
     const app = new cdk.App();
     const stack = new BuildImageDataStack(app, "MyTestStack", props);
     const template = Template.fromStack(stack);
