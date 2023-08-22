@@ -14,6 +14,7 @@ export class BuildImageRepoStack extends cdk.Stack {
 
     this.repository = new ecr.Repository(this, "BuildImageRepo", {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteImages: true,
     });
   }
 }
