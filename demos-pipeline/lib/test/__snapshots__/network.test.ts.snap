@@ -1,0 +1,568 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Pipeline Networking Snapshot 1`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "PipelineVpc0543904A": {
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "PipelineVpcIGW3FA4A524": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "PipelineVpcPrivateSubnet1DefaultRouteC225ACC6": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "PipelineVpcPublicSubnet1NATGatewayA4388274",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet1RouteTable6D8B603D",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPrivateSubnet1RouteTable6D8B603D": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPrivateSubnet1RouteTableAssociation791F1EF2": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet1RouteTable6D8B603D",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPrivateSubnet1Subnet442DCECC",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPrivateSubnet1Subnet442DCECC": {
+      "Properties": {
+        "AvailabilityZone": "dummy1a",
+        "CidrBlock": "10.0.96.0/19",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPrivateSubnet2DefaultRouteF3A9A6B9": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "PipelineVpcPublicSubnet2NATGateway5B528D21",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet2RouteTable9A31913F",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPrivateSubnet2RouteTable9A31913F": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPrivateSubnet2RouteTableAssociationC502A5A4": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet2RouteTable9A31913F",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPrivateSubnet2SubnetE21FED10",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPrivateSubnet2SubnetE21FED10": {
+      "Properties": {
+        "AvailabilityZone": "dummy1b",
+        "CidrBlock": "10.0.128.0/19",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPrivateSubnet3DefaultRoute8706A1DD": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "PipelineVpcPublicSubnet3NATGateway69775315",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet3RouteTableBF7276B0",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPrivateSubnet3RouteTableAssociationEB416B63": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPrivateSubnet3RouteTableBF7276B0",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPrivateSubnet3SubnetFCC0E247",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPrivateSubnet3RouteTableBF7276B0": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PrivateSubnet3",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPrivateSubnet3SubnetFCC0E247": {
+      "Properties": {
+        "AvailabilityZone": "dummy1c",
+        "CidrBlock": "10.0.160.0/19",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PrivateSubnet3",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPublicSubnet1DefaultRoute44F3E91D": {
+      "DependsOn": [
+        "PipelineVpcVPCGW3256101F",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "PipelineVpcIGW3FA4A524",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet1RouteTableE9A67515",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPublicSubnet1EIPBD0800F9": {
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "PipelineVpcPublicSubnet1NATGatewayA4388274": {
+      "DependsOn": [
+        "PipelineVpcPublicSubnet1DefaultRoute44F3E91D",
+        "PipelineVpcPublicSubnet1RouteTableAssociation6D13736B",
+      ],
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "PipelineVpcPublicSubnet1EIPBD0800F9",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet1Subnet26FF83E2",
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "PipelineVpcPublicSubnet1RouteTableAssociation6D13736B": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet1RouteTableE9A67515",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet1Subnet26FF83E2",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPublicSubnet1RouteTableE9A67515": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPublicSubnet1Subnet26FF83E2": {
+      "Properties": {
+        "AvailabilityZone": "dummy1a",
+        "CidrBlock": "10.0.0.0/19",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPublicSubnet2DefaultRoute04C861A0": {
+      "DependsOn": [
+        "PipelineVpcVPCGW3256101F",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "PipelineVpcIGW3FA4A524",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet2RouteTable5219ED4D",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPublicSubnet2EIPB92B2C07": {
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "PipelineVpcPublicSubnet2NATGateway5B528D21": {
+      "DependsOn": [
+        "PipelineVpcPublicSubnet2DefaultRoute04C861A0",
+        "PipelineVpcPublicSubnet2RouteTableAssociation54D39738",
+      ],
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "PipelineVpcPublicSubnet2EIPB92B2C07",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet2Subnet64F58E18",
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet2",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "PipelineVpcPublicSubnet2RouteTable5219ED4D": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPublicSubnet2RouteTableAssociation54D39738": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet2RouteTable5219ED4D",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet2Subnet64F58E18",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPublicSubnet2Subnet64F58E18": {
+      "Properties": {
+        "AvailabilityZone": "dummy1b",
+        "CidrBlock": "10.0.32.0/19",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcPublicSubnet3DefaultRouteDD586919": {
+      "DependsOn": [
+        "PipelineVpcVPCGW3256101F",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "PipelineVpcIGW3FA4A524",
+        },
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet3RouteTableD6F00678",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "PipelineVpcPublicSubnet3EIPA3CA7521": {
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet3",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "PipelineVpcPublicSubnet3NATGateway69775315": {
+      "DependsOn": [
+        "PipelineVpcPublicSubnet3DefaultRouteDD586919",
+        "PipelineVpcPublicSubnet3RouteTableAssociation163F9BEA",
+      ],
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "PipelineVpcPublicSubnet3EIPA3CA7521",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet3SubnetE08894FF",
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet3",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "PipelineVpcPublicSubnet3RouteTableAssociation163F9BEA": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "PipelineVpcPublicSubnet3RouteTableD6F00678",
+        },
+        "SubnetId": {
+          "Ref": "PipelineVpcPublicSubnet3SubnetE08894FF",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "PipelineVpcPublicSubnet3RouteTableD6F00678": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet3",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "PipelineVpcPublicSubnet3SubnetE08894FF": {
+      "Properties": {
+        "AvailabilityZone": "dummy1c",
+        "CidrBlock": "10.0.64.0/19",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "PipelineNetwork/PipelineVpc/PublicSubnet3",
+          },
+        ],
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "PipelineVpcVPCGW3256101F": {
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "PipelineVpcIGW3FA4A524",
+        },
+        "VpcId": {
+          "Ref": "PipelineVpc0543904A",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
