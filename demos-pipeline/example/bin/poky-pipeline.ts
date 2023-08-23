@@ -79,10 +79,10 @@ new DemoPipelineStack(app, "QemuDemoPipeline", {
 /**
  * Create a 3rd Party Distribution Pipeline.
  */
-// TODO(nateglims): implement
-// new DemoPipelineStack(app, "three-p-Pipeline", {
-//   ...defaultProps,
-//   imageRepo: buildImageRepo.repository,
-//   imageTag: ImageKind.Ubuntu22_04,
-//   vpc: vpc.vpc,
-// });
+new DemoPipelineStack(app, "IMX6Pipeline", {
+  ...defaultProps,
+  imageRepo: buildImageRepo.repository,
+  imageTag: ImageKind.Ubuntu22_04,
+  vpc: vpc.vpc,
+  distroKind: DistributionKind.imx6,
+});

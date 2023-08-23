@@ -12,6 +12,8 @@ export enum DistributionKind {
   Poky = "poky",
   /** The meta-aws Demonstration Distribution. */
   MetaAwsDemo = "meta-aws-demo",
+  /** the i.mx6 Distribution from NXP. */
+  imx6 = "imx6",
 }
 
 export interface SourceRepoProps extends cdk.StackProps {

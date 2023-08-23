@@ -1,0 +1,41 @@
+version: 0.2
+run-as: yoctouser
+
+env:
+  shell: bash
+
+phases:
+  pre_build:
+    run-as: root
+    commands:
+      - chown -R yoctouser /sstate-cache
+      - chown -R yoctouser /downloads
+      - chown yoctouser /build-output
+      - chmod 755 /sstate-cache
+      - chmod 755 /downloads
+      - chmod 755 /build-output
+      - apt-get install -yq repo
+  build:
+    commands:
+      - echo Build started on `date`
+      - repo init -u https://github.com/nxp-imx/imx-manifest -b imx-linux-mickledore -m imx-6.1.22-2.0.0.xml
+      - repo sync
+      - MACHINE=imx6ull14x14evk EULA=y source ./imx-setup-release.sh -b bld-fb
+      - bitbake core-image-minimal
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - bitbake -m
+      - ps aux | grep bitbake
+      - find $TMP_DIR -name '*.socket' -delete
+      - export BUILD_OUTPUT="$(uuidgen -t).tar"
+      - tar cf $BUILD_OUTPUT -C $TMP_DIR tmp
+      - cp -r $BUILD_OUTPUT /build-output
+      - echo $BUILD_OUTPUT > /build-output/tmpfile
+
+artifacts:
+  discard-paths: true
+  files:
+    - /build-output/tmpfile
+    - $TMP_DIR/tmp/deploy/images/qemux86-64/core-image-minimal-qemux86-64*
