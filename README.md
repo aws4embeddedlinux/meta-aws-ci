@@ -19,6 +19,9 @@ This project has three goals:
 
 ## How this repository is organized
 
+
+
+
 ```text
  core/              <= mechanisms for meta-aws CI
    cfn/             <= CI/CD pipeline - CFN - Standard (all recipe targets and QA checks)
