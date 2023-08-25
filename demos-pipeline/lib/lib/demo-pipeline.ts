@@ -26,7 +26,6 @@ import {
 } from "aws-cdk-lib/aws-ec2";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import { SourceRepo, DistributionKind } from "./constructs/source-repo";
-import { CodeCommitTrigger } from "aws-cdk-lib/aws-codepipeline-actions";
 
 /**
  * Properties to allow customizing the build.
