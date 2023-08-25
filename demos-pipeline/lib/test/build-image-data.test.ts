@@ -5,6 +5,8 @@ import { BuildImageDataStack } from "../lib/build-image-data";
 describe("Build Image Data", () => {
   const props = {
     bucketName: "test-bucket",
+    removalPolicy: cdk.RemovalPolicy.DESTROY,
+    autoDeleteObjects: true,
     env: { account: "111111111111", region: "eu-central-1" },
   };
 
