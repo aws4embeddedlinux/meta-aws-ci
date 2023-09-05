@@ -7,7 +7,6 @@
   "scripts": {
     "clean": "tsc --build --clean && rm -rf dist && rm -rf cdk.out",
     "build": "tsc",
-    "prebuild": "cd ../lib/ && npm install && npm run zip-data",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
@@ -32,7 +31,7 @@
     "typescript": "~5.0.4"
   },
   "dependencies": {
-    "aws4embeddedlinux-cdk-lib": "file:../lib/lib",
+    "aws4embeddedlinux-cdk-lib": "aws4embeddedlinux/aws4embeddedlinux-ci",
     "aws-cdk-lib": "2.86.0",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
