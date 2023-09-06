@@ -1,13 +1,12 @@
 {
-  "name": "aws4embeddedlinux-cdk-lib",
+  "name": "meta-aws-cdk-pipeline-reference",
   "version": "0.1.0",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "bin": {
+    "demos-pipeline": "bin/poky-pipeline.js"
+  },
   "scripts": {
-    "build": "tsc",
-    "zip-data": "if [ -f dist/assets/build-image/data.zip ]; then rm -rf dist/assets/build-image; fi && mkdir -p dist/assets/build-image ; cd assets/build-image && zip -q -o ../../dist/assets/build-image/data.zip -r *",
     "clean": "tsc --build --clean && rm -rf dist && rm -rf cdk.out",
-    "prebuild": "npm run zip-data",
+    "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
@@ -31,8 +30,10 @@
     "typedoc": "^0.24.8",
     "typescript": "~5.0.4"
   },
-  "peerDependencies": {
+  "dependencies": {
+    "aws4embeddedlinux-cdk-lib": "aws4embeddedlinux/aws4embeddedlinux-ci",
     "aws-cdk-lib": "2.86.0",
-    "constructs": "^10.0.0"
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
   }
 }
