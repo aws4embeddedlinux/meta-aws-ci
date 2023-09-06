@@ -7,7 +7,7 @@ import {
   BuildImageRepoStack,
   PipelineNetworkStack,
   ImageKind,
-  DistributionKind,
+  ProjectKind,
 } from "aws4embeddedlinux-cdk-lib";
 
 const app = new cdk.App();
@@ -73,7 +73,7 @@ new DemoPipelineStack(app, "QemuDemoPipeline", {
   imageTag: ImageKind.Ubuntu22_04,
   vpc: vpc.vpc,
   layerRepoName: "qemu-demo-layer-repo",
-  distroKind: DistributionKind.MetaAwsDemo,
+  distroKind: ProjectKind.MetaAwsDemo,
 });
 
 /**
