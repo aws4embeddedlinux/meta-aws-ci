@@ -73,16 +73,17 @@ new DemoPipelineStack(app, "QemuDemoPipeline", {
   imageTag: ImageKind.Ubuntu22_04,
   vpc: vpc.vpc,
   layerRepoName: "qemu-demo-layer-repo",
-  distroKind: ProjectKind.MetaAwsDemo,
+  projectKind: ProjectKind.MetaAwsDemo,
 });
 
 /**
- * Create a 3rd Party Distribution Pipeline.
+ * Create an AMI based on Poky.
  */
-// TODO(nateglims): implement
-// new DemoPipelineStack(app, "three-p-Pipeline", {
-//   ...defaultProps,
-//   imageRepo: buildImageRepo.repository,
-//   imageTag: ImageKind.Ubuntu22_04,
-//   vpc: vpc.vpc,
-// });
+new DemoPipelineStack(app, "PokyAmiPipeline", {
+  ...defaultProps,
+  imageRepo: buildImageRepo.repository,
+  imageTag: ImageKind.Ubuntu22_04,
+  vpc: vpc.vpc,
+  layerRepoName: "ec2-ami-poky-layer-repo",
+  projectKind: ProjectKind.PokyAmi,
+});
