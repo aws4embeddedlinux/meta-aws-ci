@@ -87,3 +87,15 @@ new DemoPipelineStack(app, "PokyAmiPipeline", {
   layerRepoName: "ec2-ami-poky-layer-repo",
   projectKind: ProjectKind.PokyAmi,
 });
+
+/**
+ * Create an kas based image.
+ */
+new DemoPipelineStack(app, "KasPipeline", {
+  ...defaultProps,
+  imageRepo: buildImageRepo.repository,
+  imageTag: ImageKind.Ubuntu22_04,
+  vpc: vpc.vpc,
+  layerRepoName: "biga-kas-layer-repo",
+  projectKind: ProjectKind.Kas,
+});
