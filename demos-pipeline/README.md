@@ -3,8 +3,50 @@
 An AWS [Cloud Developer Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/home.html) Library for building Yocto projects in AWS.
 
 ## Quickstart
+to create yocto demo build pipelines and cloud resources.
 
-Refer to [`docs/setup.md`](docs/setup.md)
+### Setting Up
+
+#### clone repo
+```bash
+git clone https://github.com/aws4embeddedlinux/meta-aws-ci.git -b cdk-pipeline
+cd meta-aws-ci/demos-pipeline
+```
+
+#### install npm packages:
+
+```bash
+npm install .
+```
+
+#### updating - if you have an already have packages installed before
+```bash
+npm update
+```
+
+#### build:
+
+```bash
+npm run build
+```
+
+#### deploy cloud resources for all demo pipelines:
+```bash
+# only required once
+cdk bootstrap
+
+cdk deploy --all
+```
+
+The newly created pipeline `ubuntu_22_04BuildImagePipeline` from the CodePipeline console will start automatically.
+
+After that completes, the DemoPipeline in the CodePipeline console page is ready to run.
+
+
+#### destroy cloud resources for all demo pipelines:
+```bash
+cdk destroy --all
+```
 
 ## Useful commands
 
