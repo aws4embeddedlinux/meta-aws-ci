@@ -99,3 +99,15 @@ new DemoPipelineStack(app, "KasPipeline", {
   layerRepoName: "biga-kas-layer-repo",
   projectKind: ProjectKind.Kas,
 });
+
+/**
+ * Create an renesas based image.
+ */
+new DemoPipelineStack(app, "RenesasPipeline", {
+  ...defaultProps,
+  imageRepo: buildImageRepo.repository,
+  imageTag: ImageKind.Ubuntu22_04,
+  vpc: vpc.vpc,
+  layerRepoName: "renesas-layer-repo",
+  projectKind: ProjectKind.Renesas,
+});
