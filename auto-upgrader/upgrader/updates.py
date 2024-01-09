@@ -70,9 +70,9 @@ def check_for_updates(recipe: str) -> bool:
 
 
 def _check_for_updates(recipe: str) -> Optional[dict]:
-    (_, stderr, _) = run(f"devtool check-upgrade-status {recipe}")
-    update_re = r"INFO:\s+" + recipe + r"\s+([^\s]+)\s+([^\s]+)"
-    m = re.search(update_re, stderr)
+    (stdout, _, _) = run(f"devtool check-upgrade-status {recipe}")
+    update_re = recipe + r"\s+([^\s]+)\s+([^\s]+)"
+    m = re.search(update_re, stdout)
     if m:
         logger.info(f"Update for {recipe}:\t{m.group(1)}\t->\t{m.group(2)}")
         return {"recipe": recipe, "previous_version": m.group(1), "next_version": m.group(2)}
