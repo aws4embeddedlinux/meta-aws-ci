@@ -148,7 +148,7 @@ for RELEASE in $RELEASES ; do
     ALL_RECIPES=${PACKAGE-`find ../meta-aws -name *.bb -type f  | sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
 
     # those tests are known to not work with others etc.
-    THINGS_TO_EXCLUDE="-name aws-cli_*"
+    THINGS_TO_EXCLUDE="-name aws-cli-v2"
 
     # find all recipes having a ptest in meta-aws
     ptest_recipes=${PACKAGE-`find ../meta-aws -name *.bb -type f ! \( ${THINGS_TO_EXCLUDE} \) -print | xargs grep -l 'inherit.*ptest.*'| sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
