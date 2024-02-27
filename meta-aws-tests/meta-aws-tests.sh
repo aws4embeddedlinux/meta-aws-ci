@@ -145,7 +145,7 @@ for RELEASE in $RELEASES ; do
     setup_config
 
     # those tests are known to not work with others etc.
-    THINGS_TO_EXCLUDE="-name aws-cli-v2"
+    THINGS_TO_EXCLUDE="-name aws-cli-v2*"
 
     # find all recipes in meta-aws or use package
     ALL_RECIPES=${PACKAGE-`find ../meta-aws -name *.bb -type f ! \( ${THINGS_TO_EXCLUDE} \)  | sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
