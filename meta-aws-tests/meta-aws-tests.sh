@@ -18,7 +18,7 @@ options=$(getopt --long "help,releases::,archs:,package:,oldsrcuri:,newsrcuri:,s
 
 eval set -- "$options"
 
-RELEASES="master nanbield kirkstone dunfell"
+RELEASES="master scarthgap kirkstone"
 ARCHS="qemuarm64 qemux86-64"
 
 while true
