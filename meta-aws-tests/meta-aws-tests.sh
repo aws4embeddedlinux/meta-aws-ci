@@ -145,13 +145,13 @@ for RELEASE in $RELEASES ; do
     setup_config
 
     # those tests are known to not work with others etc.
-    THINGS_TO_EXCLUDE="-name aws-cli-v2*"
+    THINGS_TO_EXCLUDE="! -name aws-cli-v2* ! -name aws-lc*"
 
     # find all recipes in meta-aws or use package
-    ALL_RECIPES=${PACKAGE-`find ../meta-aws -name *.bb -type f ! \( ${THINGS_TO_EXCLUDE} \)  | sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
+    ALL_RECIPES=${PACKAGE-`find ../meta-aws -name *.bb -type f \( ${THINGS_TO_EXCLUDE} \)  | sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
 
     # find all recipes having a ptest in meta-aws
-    ptest_recipes=${PACKAGE-`find ../meta-aws -name *.bb -type f ! \( ${THINGS_TO_EXCLUDE} \) -print | xargs grep -l 'inherit.*ptest.*'| sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
+    ptest_recipes=${PACKAGE-`find ../meta-aws -name *.bb -type f \( ${THINGS_TO_EXCLUDE} \) -print | xargs grep -l 'inherit.*ptest.*'| sed 's!.*/!!' | sed 's!.bb!!' | sed 's!_.*!!' | sort | uniq | sed -z 's/\n/ /g'`}
 
     # make array out of string
     ptest_recipes_array=($(echo "$ptest_recipes" | tr ',' '\n'))
