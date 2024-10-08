@@ -1,0 +1,7 @@
+#!/bin/bash
+
+BRANCH_LIST="dunfell gatesgarth hardknott honister kirkstone master zeus langdale mickledore nanbield scarthgap styhead"
+
+for b in $BRANCH_LIST; do
+	BRANCH=$b ~/bin/meta-aws-ffmerge
+done
