@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
+echo "Press any key to continue - no parameter given this will git fast forward master-next to master"
+read
 set -euxo pipefail
 
 BRANCH="${BRANCH:-master}"
 ORG="${ORG:-aws4embeddedlinux}"
+
 # For Linux and MacOS compat, avoid the -t option with mktemp!
 WORKDIR=$(mktemp -d "${TMPDIR:-/tmp}/release.XXXXXXXXX")
 
