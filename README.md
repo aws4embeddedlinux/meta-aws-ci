@@ -1,10 +1,5 @@
 ## meta-aws-ci: continuous integration for the meta-aws project
 
-Subtopics:
-
-* Core CI
-* Reference implementation
-
 ## Goals
 
 This project has three goals:
@@ -20,17 +15,9 @@ This project has three goals:
 ## How this repository is organized
 
 ```text
- core/              <= mechanisms for meta-aws CI
-   cfn/             <= CI/CD pipeline - CFN - Standard (all recipe targets and QA checks)
-   conf/            <= bitbake local.conf configuration snippets
-   containers/      <= container definitions for distribution build environments
- ref/               <= reference implementation
-   cfn/             <= Infrastructure using AWS CodeCommit
-   conf/            <= bitbake local configuration
-   layer/           <= Reference app layer, distribution definition
-     ci/            <= AWS CodeBuild buildspec file per target, repo config
- verify/            <= mechanisms for meta-aws and meta-aws-demos pull requests
- workshop/          <= workshop source for working on Yocto on AWS
+ auto-upgrader/     <= tool that is used in meta-aws to generate pull requests if an recipe upgrade is available
+ docs/              <= writeups of different topics
+ release-tests/     <= script to build and ptests all Yocto meta-aws releases
 ```
 
 ## Repo Linting
