@@ -41,4 +41,4 @@ pre-commit run --all-files
 
 ## License
 
-This library is licensed under the MIT-0 License.
+This repo is licensed under the MIT-0 License.
