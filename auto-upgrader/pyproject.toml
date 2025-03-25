@@ -1,6 +1,7 @@
 [project]
 name = "auto-upgrader"
 version = "0.1.0"
+description = "Auto upgrader tool"
 license = { file="LICENSE" }
 authors = [
     { name="Nathan Glimsdale", email="glimsdal@amazon.com" },
@@ -12,7 +13,7 @@ dependencies = [
 ]
 
 [project.scripts]
-upgrader = "upgrader:cli"
+upgrader = "upgrader.cli"
 
 [build-system]
 requires = ["setuptools>=61.0"]
