@@ -155,7 +155,8 @@ def generate_detail_page(branch, all_data, all_recipes, updated):
             '        <div class="report-header">',
             '            <p><a href="recipe-versions.html" class="back-link">← Back to Overview</a></p>',
             f'            <p><strong>Last Updated:</strong> {updated}</p>',
-            '            <p><strong>Legend:</strong> 🟢 Latest version | 🟡 Mid-range version | 🔴 Oldest version</p>',
+            f'            <p><strong>Comparing:</strong> {branch} branch vs {branch}-next branch from meta-aws git repository</p>',
+            '            <p><strong>Legend:</strong> 🟢 Newest version | 🟡 Mid version | 🔴 Oldest version (comparing branch vs branch-next)</p>',
             '        </div>',
             '        <table>', '            <thead>', '                <tr>',
             '                    <th>Recipe</th>',
@@ -288,8 +289,16 @@ def main():
     )
     print(f"            <p><strong>Last Updated:</strong> {updated}</p>")
     print(
-        "            <p><strong>Legend:</strong> 🟢 All versions match | "
-        "🟡 Minor differences | 🔴 Major differences</p>"
+        "            <p><strong>What this shows:</strong> Version status comparing each release branch "
+        "against its -next branch (e.g., master vs master-next). "
+        "Click any indicator to see version details.</p>"
+    )
+    print(
+        "            <p><strong>Legend:</strong> "
+        "🟢 Versions in sync | "
+        "🟡 Newer in -next branch | "
+        "🔴 Older in -next branch | "
+        "- Not in this release</p>"
     )
     print("        </div>")
     print("        <table>")
