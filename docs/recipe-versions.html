@@ -1,22 +1,3 @@
-Fetching current Yocto releases...
-Found releases: master, wrynose, whinlatter, scarthgap, kirkstone
-Cloning meta-aws repository...
-Fetching master...
-Fetching master-next...
-Fetching wrynose...
-No recipes found in wrynose
-Fetching wrynose-next...
-No recipes found in wrynose-next
-Fetching whinlatter...
-Fetching whinlatter-next...
-Fetching scarthgap...
-Fetching scarthgap-next...
-Fetching kirkstone...
-Fetching kirkstone-next...
-Generated docs/recipe-versions-master.html
-Generated docs/recipe-versions-whinlatter.html
-Generated docs/recipe-versions-scarthgap.html
-Generated docs/recipe-versions-kirkstone.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,6 +11,8 @@ Generated docs/recipe-versions-kirkstone.html
         .report-header { background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; }
         .back-link { color: #ff9900; text-decoration: none; }
         .back-link:hover { text-decoration: underline; }
+        .category-header { background: #f0f0f0; font-weight: bold; }
+        .recipe-path { font-size: 0.75em; color: #666; font-style: italic; }
     </style>
 </head>
 <body>
@@ -40,7 +23,7 @@ Generated docs/recipe-versions-kirkstone.html
     <main>
         <div class="report-header">
             <p><a href="index.html" class="back-link">← Back to Dashboard</a></p>
-            <p><strong>Last Updated:</strong> 2026-03-05 17:33:27 UTC</p>
+            <p><strong>Last Updated:</strong> 2026-03-05 17:38:23 UTC</p>
             <p><strong>Legend:</strong> 🟢 All versions match | 🟡 Minor differences | 🔴 Major differences</p>
         </div>
         <table>
@@ -55,8 +38,11 @@ Generated docs/recipe-versions-kirkstone.html
                 </tr>
             </thead>
             <tbody>
+                <tr class="category-header">
+                    <td colspan="6">recipes-cloud</td>
+                </tr>
                 <tr>
-                    <td><strong>amazon-cloudwatch-agent</strong></td>
+                    <td><strong>amazon-cloudwatch-agent</strong><br><span class="recipe-path">amazon-cloudwatch-agent</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -64,7 +50,53 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>amazon-cloudwatch-publisher</strong></td>
+                    <td><strong>amazon-cloudwatch-publisher</strong><br><span class="recipe-path">amazon-cloudwatch-publisher</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr class="category-header">
+                    <td colspan="6">recipes-containers</td>
+                </tr>
+                <tr>
+                    <td><strong>firecracker</strong><br><span class="recipe-path">firecracker</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>firecracker-bin</strong><br><span class="recipe-path">firecracker-bin</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>jailer</strong><br><span class="recipe-path">firecracker</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>jailer-bin</strong><br><span class="recipe-path">firecracker-bin</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
+                </tr>
+                <tr class="category-header">
+                    <td colspan="6">recipes-devtools</td>
+                </tr>
+                <tr>
+                    <td><strong>corretto-11-bin</strong><br><span class="recipe-path">amazon-corretto</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -72,7 +104,232 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>amazon-kinesis-video-streams-dcep</strong></td>
+                    <td><strong>corretto-17-bin</strong><br><span class="recipe-path">amazon-corretto</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>corretto-21-bin</strong><br><span class="recipe-path">amazon-corretto</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>corretto-25-bin</strong><br><span class="recipe-path">amazon-corretto</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>corretto-8-bin</strong><br><span class="recipe-path">amazon-corretto</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>neo-ai-dlr</strong><br><span class="recipe-path">amazon-sagemaker-neo</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>neo-ai-treelite</strong><br><span class="recipe-path">amazon-sagemaker-neo-treelite</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>neo-ai-tvm</strong><br><span class="recipe-path">amazon-sagemaker-neo-tvm</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>python3-boto3</strong><br><span class="recipe-path">python</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>python3-botocore</strong><br><span class="recipe-path">python</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>python3-ruamel-yaml-clib</strong><br><span class="recipe-path">python</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>python3-s3transfer</strong><br><span class="recipe-path">python</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>python3-urllib3-1.x</strong><br><span class="recipe-path">python</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr class="category-header">
+                    <td colspan="6">recipes-external</td>
+                </tr>
+                <tr>
+                    <td><strong>python3-timeloop</strong><br><span class="recipe-path">python3-timeloop</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr class="category-header">
+                    <td colspan="6">recipes-iot</td>
+                </tr>
+                <tr>
+                    <td><strong>aws-iot-device-client</strong><br><span class="recipe-path">aws-iot-device-client</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>aws-iot-fleetwise-edge</strong><br><span class="recipe-path">aws-iot-fleetwise</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>aws-iot-securetunneling-localproxy</strong><br><span class="recipe-path">aws-iot-securetunneling-localproxy</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>aws-robomaker</strong><br><span class="recipe-path">aws-robomaker</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-bin</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-component-helloworld-bash</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-component-helloworld-c</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-component-helloworld-cpp</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-component-helloworld-python</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-component-helloworld-rust</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-lite</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-plugin-fleetprovisioning</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>greengrass-plugin-pkcs11</strong><br><span class="recipe-path">aws-iot-greengrass</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
+                </tr>
+                <tr class="category-header">
+                    <td colspan="6">recipes-multimedia</td>
+                </tr>
+                <tr>
+                    <td><strong>amazon-kinesis-video-streams-dcep</strong><br><span class="recipe-path">amazon-kinesis-video-streams-dcep</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -80,7 +337,18 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>amazon-kvs-producer-pic</strong></td>
+                    <td><strong>amazon-s3-gst-plugin</strong><br><span class="recipe-path">amazon-s3-gst-plugin</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr class="category-header">
+                    <td colspan="6">recipes-sdk</td>
+                </tr>
+                <tr>
+                    <td><strong>amazon-kvs-producer-pic</strong><br><span class="recipe-path">amazon-kvs-producer-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -88,7 +356,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>amazon-kvs-producer-sdk-c</strong></td>
+                    <td><strong>amazon-kvs-producer-sdk-c</strong><br><span class="recipe-path">amazon-kvs-producer-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -96,7 +364,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>amazon-kvs-producer-sdk-cpp</strong></td>
+                    <td><strong>amazon-kvs-producer-sdk-cpp</strong><br><span class="recipe-path">amazon-kvs-producer-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #dc3545;">🔴</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -104,7 +372,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>amazon-kvs-webrtc-sdk</strong></td>
+                    <td><strong>amazon-kvs-webrtc-sdk</strong><br><span class="recipe-path">amazon-kvs-webrtc-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -112,23 +380,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>amazon-s3-gst-plugin</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>amazon-ssm-agent</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>aws-c-auth</strong></td>
+                    <td><strong>aws-c-auth</strong><br><span class="recipe-path">aws-c-auth</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -136,7 +388,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-cal</strong></td>
+                    <td><strong>aws-c-cal</strong><br><span class="recipe-path">aws-c-cal</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -144,7 +396,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-common</strong></td>
+                    <td><strong>aws-c-common</strong><br><span class="recipe-path">aws-c-common</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -152,7 +404,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-compression</strong></td>
+                    <td><strong>aws-c-compression</strong><br><span class="recipe-path">aws-c-compression</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -160,7 +412,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-event-stream</strong></td>
+                    <td><strong>aws-c-event-stream</strong><br><span class="recipe-path">aws-c-event-stream</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -168,7 +420,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-http</strong></td>
+                    <td><strong>aws-c-http</strong><br><span class="recipe-path">aws-c-http</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -176,7 +428,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-io</strong></td>
+                    <td><strong>aws-c-io</strong><br><span class="recipe-path">aws-c-io</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -184,7 +436,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-iot</strong></td>
+                    <td><strong>aws-c-iot</strong><br><span class="recipe-path">aws-c-iot</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -192,7 +444,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-mqtt</strong></td>
+                    <td><strong>aws-c-mqtt</strong><br><span class="recipe-path">aws-c-mqtt</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -200,7 +452,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-s3</strong></td>
+                    <td><strong>aws-c-s3</strong><br><span class="recipe-path">aws-c-s3</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -208,7 +460,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-c-sdkutils</strong></td>
+                    <td><strong>aws-c-sdkutils</strong><br><span class="recipe-path">aws-c-sdkutils</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -216,7 +468,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-checksums</strong></td>
+                    <td><strong>aws-checksums</strong><br><span class="recipe-path">aws-checksums</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -224,23 +476,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-cli</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>aws-cli-v2</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>aws-crt-cpp</strong></td>
+                    <td><strong>aws-crt-cpp</strong><br><span class="recipe-path">aws-crt-cpp</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -248,7 +484,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-crt-python</strong></td>
+                    <td><strong>aws-crt-python</strong><br><span class="recipe-path">aws-crt-python</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -256,7 +492,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-greengrass-component-sdk</strong></td>
+                    <td><strong>aws-greengrass-component-sdk</strong><br><span class="recipe-path">aws-greengrass-component-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -264,7 +500,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-greengrass-core-sdk-c</strong></td>
+                    <td><strong>aws-greengrass-core-sdk-c</strong><br><span class="recipe-path">aws-iot-greengrass-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
@@ -272,7 +508,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-greengrass-core-sdk-python</strong></td>
+                    <td><strong>aws-greengrass-core-sdk-python</strong><br><span class="recipe-path">aws-iot-greengrass-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
@@ -280,7 +516,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-client</strong></td>
+                    <td><strong>aws-iot-device-sdk-cpp-v2</strong><br><span class="recipe-path">aws-iot-device-sdk-cpp-v2</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -288,7 +524,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-cpp-v2</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -296,7 +532,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c-defender-demo-json</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -304,7 +540,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c-defender-demo-json</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c-fleet-provisioning-keys-cert</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -312,7 +548,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c-fleet-provisioning-keys-cert</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c-http-demo-basic-tls</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -320,7 +556,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c-http-demo-basic-tls</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c-http-demo-s3-download</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -328,7 +564,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c-http-demo-s3-download</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c-jobs-demo-mosquitto</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -336,7 +572,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c-jobs-demo-mosquitto</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c-mqtt-demo-plaintext</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -344,7 +580,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c-mqtt-demo-plaintext</strong></td>
+                    <td><strong>aws-iot-device-sdk-embedded-c-shadow-demo-main</strong><br><span class="recipe-path">aws-iot-device-sdk-embedded-c</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -352,15 +588,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-embedded-c-shadow-demo-main</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>aws-iot-device-sdk-python-v1</strong></td>
+                    <td><strong>aws-iot-device-sdk-python-v1</strong><br><span class="recipe-path">aws-iot-device-sdk-python-v1</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
@@ -368,7 +596,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-device-sdk-python-v2</strong></td>
+                    <td><strong>aws-iot-device-sdk-python-v2</strong><br><span class="recipe-path">aws-iot-device-sdk-python-v2</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -376,23 +604,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-iot-fleetwise-edge</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>aws-iot-securetunneling-localproxy</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>aws-lc</strong></td>
+                    <td><strong>aws-lc</strong><br><span class="recipe-path">aws-lc</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -400,15 +612,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>aws-robomaker</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>aws-sdk-cpp</strong></td>
+                    <td><strong>aws-sdk-cpp</strong><br><span class="recipe-path">aws-sdk-cpp</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -416,7 +620,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>backoffalgorithm</strong></td>
+                    <td><strong>backoffalgorithm</strong><br><span class="recipe-path">backoffalgorithm</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -424,7 +628,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corehttp</strong></td>
+                    <td><strong>corehttp</strong><br><span class="recipe-path">corehttp</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -432,7 +636,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corejson</strong></td>
+                    <td><strong>corejson</strong><br><span class="recipe-path">corejson</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -440,7 +644,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>coremqtt</strong></td>
+                    <td><strong>coremqtt</strong><br><span class="recipe-path">coremqtt</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -448,7 +652,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corepkcs11</strong></td>
+                    <td><strong>corepkcs11</strong><br><span class="recipe-path">corepkcs11</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
@@ -456,7 +660,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corretto-11-bin</strong></td>
+                    <td><strong>device-defender-for-aws-iot-embedded-sdk</strong><br><span class="recipe-path">device-defender-for-aws-iot-embedded-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -464,7 +668,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corretto-17-bin</strong></td>
+                    <td><strong>device-shadow-for-aws-iot-embedded-sdk</strong><br><span class="recipe-path">device-shadow-for-aws-iot-embedded-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -472,7 +676,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corretto-21-bin</strong></td>
+                    <td><strong>fleet-provisioning-for-aws-iot-embedded-sdk</strong><br><span class="recipe-path">fleet-provisioning-for-aws-iot-embedded-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -480,7 +684,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corretto-25-bin</strong></td>
+                    <td><strong>jobs-for-aws-iot-embedded-sdk</strong><br><span class="recipe-path">jobs-for-aws-iot-embedded-sdk</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -488,7 +692,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>corretto-8-bin</strong></td>
+                    <td><strong>linux-webrtc-reference-for-amazon-kinesis-video-streams</strong><br><span class="recipe-path">linux-webrtc-reference-for-amazon-kinesis-video-streams</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -496,7 +700,7 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>device-defender-for-aws-iot-embedded-sdk</strong></td>
+                    <td><strong>s2n</strong><br><span class="recipe-path">s2n</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
@@ -504,244 +708,47 @@ Generated docs/recipe-versions-kirkstone.html
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>device-shadow-for-aws-iot-embedded-sdk</strong></td>
+                    <td><strong>sigv4</strong><br><span class="recipe-path">sigv4</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
-                <tr>
-                    <td><strong>firecracker</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                <tr class="category-header">
+                    <td colspan="6">recipes-support</td>
                 </tr>
                 <tr>
-                    <td><strong>firecracker-bin</strong></td>
+                    <td><strong>amazon-ssm-agent</strong><br><span class="recipe-path">amazon-ssm-agent</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
+                </tr>
+                <tr>
+                    <td><strong>aws-cli</strong><br><span class="recipe-path">aws-cli</span></td>
+                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
+                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>fleet-provisioning-for-aws-iot-embedded-sdk</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-bin</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-component-helloworld-bash</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-component-helloworld-c</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-component-helloworld-cpp</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-component-helloworld-python</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-component-helloworld-rust</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-lite</strong></td>
+                    <td><strong>aws-cli-v2</strong><br><span class="recipe-path">aws-cli-v2</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>greengrass-plugin-fleetprovisioning</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
                 </tr>
                 <tr>
-                    <td><strong>greengrass-plugin-pkcs11</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>jailer</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>jailer-bin</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #ffc107;">🟡</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>jobs-for-aws-iot-embedded-sdk</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>linux-webrtc-reference-for-amazon-kinesis-video-streams</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>maven</strong></td>
+                    <td><strong>maven</strong><br><span class="recipe-path">maven</span></td>
                     <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
                     <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>neo-ai-dlr</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>neo-ai-treelite</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>neo-ai-tvm</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>python3-boto3</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>python3-botocore</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #ffc107;">🟡</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>python3-ruamel-yaml-clib</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>python3-s3transfer</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>python3-timeloop</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>python3-urllib3-1.x</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #999;">-</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>s2n</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
-                </tr>
-                <tr>
-                    <td><strong>sigv4</strong></td>
-                    <td class="status-cell"><a href="recipe-versions-master.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-wrynose.html"><span style="color: #999;">-</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-whinlatter.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-scarthgap.html"><span style="color: #28a745;">🟢</span></a></td>
-                    <td class="status-cell"><a href="recipe-versions-kirkstone.html"><span style="color: #28a745;">🟢</span></a></td>
                 </tr>
             </tbody>
         </table>
