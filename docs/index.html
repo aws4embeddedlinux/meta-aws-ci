@@ -43,7 +43,7 @@
                 Reports are generated daily via GitHub Actions and published to GitHub Pages.
             </p>
             <p>
-                <strong>Tracked Repositories:</strong> meta-aws, aws4embeddedlinux-ci, meta-aws-demos, 
+                <strong>Tracked Repositories:</strong> meta-aws, aws4embeddedlinux-ci, meta-aws-demos,
                 and all automotive demo repositories.
             </p>
         </section>
@@ -64,7 +64,7 @@
                 const elem = document.getElementById('recipe-updated');
                 elem.textContent = 'Last updated: Not yet generated';
             });
-        
+
         // Load last updated timestamp for issues
         fetch('issues.html')
             .then(() => {
@@ -75,7 +75,7 @@
                 const elem = document.getElementById('issues-updated');
                 elem.textContent = 'Last updated: Not yet generated';
             });
-        
+
         // Load last updated timestamp for security
         fetch('security.html')
             .then(() => {

@@ -54,7 +54,9 @@ def create_pulls(
         _create_prs(target_branch, repo, delay, branches)
 
 
-def _create_prs(target_branch: str, repo: str, delay: int, branches: Sequence[str]) -> None:
+def _create_prs(
+    target_branch: str, repo: str, delay: int, branches: Sequence[str]
+) -> None:
     assert "GITHUB_TOKEN" in os.environ, "GITHUB_TOKEN not found in env"
     token = os.environ.get("GITHUB_TOKEN")
     gh = Github(token)

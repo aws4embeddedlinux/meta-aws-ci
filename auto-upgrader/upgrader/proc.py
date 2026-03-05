@@ -47,7 +47,9 @@ def run(cmd: str) -> Tuple[str, str, int]:
     return ("\n".join(stdout), "\n".join(stderr), ret_code)
 
 
-async def _run(cmd: str, stdout_cb: Callable[[str], None], stderr_cb: Callable[[str], None]) -> int:
+async def _run(
+    cmd: str, stdout_cb: Callable[[str], None], stderr_cb: Callable[[str], None]
+) -> int:
     proc = await asyncio.create_subprocess_shell(cmd, stdout=PIPE, stderr=PIPE)
     await asyncio.wait(
         [
@@ -58,7 +60,9 @@ async def _run(cmd: str, stdout_cb: Callable[[str], None], stderr_cb: Callable[[
     return await proc.wait()
 
 
-async def _read_stream(stream: Optional[asyncio.StreamReader], cb: Callable[[str], None]) -> None:
+async def _read_stream(
+    stream: Optional[asyncio.StreamReader], cb: Callable[[str], None]
+) -> None:
     assert stream
     while True:
         line = await stream.readline()

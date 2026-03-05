@@ -75,7 +75,11 @@ def _check_for_updates(recipe: str) -> Optional[dict]:
     m = re.search(update_re, stdout)
     if m:
         logger.info(f"Update for {recipe}:\t{m.group(1)}\t->\t{m.group(2)}")
-        return {"recipe": recipe, "previous_version": m.group(1), "next_version": m.group(2)}
+        return {
+            "recipe": recipe,
+            "previous_version": m.group(1),
+            "next_version": m.group(2),
+        }
     else:
         logger.info(f"No update found for {recipe}.")
         return None
@@ -101,7 +105,11 @@ def update(layer_path: Path, target_branch: str) -> None:
     Path(BRANCH_FILE).touch()
 
     # TODO(glimsdal): Convert Any to Union[str, NewType of upgrade]
-    result: Dict[str, List[Any]] = {"success": list(), "fail": list(), "no_upgrade": list()}
+    result: Dict[str, List[Any]] = {
+        "success": list(),
+        "fail": list(),
+        "no_upgrade": list(),
+    }
 
     run(f"git -C {layer_path} checkout {target_branch}")
 
@@ -129,7 +137,9 @@ def update(layer_path: Path, target_branch: str) -> None:
         # Attempt upgrade
         (_, _, ret) = run(f"devtool upgrade {upgrade.get('recipe')}")
         if ret != 0:
-            logger.warn(f"upgrading {upgrade.get('recipe')} failed. return code was {ret}")
+            logger.warn(
+                f"upgrading {upgrade.get('recipe')} failed. return code was {ret}"
+            )
             result["fail"].append(upgrade)
             continue
 
@@ -146,7 +156,9 @@ def update(layer_path: Path, target_branch: str) -> None:
             f"devtool finish --force --force-patch-refresh {upgrade.get('recipe')} {layer_path}"
         )
         if ret != 0:
-            logger.warn(f"finishing {upgrade.get('recipe')} failed. return code was {ret}")
+            logger.warn(
+                f"finishing {upgrade.get('recipe')} failed. return code was {ret}"
+            )
             result["fail"].append(upgrade)
             continue
 
