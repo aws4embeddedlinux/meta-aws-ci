@@ -33,4 +33,4 @@ jobs:
           git checkout gh-pages
           mv /tmp/recipe-versions*.html docs/
           git add docs/recipe-versions*.html
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update recipe versions report" && git pull --rebase origin gh-pages && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update recipe versions report" && git pull --rebase origin gh-pages && git push origin gh-pages)
