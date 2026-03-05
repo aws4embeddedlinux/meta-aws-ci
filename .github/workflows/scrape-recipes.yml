@@ -29,7 +29,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin gh-pages:gh-pages
+          mv docs/recipe-versions*.html /tmp/
           git checkout gh-pages
-          cp docs/recipe-versions*.html .
-          git add recipe-versions*.html
+          mv /tmp/recipe-versions*.html docs/
+          git add docs/recipe-versions*.html
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update recipe versions report" && git pull --rebase && git push)
