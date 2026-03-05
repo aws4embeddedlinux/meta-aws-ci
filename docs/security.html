@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Alerts</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .summary-card { background: white; padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid #dee2e6; }
+        .summary-card h3 { font-size: 2rem; margin: 0; }
+        .summary-card p { margin: 0.5rem 0 0 0; color: #666; }
+        .critical { color: #dc3545; }
+        .high { color: #fd7e14; }
+        .medium { color: #ffc107; }
+        .low { color: #6c757d; }
+        .repo-section { background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; }
+        .repo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .repo-name { font-size: 1.25rem; font-weight: bold; color: #232f3e; }
+        .severity-badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem; margin-right: 0.5rem; }
+        .severity-badge.critical { background: #dc3545; color: white; }
+        .severity-badge.high { background: #fd7e14; color: white; }
+        .severity-badge.medium { background: #ffc107; color: black; }
+        .severity-badge.low { background: #6c757d; color: white; }
+        .no-alerts { color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Security Alerts</h1>
+        <h2>Dependabot Vulnerability Summary</h2>
+    </header>
+    <main>
+        <div class="report-header">
+            <p><a href="index.html" class="back-link">← Back to Dashboard</a></p>
+            <p><strong>Last Updated:</strong> 2026-03-05 15:41:08 UTC</p>
+        </div>
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>0</h3>
+                <p>Total Alerts</p>
+            </div>
+            <div class="summary-card">
+                <h3 class="critical">0</h3>
+                <p>Critical</p>
+            </div>
+            <div class="summary-card">
+                <h3 class="high">0</h3>
+                <p>High</p>
+            </div>
+            <div class="summary-card">
+                <h3 class="medium">0</h3>
+                <p>Medium</p>
+            </div>
+            <div class="summary-card">
+                <h3 class="low">0</h3>
+                <p>Low</p>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">aws4embeddedlinux-ci</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">aws4embeddedlinux-ci-examples</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">demo-auto-aws-iotfleetwise</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">demo-iot-automotive-cloud</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">demo-iot-automotive-embeddedlinux-image</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">demo-iot-automotive-mcu</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">demo-iot-automotive-simulator</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws-buildbot</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws-ci</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws-demos</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws-ewaol</span>
+                <span class="no-alerts">✓ No alerts</span>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>Generated by <a href="https://github.com/aws4embeddedlinux/meta-aws-ci">meta-aws-ci</a></p>
+    </footer>
+</body>
+</html>
