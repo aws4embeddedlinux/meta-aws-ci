@@ -47,22 +47,22 @@ def get_recipes_from_git(repo_path, branch="master"):
     except subprocess.CalledProcessError:
         return recipes
     
-    # Find all .bb files
-    recipes_dir = Path(repo_path) / "recipes-sdk"
-    if not recipes_dir.exists():
-        return recipes
-    
-    for bb_file in recipes_dir.rglob("*.bb"):
-        # Extract recipe name and version from filename
-        # Format: recipename_version.bb
-        match = re.match(r"(.+?)_(.+)\.bb$", bb_file.name)
-        if match:
-            recipe_name = match.group(1)
-            recipe_version = match.group(2)
-            if recipe_version != "git":
-                recipes[recipe_name] = recipe_version
-            else:
-                recipes[recipe_name] = "git"
+    # Find all .bb files in all recipes-* directories
+    for recipes_dir in Path(repo_path).glob("recipes-*"):
+        if not recipes_dir.is_dir():
+            continue
+        
+        for bb_file in recipes_dir.rglob("*.bb"):
+            # Extract recipe name and version from filename
+            # Format: recipename_version.bb
+            match = re.match(r"(.+?)_(.+)\.bb$", bb_file.name)
+            if match:
+                recipe_name = match.group(1)
+                recipe_version = match.group(2)
+                if recipe_version != "git":
+                    recipes[recipe_name] = recipe_version
+                else:
+                    recipes[recipe_name] = "git"
     
     return recipes
 
