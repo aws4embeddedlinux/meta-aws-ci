@@ -191,7 +191,7 @@ def generate_detail_page(branch, all_data, all_recipes, updated):
             versions = [master_ver, next_ver]
             colored = [color_version_html(v, versions) for v in versions]
             
-            html.append('                <tr>')
+            html.append(f'                <tr id="{recipe}">')
             recipe_display = f'<strong>{recipe}</strong>'
             if recipe_path and recipe_path != ".":
                 recipe_display += f'<br><span class="recipe-path">{recipe_path}</span>'
@@ -350,7 +350,7 @@ def main():
                 next_ver = next_info.get("version", "-") if isinstance(next_info, dict) else next_info if next_info else master_ver
                 
                 status = get_status_indicator(master_ver, next_ver)
-                print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html">{status}</a></td>')
+                print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}">{status}</a></td>')
             print("                </tr>")
 
     print("            </tbody>")
