@@ -12,6 +12,15 @@ This project has three goals:
    integrate and maintain AWS device software throughout the IoT
    product lifecycle.
 
+## Dashboard
+
+View automated reports at: **https://aws4embeddedlinux.github.io/meta-aws-ci/**
+
+The dashboard provides:
+- **Recipe Versions**: meta-aws recipe versions across Yocto releases (updated daily)
+- **Issues & PRs**: Organization-wide issue and pull request tracking (coming soon)
+- **Security Alerts**: Dependabot vulnerability summary (coming soon)
+
 ## How this repository is organized
 
 ```text
