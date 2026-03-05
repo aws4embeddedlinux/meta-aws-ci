@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issues & Pull Requests</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .summary-card { background: white; padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid #dee2e6; }
+        .summary-card h3 { font-size: 2rem; color: #ff9900; margin: 0; }
+        .summary-card p { margin: 0.5rem 0 0 0; color: #666; }
+        .repo-section { background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; }
+        .repo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .repo-name { font-size: 1.25rem; font-weight: bold; color: #232f3e; }
+        .counts { color: #666; }
+        .item-list { list-style: none; padding: 0; }
+        .item-list li { padding: 0.5rem 0; border-bottom: 1px solid #f0f0f0; }
+        .item-list li:last-child { border-bottom: none; }
+        .item-link { color: #0366d6; text-decoration: none; }
+        .item-link:hover { text-decoration: underline; }
+        .age { color: #666; font-size: 0.875rem; margin-left: 0.5rem; }
+        .no-items { color: #999; font-style: italic; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Issues & Pull Requests</h1>
+        <h2>Organization-wide Tracking</h2>
+    </header>
+    <main>
+        <div class="report-header">
+            <p><a href="index.html" class="back-link">← Back to Dashboard</a></p>
+            <p><strong>Last Updated:</strong> 2026-03-05 15:42:31 UTC</p>
+        </div>
+        <div class="summary-cards">
+            <div class="summary-card">
+                <h3>21</h3>
+                <p>Open Issues</p>
+            </div>
+            <div class="summary-card">
+                <h3>28</h3>
+                <p>Open Pull Requests</p>
+            </div>
+            <div class="summary-card">
+                <h3>12</h3>
+                <p>Repositories</p>
+            </div>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">aws4embeddedlinux-ci</span>
+                <span class="counts">1 issues, 6 PRs</span>
+            </div>
+            <h4>Issues</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci/issues/66" class="item-link">#66: cdk destroy failed</a>
+                    <span class="age">(777 days old)</span>
+                </li>
+            </ul>
+            <h4>Pull Requests</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci/pull/213" class="item-link">#213: Bump tar from 7.5.7 to 7.5.9</a>
+                    <span class="age">(14 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci/pull/214" class="item-link">#214: Bump ajv from 6.12.6 to 6.14.0</a>
+                    <span class="age">(11 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci/pull/215" class="item-link">#215: Bump prettier from 3.8.0 to 3.8.1</a>
+                    <span class="age">(9 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci/pull/216" class="item-link">#216: Bump eslint from 9.39.2 to 10.0.1</a>
+                    <span class="age">(9 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci/pull/217" class="item-link">#217: Bump aws-cdk-lib from 2.236.0 to 2.239.0</a>
+                    <span class="age">(9 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci/pull/220" class="item-link">#220: Bump minimatch from 3.1.2 to 3.1.5</a>
+                    <span class="age">(5 days old)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws</span>
+                <span class="counts">5 issues, 10 PRs</span>
+            </div>
+            <h4>Issues</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/issues/10836" class="item-link">#10836: generate EC2 AMI from compressed images</a>
+                    <span class="age">(443 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/issues/13481" class="item-link">#13481: run ptest with credentials to connect to aws</a>
+                    <span class="age">(177 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/issues/14697" class="item-link">#14697: python3-boto3 and python3-botocore should be upgraded always together</a>
+                    <span class="age">(50 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/issues/15159" class="item-link">#15159: greengrass-lite: Properly support local deployment and fleet provisioning options when enabled together</a>
+                    <span class="age">(5 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/issues/15192" class="item-link">#15192: Failed to write certificate with custom install directory and fleet provisioning</a>
+                    <span class="age">(1 days old)</span>
+                </li>
+            </ul>
+            <h4>Pull Requests</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15112" class="item-link">#15112: [Backport scarthgap-next] 2026-02-24_01-41-47_master-next_aws-lc</a>
+                    <span class="age">(9 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15115" class="item-link">#15115: [Backport scarthgap-next] 2026-02-24_01-41-47_master-next_aws-sdk-cpp</a>
+                    <span class="age">(9 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15146" class="item-link">#15146: [Backport kirkstone-next] greengrass-lite: upgrade 2.3.2 -> 2.3.3</a>
+                    <span class="age">(6 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15169" class="item-link">#15169: 2026-03-03_01-41-52_master-next_python3-boto3</a>
+                    <span class="age">(2 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15179" class="item-link">#15179: [Backport scarthgap-next] 2026-03-03_01-41-52_master-next_firecracker-bin</a>
+                    <span class="age">(2 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15181" class="item-link">#15181: [Backport whinlatter-next] 2026-03-03_01-41-52_master-next_firecracker-bin</a>
+                    <span class="age">(2 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15185" class="item-link">#15185: [Backport scarthgap-next] 2026-03-03_01-41-52_master-next_jailer-bin</a>
+                    <span class="age">(2 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15187" class="item-link">#15187: [Backport whinlatter-next] 2026-03-03_01-41-52_master-next_jailer-bin</a>
+                    <span class="age">(2 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15196" class="item-link">#15196: 2026-03-04_01-40-39_master-next_python3-boto3</a>
+                    <span class="age">(1 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws/pull/15209" class="item-link">#15209: 2026-03-05_01-41-05_master-next_python3-boto3</a>
+                    <span class="age">(0 days old)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">aws4embeddedlinux-ci-examples</span>
+                <span class="counts">0 issues, 3 PRs</span>
+            </div>
+            <h4>Pull Requests</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci-examples/pull/34" class="item-link">#34: Bump tar from 7.5.7 to 7.5.9 in /cdk</a>
+                    <span class="age">(13 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci-examples/pull/35" class="item-link">#35: Bump ajv from 6.12.6 to 6.14.0 in /cdk</a>
+                    <span class="age">(11 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/aws4embeddedlinux-ci-examples/pull/38" class="item-link">#38: Bump minimatch from 3.1.2 to 3.1.5 in /cdk</a>
+                    <span class="age">(5 days old)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">demo-auto-aws-iotfleetwise</span>
+                <span class="counts">4 issues, 0 PRs</span>
+            </div>
+            <h4>Issues</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/demo-auto-aws-iotfleetwise/issues/4" class="item-link">#4: fix: create or modify gg role in the MainStack</a>
+                    <span class="age">(1315 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/demo-auto-aws-iotfleetwise/issues/5" class="item-link">#5: Instructions</a>
+                    <span class="age">(1284 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/demo-auto-aws-iotfleetwise/issues/6" class="item-link">#6: The error "Response object is too long" for the Signal Catalog custom resource</a>
+                    <span class="age">(1226 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/demo-auto-aws-iotfleetwise/issues/7" class="item-link">#7: bootsrap error</a>
+                    <span class="age">(1140 days old)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">demo-iot-automotive-embeddedlinux-image</span>
+                <span class="counts">0 issues, 3 PRs</span>
+            </div>
+            <h4>Pull Requests</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/demo-iot-automotive-embeddedlinux-image/pull/17" class="item-link">#17: Bump tar from 7.5.7 to 7.5.9 in /cdk</a>
+                    <span class="age">(13 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/demo-iot-automotive-embeddedlinux-image/pull/18" class="item-link">#18: Bump ajv from 6.12.6 to 6.14.0 in /cdk</a>
+                    <span class="age">(11 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/demo-iot-automotive-embeddedlinux-image/pull/20" class="item-link">#20: Bump minimatch from 3.1.2 to 3.1.5 in /cdk</a>
+                    <span class="age">(5 days old)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws-buildbot</span>
+                <span class="counts">0 issues, 4 PRs</span>
+            </div>
+            <h4>Pull Requests</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-buildbot/pull/36" class="item-link">#36: build(deps-dev): bump eslint, @typescript-eslint/eslint-plugin and @typescript-eslint/parser</a>
+                    <span class="age">(32 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-buildbot/pull/37" class="item-link">#37: build(deps-dev): bump cryptography from 44.0.1 to 46.0.5 in /configuration/admin</a>
+                    <span class="age">(22 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-buildbot/pull/38" class="item-link">#38: build(deps-dev): bump ajv from 6.12.6 to 6.14.0</a>
+                    <span class="age">(11 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-buildbot/pull/40" class="item-link">#40: build(deps): bump minimatch and aws-cdk-lib</a>
+                    <span class="age">(4 days old)</span>
+                </li>
+            </ul>
+        </div>
+        <div class="repo-section">
+            <div class="repo-header">
+                <span class="repo-name">meta-aws-demos</span>
+                <span class="counts">11 issues, 2 PRs</span>
+            </div>
+            <h4>Issues</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/225" class="item-link">#225: upstream meta-aws-demos ec2 in meta-rauc-community</a>
+                    <span class="age">(203 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/267" class="item-link">#267: upstream meta-security backports</a>
+                    <span class="age">(167 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/270" class="item-link">#270: [idea] create docker gg-lite image with fleetprovisioning</a>
+                    <span class="age">(160 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/271" class="item-link">#271: [idea] do something with the fleet vulnerability management + SBOMs</a>
+                    <span class="age">(160 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/272" class="item-link">#272: [idea] run greengreass lite UATs in demo image</a>
+                    <span class="age">(160 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/274" class="item-link">#274: [idea] add AI coding info like in Linux Kernel</a>
+                    <span class="age">(157 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/284" class="item-link">#284: suppress WARNING for dangling bbappends</a>
+                    <span class="age">(155 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/299" class="item-link">#299: add podman to greengrass-lite demo image</a>
+                    <span class="age">(148 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/357" class="item-link">#357: create gg HA demo image</a>
+                    <span class="age">(105 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/394" class="item-link">#394: create a testimage for gg</a>
+                    <span class="age">(80 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/issues/416" class="item-link">#416: [idea] push GG Container to GitHub registry</a>
+                    <span class="age">(38 days old)</span>
+                </li>
+            </ul>
+            <h4>Pull Requests</h4>
+            <ul class="item-list">
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/pull/215" class="item-link">#215: Add SBOM generation for specific raspberrypi-64 greengrass demo images</a>
+                    <span class="age">(205 days old)</span>
+                </li>
+                <li>
+                    <a href="https://github.com/aws4embeddedlinux/meta-aws-demos/pull/251" class="item-link">#251: Add CONFIG_TLS=y as a default kernel config</a>
+                    <span class="age">(176 days old)</span>
+                </li>
+            </ul>
+        </div>
+    </main>
+    <footer>
+        <p>Generated by <a href="https://github.com/aws4embeddedlinux/meta-aws-ci">meta-aws-ci</a></p>
+    </footer>
+</body>
+</html>
