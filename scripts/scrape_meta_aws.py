@@ -33,7 +33,7 @@ def get_current_releases():
 
 
 def get_recipes_from_git(repo_path, branch="master"):
-    """Extract recipe versions from git repository"""
+    """Extract recipe versions from git repository with category and path info"""
     recipes = {}
     
     # Checkout the branch
@@ -52,6 +52,8 @@ def get_recipes_from_git(repo_path, branch="master"):
         if not recipes_dir.is_dir():
             continue
         
+        category = recipes_dir.name  # e.g., "recipes-iot"
+        
         for bb_file in recipes_dir.rglob("*.bb"):
             # Extract recipe name and version from filename
             # Format: recipename_version.bb
@@ -59,16 +61,34 @@ def get_recipes_from_git(repo_path, branch="master"):
             if match:
                 recipe_name = match.group(1)
                 recipe_version = match.group(2)
+                
+                # Get subdirectory path relative to recipes-* directory
+                subdir = bb_file.parent.relative_to(recipes_dir)
+                
                 if recipe_version != "git":
-                    recipes[recipe_name] = recipe_version
+                    recipes[recipe_name] = {
+                        "version": recipe_version,
+                        "category": category,
+                        "path": str(subdir)
+                    }
                 else:
-                    recipes[recipe_name] = "git"
+                    recipes[recipe_name] = {
+                        "version": "git",
+                        "category": category,
+                        "path": str(subdir)
+                    }
     
     return recipes
 
 
 def get_status_indicator(master_ver, next_ver):
     """Return status indicator based on version consistency"""
+    # Handle dict format
+    if isinstance(master_ver, dict):
+        master_ver = master_ver.get("version", "-")
+    if isinstance(next_ver, dict):
+        next_ver = next_ver.get("version", "-")
+    
     if master_ver == "-" or master_ver == "":
         return '<span style="color: #999;">-</span>'
     if next_ver == "-" or next_ver == "":
@@ -86,9 +106,13 @@ def get_status_indicator(master_ver, next_ver):
 
 
 def color_version_html(ver, versions):
+    # Handle dict format
+    if isinstance(ver, dict):
+        ver = ver.get("version", "-")
+    
     if ver == "-" or ver == "":
         return ver
-    valid = [v for v in versions if v != "-" and v != ""]
+    valid = [v.get("version", "-") if isinstance(v, dict) else v for v in versions if (v.get("version", "-") if isinstance(v, dict) else v) not in ["-", ""]]
     if len(set(valid)) <= 1:
         return ver
     try:
@@ -121,6 +145,8 @@ def generate_detail_page(branch, all_data, all_recipes, updated):
             '        .report-header { background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; }',
             '        .back-link { color: #ff9900; text-decoration: none; }',
             '        .back-link:hover { text-decoration: underline; }',
+            '        .category-header { background: #f0f0f0; font-weight: bold; }',
+            '        .recipe-path { font-size: 0.75em; color: #666; font-style: italic; }',
             '    </style>',
             '</head>', '<body>', '    <header>',
             '        <h1>meta-aws Recipe Versions</h1>',
@@ -137,17 +163,42 @@ def generate_detail_page(branch, all_data, all_recipes, updated):
             f'                    <th class="next-col">{branch}-next</th>',
             '                </tr>', '            </thead>', '            <tbody>']
     
-    for recipe in sorted(all_recipes):
-        master_ver = master_recipes.get(recipe, "-")
-        next_ver = next_recipes.get(recipe, "-")
-        versions = [master_ver, next_ver]
-        colored = [color_version_html(v, versions) for v in versions]
-        
-        html.append('                <tr>')
-        html.append(f'                    <td><strong>{recipe}</strong></td>')
-        html.append(f'                    <td>{colored[0]}</td>')
-        html.append(f'                    <td class="next-col">{colored[1]}</td>')
+    # Group recipes by category
+    recipes_by_category = {}
+    for recipe in all_recipes:
+        recipe_info = master_recipes.get(recipe) or next_recipes.get(recipe)
+        if recipe_info and isinstance(recipe_info, dict):
+            category = recipe_info.get("category", "unknown")
+            if category not in recipes_by_category:
+                recipes_by_category[category] = []
+            recipes_by_category[category].append(recipe)
+    
+    # Generate rows grouped by category
+    for category in sorted(recipes_by_category.keys()):
+        # Category header
+        html.append(f'                <tr class="category-header">')
+        html.append(f'                    <td colspan="3">{category}</td>')
         html.append('                </tr>')
+        
+        for recipe in sorted(recipes_by_category[category]):
+            master_info = master_recipes.get(recipe, {})
+            next_info = next_recipes.get(recipe, {})
+            
+            master_ver = master_info.get("version", "-") if isinstance(master_info, dict) else master_info
+            next_ver = next_info.get("version", "-") if isinstance(next_info, dict) else next_info
+            recipe_path = master_info.get("path", "") if isinstance(master_info, dict) else ""
+            
+            versions = [master_ver, next_ver]
+            colored = [color_version_html(v, versions) for v in versions]
+            
+            html.append('                <tr>')
+            recipe_display = f'<strong>{recipe}</strong>'
+            if recipe_path and recipe_path != ".":
+                recipe_display += f'<br><span class="recipe-path">{recipe_path}</span>'
+            html.append(f'                    <td>{recipe_display}</td>')
+            html.append(f'                    <td>{colored[0]}</td>')
+            html.append(f'                    <td class="next-col">{colored[1]}</td>')
+            html.append('                </tr>')
     
     html.extend(['            </tbody>', '        </table>', '    </main>',
                  '    <footer>',
@@ -220,6 +271,8 @@ def main():
     )
     print("        .back-link { color: #ff9900; text-decoration: none; }")
     print("        .back-link:hover { text-decoration: underline; }")
+    print("        .category-header { background: #f0f0f0; font-weight: bold; }")
+    print("        .recipe-path { font-size: 0.75em; color: #666; font-style: italic; }")
     print("    </style>")
     print("</head>")
     print("<body>")
@@ -249,15 +302,56 @@ def main():
     print("            </thead>")
     print("            <tbody>")
 
-    for recipe in sorted(all_recipes):
-        print("                <tr>")
-        print(f"                    <td><strong>{recipe}</strong></td>")
+    # Group recipes by category
+    recipes_by_category = {}
+    for recipe in all_recipes:
+        # Get recipe info from any branch to determine category
+        recipe_info = None
         for branch in branches:
-            master_ver = all_data.get(branch, {}).get(recipe, "-")
-            next_ver = all_data.get(f"{branch}-next", {}).get(recipe, master_ver)
-            status = get_status_indicator(master_ver, next_ver)
-            print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html">{status}</a></td>')
-        print("                </tr>")
+            recipe_info = all_data.get(branch, {}).get(recipe)
+            if recipe_info:
+                break
+        
+        if recipe_info and isinstance(recipe_info, dict):
+            category = recipe_info.get("category", "unknown")
+            if category not in recipes_by_category:
+                recipes_by_category[category] = []
+            recipes_by_category[category].append(recipe)
+    
+    # Generate rows grouped by category
+    for category in sorted(recipes_by_category.keys()):
+        # Category header
+        print(f'                <tr class="category-header">')
+        print(f'                    <td colspan="{len(branches) + 1}">{category}</td>')
+        print('                </tr>')
+        
+        for recipe in sorted(recipes_by_category[category]):
+            print("                <tr>")
+            
+            # Get recipe path from first available branch
+            recipe_path = ""
+            for branch in branches:
+                recipe_info = all_data.get(branch, {}).get(recipe)
+                if recipe_info and isinstance(recipe_info, dict):
+                    recipe_path = recipe_info.get("path", "")
+                    break
+            
+            recipe_display = f"<strong>{recipe}</strong>"
+            if recipe_path and recipe_path != ".":
+                recipe_display += f'<br><span class="recipe-path">{recipe_path}</span>'
+            
+            print(f"                    <td>{recipe_display}</td>")
+            
+            for branch in branches:
+                master_info = all_data.get(branch, {}).get(recipe, {})
+                next_info = all_data.get(f"{branch}-next", {}).get(recipe, {})
+                
+                master_ver = master_info.get("version", "-") if isinstance(master_info, dict) else master_info if master_info else "-"
+                next_ver = next_info.get("version", "-") if isinstance(next_info, dict) else next_info if next_info else master_ver
+                
+                status = get_status_indicator(master_ver, next_ver)
+                print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html">{status}</a></td>')
+            print("                </tr>")
 
     print("            </tbody>")
     print("        </table>")
