@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: gh-pages
 
       - uses: actions/setup-python@v5
         with:
@@ -23,12 +21,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
 
-      - name: Generate recipe version report
+      - name: Generate recipe version reports
         run: python scripts/scrape_meta_aws.py > docs/recipe-versions.html
 
-      - name: Commit and push to gh-pages
+      - name: Push to gh-pages
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/recipe-versions*.html
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+          cp docs/recipe-versions*.html .
+          git add recipe-versions*.html
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update recipe versions report" && git pull --rebase && git push)
