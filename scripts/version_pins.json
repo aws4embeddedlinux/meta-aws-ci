@@ -1,0 +1,19 @@
+{
+    "scarthgap": {
+        "amazon-ssm-agent": {
+            "pinned_version": "3.3.1957.0",
+            "master_version": "3.3.4177.0",
+            "reason": "SSM agent 3.3.4177.0 requires Go 1.25 and uses godebug block directive (Go 1.21+). Scarthgap ships Go 1.22.",
+            "date": "2026-04-14"
+        },
+        "aws-greengrass-component-sdk": {
+            "pinned_version": "0.4.0",
+            "master_version": "1.0.1",
+            "reason": "v1.0.1 uses Rust edition 2024 and no_std with cdylib. Scarthgap has older Rust toolchain requiring edition 2021 downgrade patches. Dedicated rework needed.",
+            "date": "2026-04-14"
+        }
+    },
+    "kirkstone": {
+        "_branch_note": "Deprecated. EOL April 2026. Final release: kirkstone-2026.15.0. No further updates."
+    }
+}

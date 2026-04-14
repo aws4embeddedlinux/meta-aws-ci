@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import json
 import os
 import re
 import subprocess
@@ -130,7 +131,7 @@ def color_version_html(ver, versions):
         return f'<span class="version-mid">🟡 {ver}</span>'
 
 
-def generate_detail_page(branch, all_data, all_recipes, updated):
+def generate_detail_page(branch, all_data, all_recipes, updated, version_pins=None):
     """Generate detailed version page for a specific branch"""
     master_recipes = all_data.get(branch, {})
     next_recipes = all_data.get(f"{branch}-next", {})
@@ -206,6 +207,10 @@ def generate_detail_page(branch, all_data, all_recipes, updated):
             html.append(f'                    <td>{colored[0]}</td>')
             html.append(f'                    <td class="next-col">{colored[1]}</td>')
             html.append('                </tr>')
+            if version_pins:
+                pin_note = version_pins.get(branch, {}).get(recipe, {})
+                if isinstance(pin_note, dict) and pin_note.get("reason"):
+                    html.append(f'                <tr><td colspan="3" style="font-size:0.85em;color:#856404;background:#fff3cd;padding:4px 12px;">📌 {pin_note["reason"]}</td></tr>')
     
     html.extend(['            </tbody>', '        </table>', '    </main>',
                  '    <footer>',
@@ -220,6 +225,13 @@ def main():
     releases = get_current_releases()
     branches = ["master"] + releases
     print(f"Found releases: {', '.join(branches)}", file=sys.stderr)
+
+    # Load version pin notes
+    pins_file = Path(__file__).parent / "version_pins.json"
+    version_pins = {}
+    if pins_file.exists():
+        version_pins = json.loads(pins_file.read_text())
+        print(f"Loaded version pins for: {', '.join(version_pins.keys())}", file=sys.stderr)
 
     all_data = {}
     
@@ -256,7 +268,7 @@ def main():
     docs_dir = Path("docs")
     for branch in branches:
         if branch in all_data:
-            detail_html = generate_detail_page(branch, all_data, all_recipes, updated)
+            detail_html = generate_detail_page(branch, all_data, all_recipes, updated, version_pins)
             detail_file = docs_dir / f"recipe-versions-{branch}.html"
             detail_file.write_text(detail_html)
             print(f"Generated {detail_file}", file=sys.stderr)
@@ -305,7 +317,8 @@ def main():
         "🟡 Newer in -next branch | "
         "🔴 Older in -next branch | "
         "- Not in this release | "
-        "⛔ Deprecated (no further updates)</p>"
+        "⛔ Deprecated (no further updates) | "
+        "📌 Version pinned (hover for reason)</p>"
     )
     print("        </div>")
     print("        <table>")
@@ -367,7 +380,12 @@ def main():
                 next_ver = next_info.get("version", "-") if isinstance(next_info, dict) else next_info if next_info else master_ver
                 
                 status = get_status_indicator(master_ver, next_ver)
-                print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}">{status}</a></td>')
+                pin_note = version_pins.get(branch, {}).get(recipe, {})
+                if isinstance(pin_note, dict) and pin_note.get("reason"):
+                    reason = pin_note["reason"].replace('"', '&quot;')
+                    print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}" title="📌 {reason}">{status} 📌</a></td>')
+                else:
+                    print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}">{status}</a></td>')
             print("                </tr>")
 
     print("            </tbody>")
