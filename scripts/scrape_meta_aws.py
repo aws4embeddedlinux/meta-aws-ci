@@ -32,6 +32,9 @@ def get_current_releases():
     return releases
 
 
+DEPRECATED_BRANCHES = {"kirkstone"}
+
+
 def get_recipes_from_git(repo_path, branch="master"):
     """Extract recipe versions from git repository with category and path info"""
     recipes = {}
@@ -154,7 +157,10 @@ def generate_detail_page(branch, all_data, all_recipes, updated):
             '    </header>', '    <main>',
             '        <div class="report-header">',
             '            <p><a href="recipe-versions.html" class="back-link">← Back to Overview</a></p>',
-            f'            <p><strong>Last Updated:</strong> {updated}</p>',
+            f'            <p><strong>Last Updated:</strong> {updated}</p>',]
+    if branch in DEPRECATED_BRANCHES:
+        html.append('            <p style="color: #dc3545; font-weight: bold;">⛔ This branch is deprecated. No further updates will be made.</p>')
+    html.extend([
             f'            <p><strong>Comparing:</strong> {branch} branch vs {branch}-next branch from meta-aws git repository</p>',
             '            <p><strong>Legend:</strong> 🟢 Newest version | 🟡 Mid version | 🔴 Oldest version (comparing branch vs branch-next)</p>',
             '        </div>',
@@ -162,7 +168,7 @@ def generate_detail_page(branch, all_data, all_recipes, updated):
             '                    <th>Recipe</th>',
             f'                    <th>{branch}</th>',
             f'                    <th class="next-col">{branch}-next</th>',
-            '                </tr>', '            </thead>', '            <tbody>']
+            '                </tr>', '            </thead>', '            <tbody>'])
     
     # Group recipes by category
     recipes_by_category = {}
@@ -298,7 +304,8 @@ def main():
         "🟢 Versions in sync | "
         "🟡 Newer in -next branch | "
         "🔴 Older in -next branch | "
-        "- Not in this release</p>"
+        "- Not in this release | "
+        "⛔ Deprecated (no further updates)</p>"
     )
     print("        </div>")
     print("        <table>")
@@ -306,7 +313,8 @@ def main():
     print("                <tr>")
     print("                    <th>Recipe</th>")
     for branch in branches:
-        print(f"                    <th>{branch}</th>")
+        label = f"{branch} ⛔" if branch in DEPRECATED_BRANCHES else branch
+        print(f"                    <th>{label}</th>")
     print("                </tr>")
     print("            </thead>")
     print("            <tbody>")
