@@ -43,9 +43,7 @@ def git_layer(tmp_path):
         ["git", "config", "user.name", "Test"], cwd=layer, capture_output=True, check=True
     )
     subprocess.run(["git", "add", "--all"], cwd=layer, capture_output=True, check=True)
-    subprocess.run(
-        ["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True
-    )
+    subprocess.run(["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True)
     subprocess.run(
         ["git", "branch", "-M", "wrynose-next"], cwd=layer, capture_output=True, check=True
     )
@@ -78,9 +76,7 @@ def git_layer_sha256(tmp_path):
         ["git", "config", "user.name", "Test"], cwd=layer, capture_output=True, check=True
     )
     subprocess.run(["git", "add", "--all"], cwd=layer, capture_output=True, check=True)
-    subprocess.run(
-        ["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True
-    )
+    subprocess.run(["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True)
     subprocess.run(
         ["git", "branch", "-M", "scarthgap-next"], cwd=layer, capture_output=True, check=True
     )
@@ -117,7 +113,7 @@ class TestUpdateSrcrev:
         assert "oldoldold" not in result
 
     def test_no_srcrev(self):
-        content = "SUMMARY = \"test\"\n"
+        content = 'SUMMARY = "test"\n'
         result = update_srcrev(content, "abc123")
         assert result == content
 

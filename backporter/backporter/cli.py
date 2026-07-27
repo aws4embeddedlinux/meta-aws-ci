@@ -107,7 +107,11 @@ def upgrade(
                 sys.exit(1)
     else:
         click.echo(f"⊘ {result.message}")
-        sys.exit(0 if "not found" in result.message.lower() or "skipping" in result.message.lower() else 1)
+        sys.exit(
+            0
+            if "not found" in result.message.lower() or "skipping" in result.message.lower()
+            else 1
+        )
 
 
 @cli.command()
