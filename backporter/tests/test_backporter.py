@@ -60,8 +60,10 @@ def git_layer_sha256(tmp_path):
     recipe_file = recipes_dir / "corretto-21-bin_21.0.10.9.1.bb"
     recipe_file.write_text(
         'SUMMARY = "Amazon Corretto 21"\n'
-        'SRC_URI:append:aarch64 = " https://corretto.aws/downloads/resources/${PV}/amazon-corretto-${PV}-linux-aarch64.tar.gz;name=aarch64"\n'
-        'SRC_URI:append:x86-64 = " https://corretto.aws/downloads/resources/${PV}/amazon-corretto-${PV}-linux-x64.tar.gz;name=x86-64"\n'
+        'SRC_URI:append:aarch64 = " https://corretto.aws/downloads/resources/'
+        '${PV}/amazon-corretto-${PV}-linux-aarch64.tar.gz;name=aarch64"\n'
+        'SRC_URI:append:x86-64 = " https://corretto.aws/downloads/resources/'
+        '${PV}/amazon-corretto-${PV}-linux-x64.tar.gz;name=x86-64"\n'
         'SRC_URI[x86-64.sha256sum] = "aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111"\n'
         'SRC_URI[aarch64.sha256sum] = "bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222"\n'
         "require corretto-bin-common.inc\n"
@@ -120,8 +122,8 @@ class TestUpdateSrcrev:
 class TestUpdateSha256sums:
     def test_replaces_sha256sums(self):
         content = (
-            'SRC_URI[x86-64.sha256sum] = "aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111"\n'
-            'SRC_URI[aarch64.sha256sum] = "bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222"\n'
+            'SRC_URI[x86-64.sha256sum] = "aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111aaaa1111"\n'  # noqa: E501
+            'SRC_URI[aarch64.sha256sum] = "bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222bbbb2222"\n'  # noqa: E501
         )
         result = update_sha256sums(
             content,
