@@ -1,0 +1,29 @@
+[project]
+name = "backporter"
+version = "0.1.0"
+description = "Backport recipe version upgrades to release branches via git mv + hash update"
+license = "MIT-0"
+authors = [
+    { name = "Rich Elberger", email = "elberger@amazon.com" },
+]
+requires-python = ">=3.9"
+dependencies = [
+    "click>=8.1.0",
+]
+
+[project.scripts]
+backporter = "backporter.cli:cli"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
