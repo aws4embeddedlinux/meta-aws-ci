@@ -256,7 +256,11 @@ def backport(layer_path: Path, input: BackportInput) -> BackportResult:
     # git mv
     try:
         run_git(
-            ["mv", str(recipe_path.relative_to(layer_path)), str(new_path.relative_to(layer_path))],
+            [
+                "mv",
+                str(recipe_path.relative_to(layer_path)),
+                str(new_path.relative_to(layer_path)),
+            ],
             cwd=layer_path,
         )
     except subprocess.CalledProcessError as e:

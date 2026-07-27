@@ -18,7 +18,8 @@ SRCREV_DIFF_RE = re.compile(r'^\+SRCREV\s*=\s*"([0-9a-f]+)"', re.MULTILINE)
 
 # Matches SRC_URI[name.sha256sum] changes in diffs
 SHA256SUM_DIFF_RE = re.compile(
-    r'^\+SRC_URI\[(?P<name>[^\]]+)\.sha256sum\]\s*=\s*"(?P<hash>[0-9a-f]+)"', re.MULTILINE
+    r'^\+SRC_URI\[(?P<name>[^\]]+)\.sha256sum\]\s*=\s*"(?P<hash>[0-9a-f]+)"',
+    re.MULTILINE,
 )
 
 

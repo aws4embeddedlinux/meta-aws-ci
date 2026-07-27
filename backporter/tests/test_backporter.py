@@ -4,7 +4,6 @@ import subprocess
 from pathlib import Path
 
 import pytest
-
 from backporter.core import (
     BackportInput,
     backport,
@@ -36,15 +35,26 @@ def git_layer(tmp_path):
     # Initialize git repo
     subprocess.run(["git", "init"], cwd=layer, capture_output=True, check=True)
     subprocess.run(
-        ["git", "config", "user.email", "test@test.com"], cwd=layer, capture_output=True, check=True
+        ["git", "config", "user.email", "test@test.com"],
+        cwd=layer,
+        capture_output=True,
+        check=True,
     )
     subprocess.run(
-        ["git", "config", "user.name", "Test"], cwd=layer, capture_output=True, check=True
+        ["git", "config", "user.name", "Test"],
+        cwd=layer,
+        capture_output=True,
+        check=True,
     )
     subprocess.run(["git", "add", "--all"], cwd=layer, capture_output=True, check=True)
-    subprocess.run(["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True)
     subprocess.run(
-        ["git", "branch", "-M", "wrynose-next"], cwd=layer, capture_output=True, check=True
+        ["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True
+    )
+    subprocess.run(
+        ["git", "branch", "-M", "wrynose-next"],
+        cwd=layer,
+        capture_output=True,
+        check=True,
     )
 
     return layer
@@ -71,15 +81,26 @@ def git_layer_sha256(tmp_path):
 
     subprocess.run(["git", "init"], cwd=layer, capture_output=True, check=True)
     subprocess.run(
-        ["git", "config", "user.email", "test@test.com"], cwd=layer, capture_output=True, check=True
+        ["git", "config", "user.email", "test@test.com"],
+        cwd=layer,
+        capture_output=True,
+        check=True,
     )
     subprocess.run(
-        ["git", "config", "user.name", "Test"], cwd=layer, capture_output=True, check=True
+        ["git", "config", "user.name", "Test"],
+        cwd=layer,
+        capture_output=True,
+        check=True,
     )
     subprocess.run(["git", "add", "--all"], cwd=layer, capture_output=True, check=True)
-    subprocess.run(["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True)
     subprocess.run(
-        ["git", "branch", "-M", "scarthgap-next"], cwd=layer, capture_output=True, check=True
+        ["git", "commit", "-m", "initial"], cwd=layer, capture_output=True, check=True
+    )
+    subprocess.run(
+        ["git", "branch", "-M", "scarthgap-next"],
+        cwd=layer,
+        capture_output=True,
+        check=True,
     )
 
     return layer
@@ -155,7 +176,9 @@ class TestBackport:
         assert result.branch_name == "backport/python3-botocore_1.43.55_to_wrynose-next"
 
         # Verify the file was renamed
-        new_file = git_layer / "recipes-devtools" / "python" / "python3-botocore_1.43.55.bb"
+        new_file = (
+            git_layer / "recipes-devtools" / "python" / "python3-botocore_1.43.55.bb"
+        )
         assert new_file.exists()
 
         # Verify SRCREV was updated
@@ -164,7 +187,9 @@ class TestBackport:
         assert "oldoldold" not in content
 
         # Verify old file is gone
-        old_file = git_layer / "recipes-devtools" / "python" / "python3-botocore_1.43.19.bb"
+        old_file = (
+            git_layer / "recipes-devtools" / "python" / "python3-botocore_1.43.19.bb"
+        )
         assert not old_file.exists()
 
     def test_sha256sum_backport(self, git_layer_sha256):
@@ -195,8 +220,14 @@ class TestBackport:
 
         # Verify sha256sums were updated
         content = new_file.read_text()
-        assert "1d03a3bd5091728492d92f0ef341aca7d8885ece9a150119558f3e3d62b58745" in content
-        assert "90a07c1c693ac9333a8a6ec79432f0d13c0564fec6617b0222d43f86858f65b8" in content
+        assert (
+            "1d03a3bd5091728492d92f0ef341aca7d8885ece9a150119558f3e3d62b58745"
+            in content
+        )
+        assert (
+            "90a07c1c693ac9333a8a6ec79432f0d13c0564fec6617b0222d43f86858f65b8"
+            in content
+        )
         assert "aaaa1111" not in content
         assert "bbbb2222" not in content
 
@@ -241,7 +272,9 @@ class TestParseUpgradeCommit:
         new_file.write_text(content)
         old_file.unlink()
 
-        subprocess.run(["git", "add", "--all"], cwd=git_layer, capture_output=True, check=True)
+        subprocess.run(
+            ["git", "add", "--all"], cwd=git_layer, capture_output=True, check=True
+        )
         subprocess.run(
             ["git", "commit", "-m", "python3-botocore: upgrade 1.43.19 -> 1.43.20"],
             cwd=git_layer,

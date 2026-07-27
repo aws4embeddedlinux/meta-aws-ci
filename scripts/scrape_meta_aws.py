@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import json
-import os
 import re
 import subprocess
 import sys
@@ -39,25 +38,22 @@ DEPRECATED_BRANCHES = {"kirkstone"}
 def get_recipes_from_git(repo_path, branch="master"):
     """Extract recipe versions from git repository with category and path info"""
     recipes = {}
-    
+
     # Checkout the branch
     try:
         subprocess.run(
-            ["git", "checkout", branch],
-            cwd=repo_path,
-            capture_output=True,
-            check=True
+            ["git", "checkout", branch], cwd=repo_path, capture_output=True, check=True
         )
     except subprocess.CalledProcessError:
         return recipes
-    
+
     # Find all .bb files in all recipes-* directories
     for recipes_dir in Path(repo_path).glob("recipes-*"):
         if not recipes_dir.is_dir():
             continue
-        
+
         category = recipes_dir.name  # e.g., "recipes-iot"
-        
+
         for bb_file in recipes_dir.rglob("*.bb"):
             # Extract recipe name and version from filename
             # Format: recipename_version.bb
@@ -65,23 +61,23 @@ def get_recipes_from_git(repo_path, branch="master"):
             if match:
                 recipe_name = match.group(1)
                 recipe_version = match.group(2)
-                
+
                 # Get subdirectory path relative to recipes-* directory
                 subdir = bb_file.parent.relative_to(recipes_dir)
-                
+
                 if recipe_version != "git":
                     recipes[recipe_name] = {
                         "version": recipe_version,
                         "category": category,
-                        "path": str(subdir)
+                        "path": str(subdir),
                     }
                 else:
                     recipes[recipe_name] = {
                         "version": "git",
                         "category": category,
-                        "path": str(subdir)
+                        "path": str(subdir),
                     }
-    
+
     return recipes
 
 
@@ -92,7 +88,7 @@ def get_status_indicator(master_ver, next_ver):
         master_ver = master_ver.get("version", "-")
     if isinstance(next_ver, dict):
         next_ver = next_ver.get("version", "-")
-    
+
     if master_ver == "-" or master_ver == "":
         return '<span style="color: #999;">-</span>'
     if next_ver == "-" or next_ver == "":
@@ -113,10 +109,14 @@ def color_version_html(ver, versions):
     # Handle dict format
     if isinstance(ver, dict):
         ver = ver.get("version", "-")
-    
+
     if ver == "-" or ver == "":
         return ver
-    valid = [v.get("version", "-") if isinstance(v, dict) else v for v in versions if (v.get("version", "-") if isinstance(v, dict) else v) not in ["-", ""]]
+    valid = [
+        v.get("version", "-") if isinstance(v, dict) else v
+        for v in versions
+        if (v.get("version", "-") if isinstance(v, dict) else v) not in ["-", ""]
+    ]
     if len(set(valid)) <= 1:
         return ver
     try:
@@ -135,42 +135,58 @@ def generate_detail_page(branch, all_data, all_recipes, updated, version_pins=No
     """Generate detailed version page for a specific branch"""
     master_recipes = all_data.get(branch, {})
     next_recipes = all_data.get(f"{branch}-next", {})
-    
-    html = ['<!DOCTYPE html>', '<html lang="en">', '<head>',
-            '    <meta charset="UTF-8">',
-            '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
-            f'    <title>meta-aws Recipe Versions - {branch}</title>',
-            '    <link rel="stylesheet" href="style.css">',
-            '    <style>',
-            '        .version-latest { font-weight: bold; color: #28a745; }',
-            '        .version-oldest { color: #dc3545; }',
-            '        .version-mid { color: #ffc107; }',
-            '        .next-col { background: #f8f9fa; font-style: italic; }',
-            '        .report-header { background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; }',
-            '        .back-link { color: #ff9900; text-decoration: none; }',
-            '        .back-link:hover { text-decoration: underline; }',
-            '        .category-header { background: #f0f0f0; font-weight: bold; }',
-            '        .recipe-path { font-size: 0.75em; color: #666; font-style: italic; }',
-            '    </style>',
-            '</head>', '<body>', '    <header>',
-            '        <h1>meta-aws Recipe Versions</h1>',
-            f'        <h2>{branch} vs {branch}-next</h2>',
-            '    </header>', '    <main>',
-            '        <div class="report-header">',
-            '            <p><a href="recipe-versions.html" class="back-link">← Back to Overview</a></p>',
-            f'            <p><strong>Last Updated:</strong> {updated}</p>',]
+
+    html = [
+        "<!DOCTYPE html>",
+        '<html lang="en">',
+        "<head>",
+        '    <meta charset="UTF-8">',
+        '    <meta name="viewport" content="width=device-width, initial-scale=1.0">',
+        f"    <title>meta-aws Recipe Versions - {branch}</title>",
+        '    <link rel="stylesheet" href="style.css">',
+        "    <style>",
+        "        .version-latest { font-weight: bold; color: #28a745; }",
+        "        .version-oldest { color: #dc3545; }",
+        "        .version-mid { color: #ffc107; }",
+        "        .next-col { background: #f8f9fa; font-style: italic; }",
+        "        .report-header { background: white; padding: 1.5rem; margin-bottom: 1rem; border-radius: 8px; }",
+        "        .back-link { color: #ff9900; text-decoration: none; }",
+        "        .back-link:hover { text-decoration: underline; }",
+        "        .category-header { background: #f0f0f0; font-weight: bold; }",
+        "        .recipe-path { font-size: 0.75em; color: #666; font-style: italic; }",
+        "    </style>",
+        "</head>",
+        "<body>",
+        "    <header>",
+        "        <h1>meta-aws Recipe Versions</h1>",
+        f"        <h2>{branch} vs {branch}-next</h2>",
+        "    </header>",
+        "    <main>",
+        '        <div class="report-header">',
+        '            <p><a href="recipe-versions.html" class="back-link">← Back to Overview</a></p>',
+        f"            <p><strong>Last Updated:</strong> {updated}</p>",
+    ]
     if branch in DEPRECATED_BRANCHES:
-        html.append('            <p style="color: #dc3545; font-weight: bold;">⛔ This branch is deprecated. No further updates will be made.</p>')
-    html.extend([
-            f'            <p><strong>Comparing:</strong> {branch} branch vs {branch}-next branch from meta-aws git repository</p>',
-            '            <p><strong>Legend:</strong> 🟢 Newest version | 🟡 Mid version | 🔴 Oldest version (comparing branch vs branch-next)</p>',
-            '        </div>',
-            '        <table>', '            <thead>', '                <tr>',
-            '                    <th>Recipe</th>',
-            f'                    <th>{branch}</th>',
+        html.append(
+            '            <p style="color: #dc3545; font-weight: bold;">⛔ This branch is deprecated. No further updates will be made.</p>'
+        )
+    html.extend(
+        [
+            f"            <p><strong>Comparing:</strong> {branch} branch vs {branch}-next branch from meta-aws git repository</p>",
+            "            <p><strong>Legend:</strong> 🟢 Newest version | 🟡 Mid version | 🔴 Oldest version (comparing branch vs branch-next)</p>",
+            "        </div>",
+            "        <table>",
+            "            <thead>",
+            "                <tr>",
+            "                    <th>Recipe</th>",
+            f"                    <th>{branch}</th>",
             f'                    <th class="next-col">{branch}-next</th>',
-            '                </tr>', '            </thead>', '            <tbody>'])
-    
+            "                </tr>",
+            "            </thead>",
+            "            <tbody>",
+        ]
+    )
+
     # Group recipes by category
     recipes_by_category = {}
     for recipe in all_recipes:
@@ -180,44 +196,64 @@ def generate_detail_page(branch, all_data, all_recipes, updated, version_pins=No
             if category not in recipes_by_category:
                 recipes_by_category[category] = []
             recipes_by_category[category].append(recipe)
-    
+
     # Generate rows grouped by category
     for category in sorted(recipes_by_category.keys()):
         # Category header
         html.append(f'                <tr class="category-header">')
         html.append(f'                    <td colspan="3">{category}</td>')
-        html.append('                </tr>')
-        
+        html.append("                </tr>")
+
         for recipe in sorted(recipes_by_category[category]):
             master_info = master_recipes.get(recipe, {})
             next_info = next_recipes.get(recipe, {})
-            
-            master_ver = master_info.get("version", "-") if isinstance(master_info, dict) else master_info
-            next_ver = next_info.get("version", "-") if isinstance(next_info, dict) else next_info
-            recipe_path = master_info.get("path", "") if isinstance(master_info, dict) else ""
-            
+
+            master_ver = (
+                master_info.get("version", "-")
+                if isinstance(master_info, dict)
+                else master_info
+            )
+            next_ver = (
+                next_info.get("version", "-")
+                if isinstance(next_info, dict)
+                else next_info
+            )
+            recipe_path = (
+                master_info.get("path", "") if isinstance(master_info, dict) else ""
+            )
+
             versions = [master_ver, next_ver]
             colored = [color_version_html(v, versions) for v in versions]
-            
+
             html.append(f'                <tr id="{recipe}">')
-            recipe_display = f'<strong>{recipe}</strong>'
+            recipe_display = f"<strong>{recipe}</strong>"
             if recipe_path and recipe_path != ".":
                 recipe_display += f'<br><span class="recipe-path">{recipe_path}</span>'
-            html.append(f'                    <td>{recipe_display}</td>')
-            html.append(f'                    <td>{colored[0]}</td>')
+            html.append(f"                    <td>{recipe_display}</td>")
+            html.append(f"                    <td>{colored[0]}</td>")
             html.append(f'                    <td class="next-col">{colored[1]}</td>')
-            html.append('                </tr>')
+            html.append("                </tr>")
             if version_pins:
                 pin_note = version_pins.get(branch, {}).get(recipe, {})
                 if isinstance(pin_note, dict) and pin_note.get("reason"):
-                    html.append(f'                <tr><td colspan="3" style="font-size:0.85em;color:#856404;background:#fff3cd;padding:4px 12px;">📌 {pin_note["reason"]}</td></tr>')
-    
-    html.extend(['            </tbody>', '        </table>', '    </main>',
-                 '    <footer>',
-                 '        <p>Generated by <a href="https://github.com/aws4embeddedlinux/meta-aws-ci">meta-aws-ci</a></p>',
-                 '    </footer>', '</body>', '</html>'])
-    
-    return '\n'.join(html)
+                    html.append(
+                        f'                <tr><td colspan="3" style="font-size:0.85em;color:#856404;background:#fff3cd;padding:4px 12px;">📌 {pin_note["reason"]}</td></tr>'
+                    )
+
+    html.extend(
+        [
+            "            </tbody>",
+            "        </table>",
+            "    </main>",
+            "    <footer>",
+            '        <p>Generated by <a href="https://github.com/aws4embeddedlinux/meta-aws-ci">meta-aws-ci</a></p>',
+            "    </footer>",
+            "</body>",
+            "</html>",
+        ]
+    )
+
+    return "\n".join(html)
 
 
 def main():
@@ -231,19 +267,28 @@ def main():
     version_pins = {}
     if pins_file.exists():
         version_pins = json.loads(pins_file.read_text())
-        print(f"Loaded version pins for: {', '.join(version_pins.keys())}", file=sys.stderr)
+        print(
+            f"Loaded version pins for: {', '.join(version_pins.keys())}",
+            file=sys.stderr,
+        )
 
     all_data = {}
-    
+
     # Clone meta-aws repository to temporary directory
     with tempfile.TemporaryDirectory() as tmpdir:
         repo_path = Path(tmpdir) / "meta-aws"
         print(f"Cloning meta-aws repository...", file=sys.stderr)
         subprocess.run(
-            ["git", "clone", "--quiet", "https://github.com/aws4embeddedlinux/meta-aws.git", str(repo_path)],
-            check=True
+            [
+                "git",
+                "clone",
+                "--quiet",
+                "https://github.com/aws4embeddedlinux/meta-aws.git",
+                str(repo_path),
+            ],
+            check=True,
         )
-        
+
         for branch in branches:
             for suffix in ["", "-next"]:
                 branch_name = f"{branch}{suffix}"
@@ -268,7 +313,9 @@ def main():
     docs_dir = Path("docs")
     for branch in branches:
         if branch in all_data:
-            detail_html = generate_detail_page(branch, all_data, all_recipes, updated, version_pins)
+            detail_html = generate_detail_page(
+                branch, all_data, all_recipes, updated, version_pins
+            )
             detail_file = docs_dir / f"recipe-versions-{branch}.html"
             detail_file.write_text(detail_html)
             print(f"Generated {detail_file}", file=sys.stderr)
@@ -291,7 +338,9 @@ def main():
     print("        .back-link { color: #ff9900; text-decoration: none; }")
     print("        .back-link:hover { text-decoration: underline; }")
     print("        .category-header { background: #f0f0f0; font-weight: bold; }")
-    print("        .recipe-path { font-size: 0.75em; color: #666; font-style: italic; }")
+    print(
+        "        .recipe-path { font-size: 0.75em; color: #666; font-style: italic; }"
+    )
     print("    </style>")
     print("</head>")
     print("<body>")
@@ -341,23 +390,23 @@ def main():
             recipe_info = all_data.get(branch, {}).get(recipe)
             if recipe_info:
                 break
-        
+
         if recipe_info and isinstance(recipe_info, dict):
             category = recipe_info.get("category", "unknown")
             if category not in recipes_by_category:
                 recipes_by_category[category] = []
             recipes_by_category[category].append(recipe)
-    
+
     # Generate rows grouped by category
     for category in sorted(recipes_by_category.keys()):
         # Category header
         print(f'                <tr class="category-header">')
         print(f'                    <td colspan="{len(branches) + 1}">{category}</td>')
-        print('                </tr>')
-        
+        print("                </tr>")
+
         for recipe in sorted(recipes_by_category[category]):
             print("                <tr>")
-            
+
             # Get recipe path from first available branch
             recipe_path = ""
             for branch in branches:
@@ -365,27 +414,39 @@ def main():
                 if recipe_info and isinstance(recipe_info, dict):
                     recipe_path = recipe_info.get("path", "")
                     break
-            
+
             recipe_display = f"<strong>{recipe}</strong>"
             if recipe_path and recipe_path != ".":
                 recipe_display += f'<br><span class="recipe-path">{recipe_path}</span>'
-            
+
             print(f"                    <td>{recipe_display}</td>")
-            
+
             for branch in branches:
                 master_info = all_data.get(branch, {}).get(recipe, {})
                 next_info = all_data.get(f"{branch}-next", {}).get(recipe, {})
-                
-                master_ver = master_info.get("version", "-") if isinstance(master_info, dict) else master_info if master_info else "-"
-                next_ver = next_info.get("version", "-") if isinstance(next_info, dict) else next_info if next_info else master_ver
-                
+
+                master_ver = (
+                    master_info.get("version", "-")
+                    if isinstance(master_info, dict)
+                    else master_info if master_info else "-"
+                )
+                next_ver = (
+                    next_info.get("version", "-")
+                    if isinstance(next_info, dict)
+                    else next_info if next_info else master_ver
+                )
+
                 status = get_status_indicator(master_ver, next_ver)
                 pin_note = version_pins.get(branch, {}).get(recipe, {})
                 if isinstance(pin_note, dict) and pin_note.get("reason"):
-                    reason = pin_note["reason"].replace('"', '&quot;')
-                    print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}" title="📌 {reason}">{status} 📌</a></td>')
+                    reason = pin_note["reason"].replace('"', "&quot;")
+                    print(
+                        f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}" title="📌 {reason}">{status} 📌</a></td>'
+                    )
                 else:
-                    print(f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}">{status}</a></td>')
+                    print(
+                        f'                    <td class="status-cell"><a href="recipe-versions-{branch}.html#{recipe}">{status}</a></td>'
+                    )
             print("                </tr>")
 
     print("            </tbody>")

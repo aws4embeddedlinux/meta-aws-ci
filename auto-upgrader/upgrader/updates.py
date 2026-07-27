@@ -70,7 +70,7 @@ def check_for_updates(recipe: str) -> bool:
 
 
 def _check_for_updates(recipe: str) -> Optional[dict]:
-    (stdout, _, _) = run(f"devtool check-upgrade-status {recipe}")
+    stdout, _, _ = run(f"devtool check-upgrade-status {recipe}")
     update_re = recipe + r"\s+([^\s]+)\s+([^\s]+)"
     m = re.search(update_re, stdout)
     if m:
@@ -135,7 +135,7 @@ def update(layer_path: Path, target_branch: str) -> None:
         run(f"git -C {layer_path} checkout {target_branch}")
 
         # Attempt upgrade
-        (_, _, ret) = run(f"devtool upgrade {upgrade.get('recipe')}")
+        _, _, ret = run(f"devtool upgrade {upgrade.get('recipe')}")
         if ret != 0:
             logger.warn(
                 f"upgrading {upgrade.get('recipe')} failed. return code was {ret}"
@@ -152,7 +152,7 @@ def update(layer_path: Path, target_branch: str) -> None:
         run(f"git -C {layer_path} checkout -b {new_branch} {target_branch}")
 
         # Finalize recipe
-        (_, _, ret) = run(
+        _, _, ret = run(
             f"devtool finish --force --force-patch-refresh {upgrade.get('recipe')} {layer_path}"
         )
         if ret != 0:

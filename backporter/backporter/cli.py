@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Optional
 
 import click
-
 from backporter.core import BackportInput, backport
 
 logger = logging.getLogger("backporter")
@@ -25,9 +24,13 @@ def cli(verbose: bool) -> None:
 
 
 @cli.command()
-@click.option("--recipe", required=True, help="Recipe name (PN), e.g. 'python3-botocore'.")
+@click.option(
+    "--recipe", required=True, help="Recipe name (PN), e.g. 'python3-botocore'."
+)
 @click.option("--version", required=True, help="New version to upgrade to.")
-@click.option("--target-branch", required=True, help="Branch to backport to, e.g. 'wrynose-next'.")
+@click.option(
+    "--target-branch", required=True, help="Branch to backport to, e.g. 'wrynose-next'."
+)
 @click.option("--srcrev", default=None, help="New SRCREV hash (for git-based recipes).")
 @click.option(
     "--sha256sum",
@@ -40,7 +43,9 @@ def cli(verbose: bool) -> None:
     required=True,
     help="Path to the layer git repository.",
 )
-@click.option("--push/--no-push", default=False, help="Push the branch to origin after commit.")
+@click.option(
+    "--push/--no-push", default=False, help="Push the branch to origin after commit."
+)
 def upgrade(
     recipe: str,
     version: str,
@@ -71,7 +76,10 @@ def upgrade(
     sha256sums = {}
     for entry in sha256sum:
         if "=" not in entry:
-            click.echo(f"ERROR: --sha256sum must be in 'name=hash' format, got: {entry}", err=True)
+            click.echo(
+                f"ERROR: --sha256sum must be in 'name=hash' format, got: {entry}",
+                err=True,
+            )
             sys.exit(1)
         name, hash_value = entry.split("=", 1)
         sha256sums[name] = hash_value
@@ -109,7 +117,8 @@ def upgrade(
         click.echo(f"⊘ {result.message}")
         sys.exit(
             0
-            if "not found" in result.message.lower() or "skipping" in result.message.lower()
+            if "not found" in result.message.lower()
+            or "skipping" in result.message.lower()
             else 1
         )
 
