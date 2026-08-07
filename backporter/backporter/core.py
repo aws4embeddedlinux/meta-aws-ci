@@ -293,8 +293,11 @@ def backport(layer_path: Path, input: BackportInput) -> BackportResult:
     # Write updated content
     new_path.write_text(content)
 
-    # Stage and commit
-    run_git(["add", "--all"], cwd=layer_path)
+    # Stage only the specific recipe files that changed (the git mv already
+    # staged the rename; we just need to stage the content update to the new file).
+    # Avoid "git add --all" which can accidentally stage unrelated files such as
+    # CI tool checkouts that appear inside the working tree (see #16495).
+    run_git(["add", str(new_path.relative_to(layer_path))], cwd=layer_path)
 
     commit_msg = f"{recipe}: upgrade {old_version} -> {new_version}"
     try:

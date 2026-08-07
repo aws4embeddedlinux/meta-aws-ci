@@ -162,9 +162,16 @@ def update(layer_path: Path, target_branch: str) -> None:
             result["fail"].append(upgrade)
             continue
 
-        # Commit upgrade
-        run(f"git -C {layer_path} add --all")
-        run(f'git -C {layer_path} commit -a -m "{commit_msg}"')
+        # Commit upgrade — stage only layer content, not unrelated checkouts
+        # that may appear in the working tree (e.g. CI tool repos). Using
+        # pathspecs for known layer directories prevents accidental gitlink
+        # staging (see meta-aws#16495).
+        run(f"git -C {layer_path} add -u")  # stage modifications/deletions to tracked files
+        run(
+            f"git -C {layer_path} add"
+            f" -- recipes-* classes conf dynamic-layers images .github"
+        )  # stage new files only in known layer directories
+        run(f'git -C {layer_path} commit -m "{commit_msg}"')
 
         with open(BRANCH_FILE, "a") as f:
             f.write(new_branch + "\n")
