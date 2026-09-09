@@ -2,7 +2,7 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Dict, FrozenSet, Optional, Sequence, Tuple
 
 import click
 from github import Github
@@ -163,7 +163,7 @@ def _open_upgrade_pulls(gh_repo, target_branch: str) -> Dict[str, list]:
 
 
 def _delete_branch(
-    gh_repo, branch: str, dry_run: bool, protected: Optional[frozenset] = None
+    gh_repo, branch: str, dry_run: bool, protected: Optional[FrozenSet[str]] = None
 ) -> None:
     """Delete a remote branch.
 
@@ -171,9 +171,7 @@ def _delete_branch(
     deleting such a branch closes that pull request as a side effect.
     """
     if protected and branch in protected:
-        logger.warning(
-            f"not deleting {branch}: it is the head of an open pull request"
-        )
+        logger.warning(f"not deleting {branch}: it is the head of an open pull request")
         return
     if dry_run:
         logger.info(f"[dry-run] would delete branch {branch}")
@@ -243,7 +241,7 @@ def _create_prs(
             # request and let a human look at it rather than silently dropping
             # work.
             logger.warning(
-                f"could not identify a single recipe for {branch}; creating pull request unconditionally"
+                f"could not identify a single recipe for {branch} - creating pull request unconditionally"
             )
             _do_create(gh_repo, target_branch, branch, upgrade_label, delay, dry_run)
             continue
@@ -257,16 +255,14 @@ def _create_prs(
         action = decide(version, current_version)
 
         if action == CREATE:
-            logger.info(f"{recipe} {version}: no open pull request; creating")
-            pull = _do_create(
-                gh_repo, target_branch, branch, upgrade_label, delay, dry_run
-            )
+            logger.info(f"{recipe} {version}: no open pull request, creating")
+            pull = _do_create(gh_repo, target_branch, branch, upgrade_label, delay, dry_run)
             if pull is not None:
                 existing.setdefault(recipe, []).append((version, pull))
 
         elif action == SKIP_DUPLICATE:
             logger.info(
-                f"{recipe} {version}: already covered by open #{current[1].number}; skipping"
+                f"{recipe} {version}: already covered by open #{current[1].number}, skipping"
             )
             if delete_redundant_branches:
                 _delete_branch(gh_repo, branch, dry_run, open_heads)
@@ -274,13 +270,11 @@ def _create_prs(
         elif action == SUPERSEDE:
             logger.info(
                 f"{recipe} {version}: supersedes open #{current[1].number} "
-                f"({current_version}); creating"
+                f"({current_version}), creating"
             )
-            pull = _do_create(
-                gh_repo, target_branch, branch, upgrade_label, delay, dry_run
-            )
+            pull = _do_create(gh_repo, target_branch, branch, upgrade_label, delay, dry_run)
             if close_superseded:
-                for open_version, open_pull in candidates:
+                for _open_version, open_pull in candidates:
                     _close_as_superseded(
                         gh_repo,
                         open_pull,
@@ -293,7 +287,7 @@ def _create_prs(
         elif action == SKIP_BEHIND:
             logger.warning(
                 f"{recipe} {version}: open #{current[1].number} already targets "
-                f"{current_version}; skipping"
+                f"{current_version}, skipping"
             )
             if delete_redundant_branches:
                 _delete_branch(gh_repo, branch, dry_run, open_heads)

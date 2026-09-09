@@ -84,9 +84,7 @@ class TestRecipeAndVersion:
         )
 
     def test_recipe_with_hyphens_and_digits(self) -> None:
-        files = [
-            ("recipes-devtools/amazon-corretto/corretto-11-bin_11.0.32.10.1.bb", "added")
-        ]
+        files = [("recipes-devtools/amazon-corretto/corretto-11-bin_11.0.32.10.1.bb", "added")]
         assert recipe_and_version(files) == ("corretto-11-bin", "11.0.32.10.1")
 
     def test_ignores_non_recipe_files(self) -> None:

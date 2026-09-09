@@ -47,3 +47,49 @@ same base branch:
   open.
 - `--no-delete-redundant-branches` leaves branches in place when no pull request
   is created for them.
+
+Because this runs unattended on a schedule, `--dry-run` is the recommended way
+to inspect what a change to this logic would do before letting it act:
+
+```shell
+GITHUB_TOKEN=... upgrader create-pulls \
+    --branch-file=branches.txt \
+    --repo=aws4embeddedlinux/meta-aws \
+    --target-branch=master-next \
+    --dry-run
+```
+
+## Development
+
+```shell
+python3 -m venv .venv && . .venv/bin/activate
+pip install -e . -r dev-requirements.txt pytest
+```
+
+Run the tests:
+
+```shell
+python -m pytest tests/
+```
+
+`tests/test_recipes.py` covers version comparison and the upgrade decision
+matrix. Those functions take plain data rather than PyGithub objects
+specifically so they can be tested without network access or mocks; keep new
+decision logic in `upgrader/recipes.py` for the same reason.
+
+`tests/test_proc.py::test_async_run` currently fails under Python 3.12 and
+newer, which tightened `asyncio` coroutine handling. The failure predates the
+duplicate-suppression work and is unrelated to it. There is no workflow running
+these tests, so it has gone unnoticed.
+
+Linting is enforced by `pre-commit` from the repository root (`black`, `isort`,
+`flake8`):
+
+```shell
+pre-commit run --all-files
+```
+
+Note that `flake8` reports a spurious `E702` for semicolons appearing inside
+f-string *text* when run under Python 3.12 or newer, a consequence of the PEP
+701 tokenizer change. Avoid semicolons in log messages rather than adding
+`noqa` comments.
