@@ -166,7 +166,9 @@ def update(layer_path: Path, target_branch: str) -> None:
         # that may appear in the working tree (e.g. CI tool repos). Using
         # pathspecs for known layer directories prevents accidental gitlink
         # staging (see meta-aws#16495).
-        run(f"git -C {layer_path} add -u")  # stage modifications/deletions to tracked files
+        run(
+            f"git -C {layer_path} add -u"
+        )  # stage modifications/deletions to tracked files
         run(
             f"git -C {layer_path} add"
             f" -- recipes-* classes conf dynamic-layers images .github"

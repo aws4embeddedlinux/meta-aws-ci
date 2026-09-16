@@ -198,7 +198,9 @@ def _close_as_superseded(
         f"`{pull.base.ref}`.\n\nClosed automatically by the auto-upgrader."
     )
     if dry_run:
-        logger.info(f"[dry-run] would close #{pull.number} as superseded by {new_version}")
+        logger.info(
+            f"[dry-run] would close #{pull.number} as superseded by {new_version}"
+        )
         return
 
     branch = pull.head.ref
@@ -256,7 +258,9 @@ def _create_prs(
 
         if action == CREATE:
             logger.info(f"{recipe} {version}: no open pull request, creating")
-            pull = _do_create(gh_repo, target_branch, branch, upgrade_label, delay, dry_run)
+            pull = _do_create(
+                gh_repo, target_branch, branch, upgrade_label, delay, dry_run
+            )
             if pull is not None:
                 existing.setdefault(recipe, []).append((version, pull))
 
@@ -272,7 +276,9 @@ def _create_prs(
                 f"{recipe} {version}: supersedes open #{current[1].number} "
                 f"({current_version}), creating"
             )
-            pull = _do_create(gh_repo, target_branch, branch, upgrade_label, delay, dry_run)
+            pull = _do_create(
+                gh_repo, target_branch, branch, upgrade_label, delay, dry_run
+            )
             if close_superseded:
                 for _open_version, open_pull in candidates:
                     _close_as_superseded(
