@@ -29,6 +29,12 @@ jobs:
           ref: master
           path: ci
 
+      - name: Exclude ci/ from git tracking
+        run: |
+          # The ci/ checkout lives inside the meta-aws working tree.
+          # Ensure git never stages it as a gitlink (fixes #16495).
+          echo "ci/" >> .git/info/exclude
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:

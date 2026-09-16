@@ -24,7 +24,8 @@ The dashboard provides:
 ## How this repository is organized
 
 ```text
- auto-upgrader/     <= tool that is used in meta-aws to generate pull requests if an recipe upgrade is available
+ auto-upgrader/     <= tool used in meta-aws to open pull requests when a recipe upgrade is
+                       available, skipping upgrades already covered by an open pull request
  docs/              <= writeups of different topics
  ff-merge/          <= script to perform -next to release branch ff merge
  release-tests/     <= script to build and ptests all Yocto meta-aws releases
