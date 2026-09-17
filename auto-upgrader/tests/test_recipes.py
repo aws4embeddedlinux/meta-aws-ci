@@ -8,11 +8,16 @@ hand-authored and multi-recipe pull requests out of the automation's way.
 import pytest
 
 from upgrader.recipes import (
+    BLOCKED_LABEL,
     CREATE,
     SKIP_BEHIND,
     SKIP_DUPLICATE,
     SUPERSEDE,
+    blocked_comment_for_new_pr,
+    blocked_supersede_comment,
     decide,
+    find_root_blocked_pr,
+    find_root_reference,
     recipe_and_version,
     version_key,
 )
@@ -167,3 +172,131 @@ class TestDecide:
     )
     def test_matrix(self, candidate: str, existing: str, expected: str) -> None:
         assert decide(candidate, existing) == expected
+
+
+class TestFindRootReference:
+    def test_finds_reference_in_body(self) -> None:
+        assert find_root_reference(["Blocked by same upstream issue as #42"]) == 42
+
+    def test_finds_reference_in_later_text(self) -> None:
+        # Callers pass body then comment bodies; the first hit wins.
+        texts = [
+            "Automatically created.",
+            "unrelated comment",
+            "Blocked by same upstream issue as #99",
+        ]
+        assert find_root_reference(texts) == 99
+
+    def test_no_reference_returns_none(self) -> None:
+        assert find_root_reference(["nothing here", "or here"]) is None
+
+    def test_empty_input_returns_none(self) -> None:
+        assert find_root_reference([]) is None
+
+    def test_ignores_none_entries(self) -> None:
+        # ``pull.body`` may be ``None`` for a pull request created without a
+        # description; the helper must not raise.
+        assert find_root_reference([None, "Blocked by same upstream issue as #7"]) == 7
+
+    def test_is_case_insensitive(self) -> None:
+        # The marker is written by the automation, but a human may edit the
+        # body when investigating; tolerate case drift.
+        assert find_root_reference(["blocked by SAME upstream ISSUE as #12"]) == 12
+
+    def test_first_match_wins(self) -> None:
+        texts = [
+            "Blocked by same upstream issue as #10",
+            "Blocked by same upstream issue as #20",
+        ]
+        assert find_root_reference(texts) == 10
+
+
+class TestFindRootBlockedPr:
+    def test_pull_with_no_reference_is_root(self) -> None:
+        assert find_root_blocked_pr(100, ["no reference"], lambda n: None) == 100
+
+    def test_direct_reference(self) -> None:
+        # Referenced PR itself has no earlier reference, so it is the root.
+        graph = {42: ["no earlier reference"]}
+        assert (
+            find_root_blocked_pr(
+                100,
+                ["Blocked by same upstream issue as #42"],
+                graph.get,
+            )
+            == 42
+        )
+
+    def test_multi_hop_chain(self) -> None:
+        # 100 -> 42 -> 10 (root)
+        graph = {
+            42: ["Blocked by same upstream issue as #10"],
+            10: ["original blocked report"],
+        }
+        assert (
+            find_root_blocked_pr(
+                100,
+                ["Blocked by same upstream issue as #42"],
+                graph.get,
+            )
+            == 10
+        )
+
+    def test_unresolvable_reference_returned_as_root(self) -> None:
+        # A referenced pull request that cannot be fetched (deleted, private)
+        # is returned unchanged so the operator can still investigate it.
+        assert (
+            find_root_blocked_pr(
+                100,
+                ["Blocked by same upstream issue as #42"],
+                lambda n: None,
+            )
+            == 42
+        )
+
+    def test_cycle_does_not_loop_forever(self) -> None:
+        # A malformed chain that references back to a visited PR must not hang.
+        graph = {
+            42: ["Blocked by same upstream issue as #100"],
+        }
+        result = find_root_blocked_pr(
+            100,
+            ["Blocked by same upstream issue as #42"],
+            graph.get,
+        )
+        assert result in (42, 100)
+
+    def test_self_reference_is_root(self) -> None:
+        # A pull request that (nonsensically) references itself is treated as
+        # the root rather than followed.
+        assert (
+            find_root_blocked_pr(
+                50,
+                ["Blocked by same upstream issue as #50"],
+                lambda n: None,
+            )
+            == 50
+        )
+
+
+class TestBlockedCommentFormatting:
+    def test_new_pr_comment_names_root(self) -> None:
+        # The exact wording is the marker the trace walks; keep it stable.
+        assert blocked_comment_for_new_pr(42) == "Blocked by same upstream issue as #42"
+
+    def test_new_pr_comment_is_discovered_by_the_trace(self) -> None:
+        # Round-trip: what the writer produces must be what the reader finds,
+        # otherwise a two-hop chain silently loses its root.
+        assert find_root_reference([blocked_comment_for_new_pr(7)]) == 7
+
+    def test_supersede_comment_names_new_pr_and_root(self) -> None:
+        assert blocked_supersede_comment(200, 42) == (
+            "Superseded by #200 (newer version). Upstream block tracked in #42."
+        )
+
+
+class TestBlockedLabelConstant:
+    def test_blocked_label_is_the_documented_string(self) -> None:
+        # Constant used across match, apply and comment paths -- pinned here
+        # so a rename cannot silently split the two.
+        assert BLOCKED_LABEL == "blocked"
