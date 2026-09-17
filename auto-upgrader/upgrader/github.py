@@ -2,17 +2,21 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import Dict, FrozenSet, Optional, Sequence, Tuple
+from typing import Dict, FrozenSet, List, Optional, Sequence, Tuple
 
 import click
 from github import Github
 
 from upgrader.recipes import (
+    BLOCKED_LABEL,
     CREATE,
     SKIP_BEHIND,
     SKIP_DUPLICATE,
     SUPERSEDE,
+    blocked_comment_for_new_pr,
+    blocked_supersede_comment,
     decide,
+    find_root_blocked_pr,
     recipe_and_version,
 )
 
@@ -143,6 +147,37 @@ def _has_human_activity(pull) -> bool:
     return False
 
 
+def _has_blocked_label(pull) -> bool:
+    """Whether a pull request carries the blocked label."""
+    return any(label.name == BLOCKED_LABEL for label in pull.labels)
+
+
+def _pull_texts(pull) -> List[Optional[str]]:
+    """Body followed by comment bodies, suitable for :func:`find_root_reference`."""
+    texts: List[Optional[str]] = [pull.body]
+    for comment in pull.get_issue_comments():
+        texts.append(comment.body)
+    return texts
+
+
+def _root_blocked_pr_number(gh_repo, pull) -> int:
+    """Trace an open blocked pull request back to the root of its blocked chain.
+
+    Falls back to the starting pull request's number when nothing earlier is
+    referenced -- i.e. the pull request being closed IS the root.
+    """
+
+    def fetch(number: int) -> Optional[List[Optional[str]]]:
+        try:
+            referenced = gh_repo.get_pull(number)
+        except Exception as exc:  # noqa: BLE001 - referenced PR may be gone
+            logger.warning(f"could not fetch referenced pull request #{number}: {exc}")
+            return None
+        return _pull_texts(referenced)
+
+    return find_root_blocked_pr(pull.number, _pull_texts(pull), fetch)
+
+
 def _open_upgrade_pulls(gh_repo, target_branch: str) -> Dict[str, list]:
     """Map recipe name -> open bot-authored upgrade pull requests for it.
 
@@ -198,9 +233,7 @@ def _close_as_superseded(
         f"`{pull.base.ref}`.\n\nClosed automatically by the auto-upgrader."
     )
     if dry_run:
-        logger.info(
-            f"[dry-run] would close #{pull.number} as superseded by {new_version}"
-        )
+        logger.info(f"[dry-run] would close #{pull.number} as superseded by {new_version}")
         return
 
     branch = pull.head.ref
@@ -210,6 +243,49 @@ def _close_as_superseded(
     if delete_branch:
         # Deliberately unprotected: we just closed this pull request, so its
         # head branch is now safe to remove.
+        _delete_branch(gh_repo, branch, dry_run)
+
+
+def _close_blocked_as_superseded(
+    gh_repo,
+    pull,
+    new_pull_number: Optional[int],
+    root_number: int,
+    delete_branch: bool,
+    dry_run: bool,
+) -> None:
+    """Close a blocked pull request that a newer upgrade has superseded.
+
+    Unlike :func:`_close_as_superseded`, human review or comment activity does
+    NOT stop the close: a blocked pull request is expected to attract triage
+    comments, and leaving it open every time a newer version arrives is exactly
+    the backlog problem this handling exists to solve.
+
+    ``new_pull_number`` is ``None`` when the caller is in dry-run and no new
+    pull request was created; the log line still names the root so the operator
+    can trace the chain.
+    """
+    displayed_new = f"#{new_pull_number}" if new_pull_number is not None else "<new PR>"
+    if dry_run:
+        logger.info(
+            f"[dry-run] would close blocked #{pull.number} as superseded by "
+            f"{displayed_new} (root #{root_number})"
+        )
+        return
+
+    if new_pull_number is None:
+        # Defensive: with dry_run=False we always have a real new pull request.
+        logger.warning(f"not closing blocked #{pull.number}: no new pull request to reference")
+        return
+
+    branch = pull.head.ref
+    pull.create_issue_comment(blocked_supersede_comment(new_pull_number, root_number))
+    pull.edit(state="closed")
+    logger.info(
+        f"closed blocked #{pull.number} as superseded by #{new_pull_number} "
+        f"(root #{root_number})"
+    )
+    if delete_branch:
         _delete_branch(gh_repo, branch, dry_run)
 
 
@@ -227,6 +303,7 @@ def _create_prs(
     gh = Github(token)
     gh_repo = gh.get_repo(repo)
     upgrade_label = gh_repo.get_label(UPGRADE_LABEL)
+    blocked_label = gh_repo.get_label(BLOCKED_LABEL)
 
     existing = _open_upgrade_pulls(gh_repo, target_branch)
     open_heads = frozenset(
@@ -245,7 +322,7 @@ def _create_prs(
             logger.warning(
                 f"could not identify a single recipe for {branch} - creating pull request unconditionally"
             )
-            _do_create(gh_repo, target_branch, branch, upgrade_label, delay, dry_run)
+            _do_create(gh_repo, target_branch, branch, [upgrade_label], delay, dry_run)
             continue
 
         recipe, version = identified
@@ -258,9 +335,7 @@ def _create_prs(
 
         if action == CREATE:
             logger.info(f"{recipe} {version}: no open pull request, creating")
-            pull = _do_create(
-                gh_repo, target_branch, branch, upgrade_label, delay, dry_run
-            )
+            pull = _do_create(gh_repo, target_branch, branch, [upgrade_label], delay, dry_run)
             if pull is not None:
                 existing.setdefault(recipe, []).append((version, pull))
 
@@ -272,23 +347,77 @@ def _create_prs(
                 _delete_branch(gh_repo, branch, dry_run, open_heads)
 
         elif action == SUPERSEDE:
-            logger.info(
-                f"{recipe} {version}: supersedes open #{current[1].number} "
-                f"({current_version}), creating"
-            )
-            pull = _do_create(
-                gh_repo, target_branch, branch, upgrade_label, delay, dry_run
-            )
-            if close_superseded:
-                for _open_version, open_pull in candidates:
-                    _close_as_superseded(
-                        gh_repo,
-                        open_pull,
-                        version,
-                        delete_redundant_branches,
-                        dry_run,
+            blocked_candidates = [(v, p) for v, p in candidates if _has_blocked_label(p)]
+            regular_candidates = [(v, p) for v, p in candidates if not _has_blocked_label(p)]
+
+            if blocked_candidates:
+                # The chain of blocked pull requests shares a root: trace from
+                # the highest-version blocked candidate, which is the tip of
+                # that chain, back to the pull request that first reported the
+                # upstream issue.
+                tip_blocked = max(blocked_candidates, key=lambda pair: pair[0])[1]
+                root_number = _root_blocked_pr_number(gh_repo, tip_blocked)
+                logger.info(
+                    f"{recipe} {version}: supersedes blocked #{tip_blocked.number} "
+                    f"(root #{root_number}), creating with blocked label"
+                )
+                pull = _do_create(
+                    gh_repo,
+                    target_branch,
+                    branch,
+                    [upgrade_label, blocked_label],
+                    delay,
+                    dry_run,
+                )
+                if pull is not None:
+                    pull.create_issue_comment(blocked_comment_for_new_pr(root_number))
+                else:
+                    logger.info(
+                        f"[dry-run] would label new pull request for {branch} as "
+                        f"blocked and reference root #{root_number}"
                     )
-            existing[recipe] = [(version, pull)] if pull is not None else []
+
+                if close_superseded:
+                    new_number = pull.number if pull is not None else None
+                    for _open_version, open_pull in blocked_candidates:
+                        _close_blocked_as_superseded(
+                            gh_repo,
+                            open_pull,
+                            new_number,
+                            root_number,
+                            delete_redundant_branches,
+                            dry_run,
+                        )
+                    for _open_version, open_pull in regular_candidates:
+                        _close_as_superseded(
+                            gh_repo,
+                            open_pull,
+                            version,
+                            delete_redundant_branches,
+                            dry_run,
+                        )
+                else:
+                    logger.info(
+                        f"{recipe} {version}: --no-close-superseded is set, "
+                        f"leaving #{tip_blocked.number} open"
+                    )
+                existing[recipe] = [(version, pull)] if pull is not None else []
+            else:
+                logger.info(
+                    f"{recipe} {version}: supersedes open #{current[1].number} "
+                    f"({current_version}), creating"
+                )
+                pull = _do_create(gh_repo, target_branch, branch, [upgrade_label], delay, dry_run)
+                if close_superseded:
+                    for _open_version, open_pull in candidates:
+                        _close_as_superseded(
+                            gh_repo,
+                            open_pull,
+                            version,
+                            delete_redundant_branches,
+                            dry_run,
+                        )
+                existing[recipe] = [(version, pull)] if pull is not None else []
 
         elif action == SKIP_BEHIND:
             logger.warning(
@@ -299,14 +428,15 @@ def _create_prs(
                 _delete_branch(gh_repo, branch, dry_run, open_heads)
 
 
-def _do_create(gh_repo, target_branch, branch, upgrade_label, delay, dry_run):
+def _do_create(gh_repo, target_branch, branch, labels, delay, dry_run):
     if dry_run:
-        logger.info(f"[dry-run] would create pull request for {branch}")
+        label_names = ", ".join(label.name for label in labels)
+        logger.info(f"[dry-run] would create pull request for {branch} with labels [{label_names}]")
         return None
     pull = gh_repo.create_pull(
         base=target_branch, head=branch, title=branch, body="Automatically created."
     )
-    pull.set_labels(upgrade_label)
+    pull.set_labels(*labels)
     if delay:
         time.sleep(delay)
     return pull

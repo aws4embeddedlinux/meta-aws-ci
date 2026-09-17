@@ -5,7 +5,20 @@ that the decision logic can be unit tested without network access or mocks.
 """
 
 import re
-from typing import Dict, List, Optional, Sequence, Set, Tuple
+from typing import Callable, Dict, List, Optional, Sequence, Set, Tuple
+
+#: Label applied to pull requests that are blocked on an upstream issue.
+#: Kept as a single source of truth so the same string is not repeated across
+#: match, apply and comment paths.
+BLOCKED_LABEL = "blocked"
+
+#: Body/comment marker that ties a new blocked pull request back to the root
+#: pull request that first reported the upstream block. The regex tolerates
+#: surrounding whitespace and case so a human note stays discoverable.
+BLOCKED_REFERENCE_RE = re.compile(
+    r"Blocked by same upstream issue as #(?P<number>\d+)",
+    re.IGNORECASE,
+)
 
 # recipes-<category>/<dir>/<name>_<version>.bb  (also .bbappend)
 RECIPE_FILE_RE = re.compile(
@@ -120,3 +133,76 @@ def decide(candidate_version: str, existing_version: Optional[str]) -> str:
     if candidate > existing:
         return SUPERSEDE
     return SKIP_BEHIND
+
+
+def find_root_reference(texts: Sequence[Optional[str]]) -> Optional[int]:
+    """Return the first ``#N`` referenced by a "Blocked by same upstream issue as" marker.
+
+    ``texts`` is the pull request body followed by comment bodies, in order.
+    ``None`` entries are ignored so callers can pass ``pull.body`` directly.
+    Returns ``None`` if no marker is present.
+    """
+    for text in texts:
+        if not text:
+            continue
+        match = BLOCKED_REFERENCE_RE.search(text)
+        if match:
+            return int(match.group("number"))
+    return None
+
+
+def find_root_blocked_pr(
+    start_number: int,
+    start_texts: Sequence[Optional[str]],
+    fetch_texts: Callable[[int], Optional[Sequence[Optional[str]]]],
+) -> int:
+    """Trace back through "Blocked by same upstream issue as #N" markers to the root.
+
+    Parameters
+    ----------
+    start_number
+        Number of the pull request the trace starts from.
+    start_texts
+        Body and comment bodies of the starting pull request, in that order.
+        A pull request that does not reference an earlier one IS the root, so
+        the returned number is ``start_number`` in that case.
+    fetch_texts
+        Resolver returning the body and comment bodies of a referenced pull
+        request, or ``None`` if it cannot be fetched (deleted, private, out of
+        scope). When a reference cannot be resolved the referenced number is
+        returned unchanged so the operator can still investigate it.
+
+    A cycle in the chain -- a pull request whose reference resolves to one
+    already visited -- returns the pull request that closed the cycle rather
+    than looping forever.
+    """
+    visited: Set[int] = set()
+    current_number = start_number
+    current_texts: Sequence[Optional[str]] = start_texts
+    while True:
+        if current_number in visited:
+            return current_number
+        visited.add(current_number)
+        reference = find_root_reference(current_texts)
+        if reference is None or reference == current_number:
+            return current_number
+        next_texts = fetch_texts(reference)
+        if next_texts is None:
+            # Referenced pull request is unreachable -- treat the reference
+            # itself as the root so the number stays visible to the operator.
+            return reference
+        current_number = reference
+        current_texts = next_texts
+
+
+def blocked_comment_for_new_pr(root_number: int) -> str:
+    """Comment posted on the new pull request that inherits the upstream block."""
+    return f"Blocked by same upstream issue as #{root_number}"
+
+
+def blocked_supersede_comment(new_number: int, root_number: int) -> str:
+    """Closing comment posted on the old blocked pull request being superseded."""
+    return (
+        f"Superseded by #{new_number} (newer version). "
+        f"Upstream block tracked in #{root_number}."
+    )
